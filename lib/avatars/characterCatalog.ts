@@ -1,11 +1,12 @@
 import characterPresets from './characterPresets.json'
+import { HUMAN_PRESETS } from './humanPresets'
 import {
   PORTRAIT_PRESETS,
   isPortraitPreset,
   type PortraitPreset,
 } from './portraitCatalog'
 
-export type CharacterPresetCategory = 'soft' | 'character' | 'simple' | 'portrait'
+export type CharacterPresetCategory = 'human' | 'soft' | 'character' | 'simple'
 
 export type CharacterPreset = {
   id: string
@@ -21,18 +22,21 @@ export type CharacterPreset = {
   defaultColors: { body: string; eyes: string }
 }
 
-export type AnyCharacter = CharacterPreset | PortraitPreset
+export type AnyCharacter = CharacterPreset
 
-export const CHARACTER_PRESETS = characterPresets.presets as CharacterPreset[]
+export const CHARACTER_PRESETS: CharacterPreset[] = [
+  ...HUMAN_PRESETS,
+  ...(characterPresets.presets as CharacterPreset[]),
+]
 
-export const ALL_CHARACTERS: AnyCharacter[] = [...PORTRAIT_PRESETS, ...CHARACTER_PRESETS]
+export const ALL_CHARACTERS: AnyCharacter[] = CHARACTER_PRESETS
 
 export const CHARACTER_CATEGORIES: {
   id: CharacterPresetCategory | 'all'
   label: string
 }[] = [
   { id: 'all', label: 'All' },
-  { id: 'portrait', label: 'Portraits' },
+  { id: 'human', label: 'People' },
   { id: 'soft', label: 'Soft / Disney-ish' },
   { id: 'character', label: 'Characters' },
   { id: 'simple', label: 'Simple shapes' },
@@ -40,11 +44,11 @@ export const CHARACTER_CATEGORIES: {
 
 /** Default silhouette per Trooper cast handle (matches shipping cast). */
 export const DEFAULT_TEAM_PRESETS: Record<string, string> = {
-  rex: 'cubee',
-  nova: 'mickey',
-  scout: 'cloudee',
-  pip: 'cylinder',
-  wren: 'kirby',
+  rex: 'cub',
+  nova: 'nook',
+  scout: 'puff',
+  pip: 'pip',
+  wren: 'mochi',
 }
 
 export function getCharacterPreset(id: string): CharacterPreset | undefined {
@@ -60,5 +64,9 @@ export function presetsByCategory(category: CharacterPresetCategory | 'all'): An
   return ALL_CHARACTERS.filter((p) => p.category === category)
 }
 
-export { PORTRAIT_PRESETS, isPortraitPreset }
+export function isHumanPreset(preset: AnyCharacter): boolean {
+  return preset.category === 'human'
+}
+
+export { PORTRAIT_PRESETS, isPortraitPreset, HUMAN_PRESETS }
 export type { PortraitPreset }

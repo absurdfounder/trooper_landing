@@ -3,20 +3,18 @@
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import { Check } from 'lucide-react'
 
-import ClayPortrait from '@/components/character-builder/clay/ClayPortrait'
 import LiveAvatarPreview from '@/components/character-builder/LiveAvatarPreview'
 import { assembleAvatarDefinition } from '@/lib/avatars/assembleAvatar'
 import {
   ALL_CHARACTERS,
   CHARACTER_CATEGORIES,
   getAnyCharacter,
-  isPortraitPreset,
+  isHumanPreset,
   presetsByCategory,
   type AnyCharacter,
   type CharacterPreset,
   type CharacterPresetCategory,
 } from '@/lib/avatars/characterCatalog'
-import { PORTRAIT_ANIMATIONS } from '@/lib/avatars/portraitPose'
 import {
   CHARACTER_THEMES,
   getCharacterTheme,
@@ -29,7 +27,7 @@ type BuilderLook = {
   presetId: string
 }
 
-const STORAGE_KEY = 'trooper.character-builder.v3'
+const STORAGE_KEY = 'trooper.character-builder.v4'
 const BLOB_ANIMATIONS = [
   'sleeping',
   'waking',
@@ -59,7 +57,7 @@ const BLOB_ANIMATIONS = [
 function defaultLook(): BuilderLook {
   return {
     themeId: 'pastel',
-    presetId: 'nori',
+    presetId: 'pip',
   }
 }
 
@@ -101,11 +99,11 @@ function updateLook(
 }
 
 /**
- * Character builder — theme + ready-made characters (blob silhouettes and clay portraits).
+ * Character builder — theme + ready-made blob characters, including people with bodies.
  */
 export default function CharacterBuilder() {
   const [look, setLook] = useState<BuilderLook>(defaultLook)
-  const [category, setCategory] = useState<CharacterPresetCategory | 'all'>('portrait')
+  const [category, setCategory] = useState<CharacterPresetCategory | 'all'>('human')
   const [animation, setAnimation] = useState('idle')
 
   useEffect(() => {
@@ -119,20 +117,21 @@ export default function CharacterBuilder() {
     ALL_CHARACTERS.findIndex((p) => p.id === preset.id),
   )
   const colors = themeColorsForSlot(theme, presetIndex)
-  const portrait = isPortraitPreset(preset)
+  const human = isHumanPreset(preset)
 
-  const definition = useMemo(() => {
-    if (isPortraitPreset(preset)) return null
-    return assembleAvatarDefinition({
-      name: preset.name,
-      preset,
-      colors,
-    })
-  }, [preset, colors.body, colors.eyes])
+  const definition = useMemo(
+    () =>
+      assembleAvatarDefinition({
+        name: preset.name,
+        preset,
+        colors,
+      }),
+    [preset, colors.body, colors.eyes],
+  )
 
   const filtered = presetsByCategory(category)
-  const animations = portrait ? [...PORTRAIT_ANIMATIONS] : (definition?.animationOrder ?? BLOB_ANIMATIONS)
-  const expressionCount = portrait ? PORTRAIT_ANIMATIONS.length : (definition?.expressionOrder.length ?? 28)
+  const animations = definition.animationOrder ?? BLOB_ANIMATIONS
+  const expressionCount = definition.expressionOrder.length ?? 28
 
   useEffect(() => {
     if (!animations.includes(animation)) setAnimation(animations[0] ?? 'idle')
@@ -143,8 +142,8 @@ export default function CharacterBuilder() {
       <p className="kicker">Character builder</p>
       <h1 className="h2-section mt-3 max-w-3xl">Decide how your virtual team looks.</h1>
       <p className="lede mt-3 max-w-2xl">
-        Pick a theme, then a character. Portraits are half-body SVG clay figures with hair, clothes,
-        and the big eyes. Soft shapes are still here. Drag the preview to look around.
+        Pick a theme, then a character. People use the same animated shapes as the rest of the crew,
+        with a body attached. Drag the preview to look around.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
@@ -154,7 +153,7 @@ export default function CharacterBuilder() {
               Theme style
             </h2>
             <p className="mt-1 text-[14px] text-ink-muted">
-              One palette for the whole crew. Soft shapes pick up the fill; portraits keep their clay look.
+              One palette for the whole crew — body fill and eyes.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {CHARACTER_THEMES.map((t) => {
@@ -189,7 +188,7 @@ export default function CharacterBuilder() {
               Characters
             </h2>
             <p className="mt-1 text-[14px] text-ink-muted">
-              Clay portraits, soft Disney-ish looks, classic characters, and simple bodies.
+              People with bodies, soft Disney-ish looks, classic characters, and simple shapes.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -242,29 +241,19 @@ export default function CharacterBuilder() {
             </p>
             <div className="mt-4 flex justify-center">
               <div
-                className={`flex items-end justify-center overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 ${
-                  portrait ? 'h-[240px] w-[200px]' : 'size-[200px] items-center'
+                className={`flex justify-center overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 ${
+                  human ? 'h-[240px] w-[210px] items-end' : 'size-[200px] items-center'
                 }`}
-                style={portrait ? undefined : { backgroundColor: `${colors.body}18` }}
+                style={{ backgroundColor: `${colors.body}18` }}
               >
-                {portrait ? (
-                  <ClayPortrait
-                    preset={preset}
-                    size={200}
-                    animation={animation}
-                    label={`${preset.name} preview`}
-                    interactiveLook
-                    liveMotion
-                  />
-                ) : definition ? (
-                  <LiveAvatarPreview
-                    definition={definition}
-                    size={168}
-                    animation={animation}
-                    label={`${preset.name} preview`}
-                    interactiveLook
-                  />
-                ) : null}
+                <LiveAvatarPreview
+                  definition={definition}
+                  size={human ? 220 : 168}
+                  animation={animation}
+                  label={`${preset.name} preview`}
+                  interactiveLook
+                  className={human ? 'origin-center scale-[1.12]' : ''}
+                />
               </div>
             </div>
             <p className="mt-3 text-center text-[13px] text-ink-muted">
@@ -306,7 +295,7 @@ export default function CharacterBuilder() {
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
-                {portrait ? 'SVG clay with look-around' : 'Saved in this browser'}
+                {human ? 'Head, body, and look-around' : 'Saved in this browser'}
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
@@ -335,7 +324,7 @@ function CharacterCard({
   animation: string
   liveMotion: boolean
 }) {
-  const portrait = isPortraitPreset(preset)
+  const human = isHumanPreset(preset)
 
   return (
     <button
@@ -346,26 +335,18 @@ function CharacterCard({
       }`}
     >
       <div
-        className={`flex items-end justify-center overflow-hidden rounded-xl ${
-          portrait ? 'h-[108px] w-[88px]' : 'size-[76px] items-center'
+        className={`flex justify-center overflow-hidden rounded-xl ${
+          human ? 'h-[108px] w-[88px] items-center' : 'size-[76px] items-center'
         } ${selected ? 'bg-stone-100' : 'bg-stone-50'}`}
-        style={!portrait && selected ? { backgroundColor: `${colors.body}22` } : undefined}
+        style={selected ? { backgroundColor: `${colors.body}22` } : undefined}
       >
-        {portrait ? (
-          <ClayPortrait
-            preset={preset}
-            size={88}
-            animation={liveMotion ? animation : 'idle'}
-            label={preset.name}
-            liveMotion={liveMotion}
-          />
-        ) : (
-          <BlobCardPreview
-            preset={preset}
-            colors={colors}
-            animation={liveMotion ? animation : 'idle'}
-          />
-        )}
+        <BlobCardPreview
+          preset={preset}
+          colors={colors}
+          animation={liveMotion ? animation : 'idle'}
+          size={human ? 96 : 64}
+          className={human ? 'origin-center scale-[1.12]' : ''}
+        />
       </div>
       <span className="mt-2 font-display text-[15px] tracking-tight text-ink">{preset.name}</span>
       <span className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-ink-faint">
@@ -379,10 +360,14 @@ function BlobCardPreview({
   preset,
   colors,
   animation,
+  size = 64,
+  className,
 }: {
   preset: CharacterPreset
   colors: { body: string; eyes: string }
   animation: string
+  size?: number
+  className?: string
 }) {
   const definition = useMemo(
     () =>
@@ -397,9 +382,10 @@ function BlobCardPreview({
   return (
     <LiveAvatarPreview
       definition={definition}
-      size={64}
+      size={size}
       animation={animation}
       label={preset.name}
+      className={className}
     />
   )
 }
