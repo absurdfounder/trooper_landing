@@ -1,8 +1,3 @@
-/**
- * Half-body clay portraits — hair, clothes, and googly eyes.
- * Face fill comes from the builder theme; hair and wardrobe stay character-specific.
- */
-
 export type HairStyle =
   | 'double-buns'
   | 'afro'
@@ -17,7 +12,6 @@ export type HairStyle =
   | 'locs'
   | 'bun'
   | 'bangs-buns'
-  | 'short-crop'
 
 export type ClothesStyle =
   | 'overalls'
@@ -50,12 +44,13 @@ export type PortraitPreset = {
   name: string
   blurb: string
   category: 'portrait'
-  /** Default face fill — overridden by the active theme in the builder. */
   face: string
   hair: { style: HairStyle; color: string }
   clothes: { style: ClothesStyle; primary: string; secondary: string }
   accessories: PortraitAccessory[]
   ears: boolean
+  /** Photographic reference still, used only for quality comparison. */
+  ref: string
 }
 
 export const PORTRAIT_PRESETS: PortraitPreset[] = [
@@ -70,6 +65,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'overalls', primary: '#cdbba4', secondary: '#f3eee6' },
     accessories: ['hoops', 'beads'],
     ears: true,
+    ref: '/images/portraits/nori.webp',
   },
   {
     kind: 'portrait',
@@ -82,6 +78,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'jacket-tee', primary: '#e5d3b0', secondary: '#f7f4ef' },
     accessories: [],
     ears: false,
+    ref: '/images/portraits/coco.webp',
   },
   {
     kind: 'portrait',
@@ -94,6 +91,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'zip-sweater', primary: '#e6d9c6', secondary: '#f7f4ef' },
     accessories: [],
     ears: true,
+    ref: '/images/portraits/jun.webp',
   },
   {
     kind: 'portrait',
@@ -101,11 +99,12 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     name: 'Leo',
     blurb: 'Violet face, ice-blue sweep, open camp shirt.',
     category: 'portrait',
-    face: '#7b4fd1',
+    face: '#7b54d4',
     hair: { style: 'swept', color: '#9eb6e8' },
-    clothes: { style: 'button-shirt', primary: '#d7c4a6', secondary: '#f7f4ef' },
+    clothes: { style: 'button-shirt', primary: '#d4c4a8', secondary: '#f5f2ed' },
     accessories: [],
     ears: true,
+    ref: '/images/portraits/leo.webp',
   },
   {
     kind: 'portrait',
@@ -117,7 +116,8 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     hair: { style: 'braid', color: '#8b68d9' },
     clothes: { style: 'zip-sweater', primary: '#ede6d8', secondary: '#ede6d8' },
     accessories: [],
-    ears: false,
+    ears: true,
+    ref: '/images/portraits/lila.webp',
   },
   {
     kind: 'portrait',
@@ -126,10 +126,11 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     blurb: 'Sunshine face, ocean waves, knit sweater and a gold chain.',
     category: 'portrait',
     face: '#e8c63a',
-    hair: { style: 'wavy', color: '#2b62c9' },
+    hair: { style: 'wavy', color: '#2563eb' },
     clothes: { style: 'knit-sweater', primary: '#f0ebe4', secondary: '#e4d9cc' },
     accessories: ['necklace', 'bag-strap'],
     ears: false,
+    ref: '/images/portraits/mica.webp',
   },
   {
     kind: 'portrait',
@@ -142,6 +143,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'vest-tee', primary: '#3f2e24', secondary: '#f7f4ef' },
     accessories: ['bag-strap'],
     ears: false,
+    ref: '/images/portraits/viola.webp',
   },
   {
     kind: 'portrait',
@@ -154,6 +156,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'hoodie-jacket', primary: '#e8dcc8', secondary: '#f5f2ed' },
     accessories: [],
     ears: true,
+    ref: '/images/portraits/ember.webp',
   },
   {
     kind: 'portrait',
@@ -166,6 +169,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'turtleneck-blazer', primary: '#ddd0ba', secondary: '#f5f2ed' },
     accessories: [],
     ears: true,
+    ref: '/images/portraits/cole.webp',
   },
   {
     kind: 'portrait',
@@ -175,9 +179,10 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     category: 'portrait',
     face: '#1fb5a8',
     hair: { style: 'long-straight', color: '#c5cad0' },
-    clothes: { style: 'zip-jumpsuit', primary: '#e8ddcc', secondary: '#e8ddcc' },
+    clothes: { style: 'zip-sweater', primary: '#e8ddcc', secondary: '#e8ddcc' },
     accessories: ['bag-strap'],
     ears: false,
+    ref: '/images/portraits/frost.webp',
   },
   {
     kind: 'portrait',
@@ -190,6 +195,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'turtleneck-blazer', primary: '#ddd0ba', secondary: '#f5f2ed' },
     accessories: [],
     ears: true,
+    ref: '/images/portraits/tessa.webp',
   },
   {
     kind: 'portrait',
@@ -202,6 +208,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'hoodie', primary: '#a89886', secondary: '#c4b8aa' },
     accessories: ['bag-strap'],
     ears: true,
+    ref: '/images/portraits/rio.webp',
   },
   {
     kind: 'portrait',
@@ -211,9 +218,10 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     category: 'portrait',
     face: '#e85a9b',
     hair: { style: 'long-straight', color: '#f084b0' },
-    clothes: { style: 'polo-zip', primary: '#e8ddc8', secondary: '#e8ddc8' },
+    clothes: { style: 'zip-sweater', primary: '#e8ddc8', secondary: '#e8ddc8' },
     accessories: [],
     ears: false,
+    ref: '/images/portraits/faye.webp',
   },
   {
     kind: 'portrait',
@@ -226,6 +234,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'suit', primary: '#f4f0ea', secondary: '#efeae2' },
     accessories: ['glasses'],
     ears: true,
+    ref: '/images/portraits/ora.webp',
   },
   {
     kind: 'portrait',
@@ -238,6 +247,7 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'zip-sweater', primary: '#e8dcc8', secondary: '#e8dcc8' },
     accessories: ['headphones'],
     ears: false,
+    ref: '/images/portraits/kiki.webp',
   },
   {
     kind: 'portrait',
@@ -250,6 +260,46 @@ export const PORTRAIT_PRESETS: PortraitPreset[] = [
     clothes: { style: 'turtleneck-blazer', primary: '#ddd0ba', secondary: '#f7f4ef' },
     accessories: ['tortoise-glasses', 'pocket-pen'],
     ears: true,
+    ref: '/images/portraits/nico.webp',
+  },
+  {
+    kind: 'portrait',
+    id: 'ash',
+    name: 'Ash',
+    blurb: 'Teal face, silver sweep, open sand shirt.',
+    category: 'portrait',
+    face: '#1fb5a8',
+    hair: { style: 'swept', color: '#c5cad0' },
+    clothes: { style: 'button-shirt', primary: '#d4c4a8', secondary: '#f5f2ed' },
+    accessories: [],
+    ears: true,
+    ref: '/images/portraits/ash.webp',
+  },
+  {
+    kind: 'portrait',
+    id: 'honey',
+    name: 'Honey',
+    blurb: 'Olive face, long blonde waves, cream collared shirt.',
+    category: 'portrait',
+    face: '#7ba33a',
+    hair: { style: 'wavy', color: '#f5d08a' },
+    clothes: { style: 'button-shirt', primary: '#e8ddc8', secondary: '#f5f2ed' },
+    accessories: [],
+    ears: false,
+    ref: '/images/portraits/honey.webp',
+  },
+  {
+    kind: 'portrait',
+    id: 'rue',
+    name: 'Rue',
+    blurb: 'Orange face, straight copper hair, ribbed turtleneck.',
+    category: 'portrait',
+    face: '#f07828',
+    hair: { style: 'long-straight', color: '#e05210' },
+    clothes: { style: 'turtleneck', primary: '#efe8dc', secondary: '#efe8dc' },
+    accessories: ['hoops'],
+    ears: true,
+    ref: '/images/portraits/rue.webp',
   },
 ]
 

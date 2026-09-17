@@ -143,8 +143,8 @@ export default function CharacterBuilder() {
       <p className="kicker">Character builder</p>
       <h1 className="h2-section mt-3 max-w-3xl">Decide how your virtual team looks.</h1>
       <p className="lede mt-3 max-w-2xl">
-        Pick a theme, then a character. Portraits are half-body clay figures with hair, clothes, and
-        big eyes. Soft shapes are still here. Drag the preview to look around.
+        Pick a theme, then a character. Portraits are half-body SVG clay figures with hair, clothes,
+        and the big eyes. Soft shapes are still here. Drag the preview to look around.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
@@ -154,7 +154,7 @@ export default function CharacterBuilder() {
               Theme style
             </h2>
             <p className="mt-1 text-[14px] text-ink-muted">
-              One palette for the whole crew — face color on portraits, body fill on shapes.
+              One palette for the whole crew. Soft shapes pick up the fill; portraits keep their clay look.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {CHARACTER_THEMES.map((t) => {
@@ -242,16 +242,15 @@ export default function CharacterBuilder() {
             </p>
             <div className="mt-4 flex justify-center">
               <div
-                className={`flex items-end justify-center rounded-2xl bg-white ring-1 ring-black/5 ${
+                className={`flex items-end justify-center overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 ${
                   portrait ? 'h-[240px] w-[200px]' : 'size-[200px] items-center'
                 }`}
-                style={{ backgroundColor: `${colors.body}18` }}
+                style={portrait ? undefined : { backgroundColor: `${colors.body}18` }}
               >
                 {portrait ? (
                   <ClayPortrait
                     preset={preset}
-                    faceColor={colors.body}
-                    size={168}
+                    size={200}
                     animation={animation}
                     label={`${preset.name} preview`}
                     interactiveLook
@@ -307,7 +306,7 @@ export default function CharacterBuilder() {
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
-                {portrait ? 'Hair, clothes, and shaded eyes' : 'Saved in this browser'}
+                {portrait ? 'SVG clay with look-around' : 'Saved in this browser'}
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
@@ -348,15 +347,14 @@ function CharacterCard({
     >
       <div
         className={`flex items-end justify-center overflow-hidden rounded-xl ${
-          portrait ? 'h-[96px] w-[76px]' : 'size-[76px] items-center'
+          portrait ? 'h-[108px] w-[88px]' : 'size-[76px] items-center'
         } ${selected ? 'bg-stone-100' : 'bg-stone-50'}`}
-        style={selected ? { backgroundColor: `${colors.body}22` } : undefined}
+        style={!portrait && selected ? { backgroundColor: `${colors.body}22` } : undefined}
       >
         {portrait ? (
           <ClayPortrait
             preset={preset}
-            faceColor={colors.body}
-            size={72}
+            size={88}
             animation={liveMotion ? animation : 'idle'}
             label={preset.name}
             liveMotion={liveMotion}
