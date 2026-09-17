@@ -61,106 +61,98 @@ function person(
   }
 }
 
-/** Chibi body that stays inside the 300×300 viewBox under a centered head. */
-const torso = (id: string, w = 64, h = 72, d = 54, y = 88) =>
-  node(`${id}-torso`, 'Torso', 'capsule', { w, h, d, r: 1 }, [0, y, -12])
-
-const arms = (id: string, spread = 74, y = 84, lean = 22, len = 52) => [
-  node(`${id}-arm-l`, 'Arm L', 'capsule', { w: 22, h: len, d: 22, r: 1 }, [-spread, y, 10], [0, 0, lean]),
-  node(`${id}-arm-r`, 'Arm R', 'capsule', { w: 22, h: len, d: 22, r: 1 }, [spread, y, 10], [0, 0, -lean]),
+/** Half-body bust: turtleneck in front, cropped jacket behind. No legs. */
+const ears = (id: string, spread = 90, y = 8, w = 32, h = 38) => [
+  node(`${id}-ear-l`, 'Ear L', 'sphere', { w, h, d: 22, r: 1 }, [-spread, y, 12]),
+  node(`${id}-ear-r`, 'Ear R', 'sphere', { w, h, d: 22, r: 1 }, [spread, y, 12]),
 ]
 
-const feet = (id: string, spread = 22, y = 128, w = 36, h = 24) => [
-  node(`${id}-foot-l`, 'Foot L', 'sphere', { w, h, d: 32, r: 1 }, [-spread, y, 6]),
-  node(`${id}-foot-r`, 'Foot R', 'sphere', { w, h, d: 32, r: 1 }, [spread, y, 6]),
+const turtleneck = (id: string, w = 56, h = 58, y = 96) =>
+  node(`${id}-neck`, 'Neck', 'capsule', { w, h, d: 50, r: 1 }, [0, y, 16])
+
+const jacket = (id: string, w = 252, h = 150, y = 162) =>
+  node(`${id}-jacket`, 'Jacket', 'cube', { w, h, d: 96, r: 0.58 }, [0, y, -28])
+
+const bust = (id: string, withEars = true) => [
+  ...(withEars ? ears(id) : []),
+  turtleneck(id),
+  jacket(id),
 ]
 
-/** Soft blob people — same primitives as Dot / Mickey / Jello, with a body attached. */
+/** Soft blob people — same primitives as Dot / Mickey, framed as a half-body bust. */
 export const HUMAN_PRESETS: CharacterPreset[] = [
   person(
     'pip',
     'Pip',
-    'Dot with a pill body and stubby feet — the default little person.',
-    { type: 'sphere', width: 148, height: 148, depth: 134, roundness: 1 },
-    [torso('pip'), ...arms('pip'), ...feet('pip')],
+    'Dot as a half-body — round head, ears, turtleneck, cropped jacket.',
+    { type: 'sphere', width: 178, height: 178, depth: 160, roundness: 1 },
+    bust('pip'),
     { body: '#7ebef0', eyes: '#3f3f46' },
   ),
   person(
     'mochi',
     'Mochi',
-    'Poyo energy, standing up — round head, chubby torso, tiny feet.',
-    { type: 'sphere', width: 156, height: 148, depth: 140, roundness: 1 },
-    [torso('mochi', 86, 68, 66, 90), ...arms('mochi', 82, 86, 18, 42), ...feet('mochi', 22, 126, 40, 26)],
+    'Poyo as a bust — softer head, turtleneck, cropped at the chest.',
+    { type: 'sphere', width: 188, height: 176, depth: 168, roundness: 1 },
+    [turtleneck('mochi', 68, 54, 98), jacket('mochi', 268, 146, 164)],
     { body: '#ffc2e9', eyes: '#3e4e65' },
   ),
   person(
     'reed',
     'Reed',
-    'Taller oval head and slimmer limbs — still one soft shape.',
-    { type: 'sphere', width: 124, height: 148, depth: 112, roundness: 1 },
-    [torso('reed', 50, 86, 44, 92), ...arms('reed', 68, 78, 16, 58), ...feet('reed', 16, 136, 28, 20)],
+    'Oval head on a slimmer bust — turtleneck, cropped jacket.',
+    { type: 'sphere', width: 156, height: 188, depth: 140, roundness: 1 },
+    [...ears('reed', 82, 10, 28, 36), turtleneck('reed', 44, 62, 100), jacket('reed', 214, 156, 166)],
     { body: '#b49aef', eyes: '#3f3f46' },
   ),
   person(
     'cub',
     'Cub',
-    'Jello with a body — rounded cube head on a matching box torso.',
-    { type: 'cube', width: 118, height: 118, depth: 106, roundness: 0.78 },
-    [
-      node('cub-torso', 'Torso', 'cube', { w: 86, h: 74, d: 70, r: 0.82 }, [0, 92, -12]),
-      ...arms('cub', 78, 84, 12, 48),
-      ...feet('cub', 22, 130, 36, 24),
-    ],
+    'Jello as a half-body — cube head on a matching box jacket.',
+    { type: 'cube', width: 164, height: 164, depth: 146, roundness: 0.78 },
+    [turtleneck('cub', 56, 50, 94), jacket('cub', 256, 146, 160)],
     { body: '#e65c5c', eyes: '#111316' },
   ),
   person(
     'nook',
     'Nook',
-    'Mickey with a little body underneath — ears, then arms and feet.',
-    { type: 'mickey', width: 150, height: 140, depth: 108, roundness: 1 },
-    [torso('nook', 62, 68, 50, 90), ...arms('nook', 74, 84, 22, 48), ...feet('nook', 18, 126, 30, 22)],
+    'Mickey as a bust — ears, turtleneck, cropped at the chest.',
+    { type: 'mickey', width: 186, height: 176, depth: 132, roundness: 1 },
+    [turtleneck('nook', 50, 54, 92), jacket('nook', 246, 146, 158)],
     { body: '#5b7fe5', eyes: '#111316' },
   ),
   person(
     'bop',
     'Bop',
-    'Round person with two soft buns — hair as extra spheres.',
-    { type: 'sphere', width: 136, height: 136, depth: 124, roundness: 1 },
+    'Round bust with two soft buns — hair on a half-body.',
+    { type: 'sphere', width: 170, height: 170, depth: 154, roundness: 1 },
     [
-      node('bop-bun-l', 'Bun L', 'sphere', { w: 38, h: 38, d: 36, r: 1 }, [-16, -82, -4]),
-      node('bop-bun-r', 'Bun R', 'sphere', { w: 38, h: 38, d: 36, r: 1 }, [16, -82, -4]),
-      torso('bop', 66, 70, 52, 86),
-      ...arms('bop', 74, 82, 22, 50),
-      ...feet('bop', 20, 124, 34, 22),
+      node('bop-bun-l', 'Bun L', 'sphere', { w: 48, h: 48, d: 42, r: 1 }, [-20, -94, -6]),
+      node('bop-bun-r', 'Bun R', 'sphere', { w: 48, h: 48, d: 42, r: 1 }, [20, -94, -6]),
+      ...bust('bop'),
     ],
     { body: '#e69a5c', eyes: '#3f3f46' },
   ),
   person(
     'puff',
     'Puff',
-    'Nimbus with a body — cloud head, pill torso, little feet.',
-    { type: 'sphere', width: 112, height: 112, depth: 108, roundness: 1 },
+    'Nimbus as a half-body — cloud head on a cropped jacket.',
+    { type: 'sphere', width: 140, height: 140, depth: 132, roundness: 1 },
     [
-      node('puff-puff-l', 'Puff L', 'sphere', { w: 58, h: 58, d: 56, r: 1 }, [-38, -14, -12]),
-      node('puff-puff-ll', 'Puff LL', 'sphere', { w: 76, h: 62, d: 64, r: 1 }, [-46, 14, -12]),
-      node('puff-puff-r', 'Puff R', 'sphere', { w: 68, h: 68, d: 62, r: 1 }, [42, 14, -12]),
-      node('puff-puff-tr', 'Puff TR', 'sphere', { w: 66, h: 66, d: 70, r: 1 }, [30, -26, -12]),
-      torso('puff', 56, 62, 48, 92),
-      ...arms('puff', 70, 86, 18, 44),
-      ...feet('puff', 18, 126, 32, 22),
+      node('puff-puff-l', 'Puff L', 'sphere', { w: 78, h: 78, d: 72, r: 1 }, [-50, -22, -12]),
+      node('puff-puff-ll', 'Puff LL', 'sphere', { w: 90, h: 74, d: 76, r: 1 }, [-56, 6, -12]),
+      node('puff-puff-r', 'Puff R', 'sphere', { w: 84, h: 84, d: 76, r: 1 }, [52, 4, -12]),
+      node('puff-puff-tr', 'Puff TR', 'sphere', { w: 86, h: 86, d: 88, r: 1 }, [38, -38, -12]),
+      jacket('puff', 236, 140, 156),
     ],
     { body: '#f0b45c', eyes: '#3f3f46' },
   ),
   person(
     'tin',
     'Can',
-    'Tin with arms and feet — cylinder head on a matching can-body.',
-    { type: 'cylinder', width: 120, height: 132, depth: 108, roundness: 0.9, morphRoundness: 0.35 },
-    [
-      node('tin-torso', 'Torso', 'cylinder', { w: 70, h: 72, d: 60, r: 0.85, morph: 0.3 }, [0, 96, -12]),
-      ...arms('tin', 74, 86, 10, 48),
-      ...feet('tin', 18, 132, 30, 20),
-    ],
+    'Tin as a bust — cylinder head on a cropped jacket.',
+    { type: 'cylinder', width: 156, height: 176, depth: 140, roundness: 0.9, morphRoundness: 0.35 },
+    [turtleneck('tin', 64, 50, 100), jacket('tin', 240, 140, 164)],
     { body: '#ffcf24', eyes: '#3f3f46' },
   ),
 ]

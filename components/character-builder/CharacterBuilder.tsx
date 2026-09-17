@@ -142,8 +142,8 @@ export default function CharacterBuilder() {
       <p className="kicker">Character builder</p>
       <h1 className="h2-section mt-3 max-w-3xl">Decide how your virtual team looks.</h1>
       <p className="lede mt-3 max-w-2xl">
-        Pick a theme, then a character. People use the same animated shapes as the rest of the crew,
-        with a body attached. Drag the preview to look around.
+        Pick a theme, then a character. People are half-body busts of the same animated shapes —
+        head, shoulders, cropped at the chest. Drag the preview to look around.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
@@ -188,7 +188,7 @@ export default function CharacterBuilder() {
               Characters
             </h2>
             <p className="mt-1 text-[14px] text-ink-muted">
-              People with bodies, soft Disney-ish looks, classic characters, and simple shapes.
+              People with half-body busts, soft Disney-ish looks, classic characters, and simple shapes.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -242,17 +242,17 @@ export default function CharacterBuilder() {
             <div className="mt-4 flex justify-center">
               <div
                 className={`flex justify-center overflow-hidden rounded-2xl bg-white ring-1 ring-black/5 ${
-                  human ? 'h-[240px] w-[210px] items-end' : 'size-[200px] items-center'
+                  human ? 'h-[260px] w-[210px] items-start pt-2' : 'size-[200px] items-center'
                 }`}
                 style={{ backgroundColor: `${colors.body}18` }}
               >
                 <LiveAvatarPreview
                   definition={definition}
-                  size={human ? 220 : 168}
+                  size={human ? 248 : 168}
                   animation={animation}
                   label={`${preset.name} preview`}
                   interactiveLook
-                  className={human ? 'origin-center scale-[1.12]' : ''}
+                  className={human ? 'origin-top' : ''}
                 />
               </div>
             </div>
@@ -295,7 +295,7 @@ export default function CharacterBuilder() {
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
-                {human ? 'Head, body, and look-around' : 'Saved in this browser'}
+                {human ? 'Half-body bust, look-around' : 'Saved in this browser'}
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
@@ -336,7 +336,7 @@ function CharacterCard({
     >
       <div
         className={`flex justify-center overflow-hidden rounded-xl ${
-          human ? 'h-[108px] w-[88px] items-center' : 'size-[76px] items-center'
+          human ? 'h-[132px] w-[100px] items-start pt-0.5' : 'size-[76px] items-center'
         } ${selected ? 'bg-stone-100' : 'bg-stone-50'}`}
         style={selected ? { backgroundColor: `${colors.body}22` } : undefined}
       >
@@ -344,8 +344,8 @@ function CharacterCard({
           preset={preset}
           colors={colors}
           animation={liveMotion ? animation : 'idle'}
-          size={human ? 96 : 64}
-          className={human ? 'origin-center scale-[1.12]' : ''}
+          size={human ? 128 : 64}
+          className={human ? 'origin-top' : ''}
         />
       </div>
       <span className="mt-2 font-display text-[15px] tracking-tight text-ink">{preset.name}</span>
