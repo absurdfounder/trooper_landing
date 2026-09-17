@@ -3,16 +3,20 @@
 import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import { Check } from 'lucide-react'
 
+import ClayPortrait from '@/components/character-builder/clay/ClayPortrait'
 import LiveAvatarPreview from '@/components/character-builder/LiveAvatarPreview'
 import { assembleAvatarDefinition } from '@/lib/avatars/assembleAvatar'
 import {
+  ALL_CHARACTERS,
   CHARACTER_CATEGORIES,
-  CHARACTER_PRESETS,
-  getCharacterPreset,
+  getAnyCharacter,
+  isPortraitPreset,
   presetsByCategory,
+  type AnyCharacter,
   type CharacterPreset,
   type CharacterPresetCategory,
 } from '@/lib/avatars/characterCatalog'
+import { PORTRAIT_ANIMATIONS } from '@/lib/avatars/portraitPose'
 import {
   CHARACTER_THEMES,
   getCharacterTheme,
@@ -25,12 +29,37 @@ type BuilderLook = {
   presetId: string
 }
 
-const STORAGE_KEY = 'trooper.character-builder.v2'
+const STORAGE_KEY = 'trooper.character-builder.v3'
+const BLOB_ANIMATIONS = [
+  'sleeping',
+  'waking',
+  'idle',
+  'listening',
+  'thinking',
+  'searching',
+  'working',
+  'excited',
+  'bored',
+  'suspicious',
+  'angry',
+  'drowsy',
+  'happy',
+  'curious',
+  'confused',
+  'surprised',
+  'proud',
+  'shy',
+  'sad',
+  'laughing',
+  'scared',
+  'playful',
+  'celebrate',
+]
 
 function defaultLook(): BuilderLook {
   return {
     themeId: 'pastel',
-    presetId: CHARACTER_PRESETS[0]?.id ?? 'mickey',
+    presetId: 'nori',
   }
 }
 
@@ -43,7 +72,7 @@ function loadLook(): BuilderLook {
       ? (parsed.themeId as CharacterThemeId)
       : 'pastel'
     const presetId =
-      parsed.presetId && getCharacterPreset(parsed.presetId)
+      parsed.presetId && getAnyCharacter(parsed.presetId)
         ? parsed.presetId
         : defaultLook().presetId
     return { themeId, presetId }
@@ -72,12 +101,11 @@ function updateLook(
 }
 
 /**
- * Simple character builder — theme + ready-made characters.
- * Grid shows live characters (not abstract shapes). Preview lists every animation.
+ * Character builder — theme + ready-made characters (blob silhouettes and clay portraits).
  */
 export default function CharacterBuilder() {
   const [look, setLook] = useState<BuilderLook>(defaultLook)
-  const [category, setCategory] = useState<CharacterPresetCategory | 'all'>('all')
+  const [category, setCategory] = useState<CharacterPresetCategory | 'all'>('portrait')
   const [animation, setAnimation] = useState('idle')
 
   useEffect(() => {
@@ -85,26 +113,26 @@ export default function CharacterBuilder() {
   }, [])
 
   const theme = getCharacterTheme(look.themeId)
-  const preset = getCharacterPreset(look.presetId) ?? CHARACTER_PRESETS[0]
+  const preset = getAnyCharacter(look.presetId) ?? ALL_CHARACTERS[0]
   const presetIndex = Math.max(
     0,
-    CHARACTER_PRESETS.findIndex((p) => p.id === preset.id),
+    ALL_CHARACTERS.findIndex((p) => p.id === preset.id),
   )
   const colors = themeColorsForSlot(theme, presetIndex)
+  const portrait = isPortraitPreset(preset)
 
-  const definition = useMemo(
-    () =>
-      assembleAvatarDefinition({
-        name: preset.name,
-        preset,
-        colors,
-      }),
-    [preset, colors.body, colors.eyes],
-  )
+  const definition = useMemo(() => {
+    if (isPortraitPreset(preset)) return null
+    return assembleAvatarDefinition({
+      name: preset.name,
+      preset,
+      colors,
+    })
+  }, [preset, colors.body, colors.eyes])
 
   const filtered = presetsByCategory(category)
-  const animations = definition.animationOrder
-  const expressionCount = definition.expressionOrder.length
+  const animations = portrait ? [...PORTRAIT_ANIMATIONS] : (definition?.animationOrder ?? BLOB_ANIMATIONS)
+  const expressionCount = portrait ? PORTRAIT_ANIMATIONS.length : (definition?.expressionOrder.length ?? 28)
 
   useEffect(() => {
     if (!animations.includes(animation)) setAnimation(animations[0] ?? 'idle')
@@ -115,8 +143,8 @@ export default function CharacterBuilder() {
       <p className="kicker">Character builder</p>
       <h1 className="h2-section mt-3 max-w-3xl">Decide how your virtual team looks.</h1>
       <p className="lede mt-3 max-w-2xl">
-        Pick a theme style, then a ready-made character. Every pick includes the full expression and
-        animation catalog — drag the preview to look around.
+        Pick a theme, then a character. Portraits are half-body clay figures with hair, clothes, and
+        big eyes. Soft shapes are still here. Drag the preview to look around.
       </p>
 
       <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-start">
@@ -126,7 +154,7 @@ export default function CharacterBuilder() {
               Theme style
             </h2>
             <p className="mt-1 text-[14px] text-ink-muted">
-              One palette for the whole crew — pastel, neon, and more.
+              One palette for the whole crew — face color on portraits, body fill on shapes.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {CHARACTER_THEMES.map((t) => {
@@ -161,7 +189,7 @@ export default function CharacterBuilder() {
               Characters
             </h2>
             <p className="mt-1 text-[14px] text-ink-muted">
-              Soft Disney-ish looks, classic characters, and simple bodies — pick one.
+              Clay portraits, soft Disney-ish looks, classic characters, and simple bodies.
             </p>
 
             <div className="mt-4 flex flex-wrap gap-1.5">
@@ -189,7 +217,7 @@ export default function CharacterBuilder() {
                 const selected = p.id === preset.id
                 const cardColors = themeColorsForSlot(
                   theme,
-                  CHARACTER_PRESETS.findIndex((x) => x.id === p.id),
+                  ALL_CHARACTERS.findIndex((x) => x.id === p.id),
                 )
                 return (
                   <CharacterCard
@@ -198,7 +226,6 @@ export default function CharacterBuilder() {
                     colors={cardColors}
                     selected={selected}
                     onSelect={() => updateLook(setLook, { presetId: p.id })}
-                    // Only the selected card runs a non-idle loop — keeps the grid light.
                     animation={selected ? animation : 'idle'}
                     liveMotion={selected}
                   />
@@ -215,16 +242,30 @@ export default function CharacterBuilder() {
             </p>
             <div className="mt-4 flex justify-center">
               <div
-                className="flex size-[200px] items-center justify-center rounded-2xl bg-white ring-1 ring-black/5"
+                className={`flex items-end justify-center rounded-2xl bg-white ring-1 ring-black/5 ${
+                  portrait ? 'h-[240px] w-[200px]' : 'size-[200px] items-center'
+                }`}
                 style={{ backgroundColor: `${colors.body}18` }}
               >
-                <LiveAvatarPreview
-                  definition={definition}
-                  size={168}
-                  animation={animation}
-                  label={`${preset.name} preview`}
-                  interactiveLook
-                />
+                {portrait ? (
+                  <ClayPortrait
+                    preset={preset}
+                    faceColor={colors.body}
+                    size={168}
+                    animation={animation}
+                    label={`${preset.name} preview`}
+                    interactiveLook
+                    liveMotion
+                  />
+                ) : definition ? (
+                  <LiveAvatarPreview
+                    definition={definition}
+                    size={168}
+                    animation={animation}
+                    label={`${preset.name} preview`}
+                    interactiveLook
+                  />
+                ) : null}
               </div>
             </div>
             <p className="mt-3 text-center text-[13px] text-ink-muted">
@@ -266,6 +307,10 @@ export default function CharacterBuilder() {
               </li>
               <li className="flex items-center gap-2">
                 <Check className="size-3.5 text-emerald-600" aria-hidden />
+                {portrait ? 'Hair, clothes, and shaded eyes' : 'Saved in this browser'}
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="size-3.5 text-emerald-600" aria-hidden />
                 Saved in this browser
               </li>
             </ul>
@@ -284,12 +329,62 @@ function CharacterCard({
   animation,
   liveMotion,
 }: {
-  preset: CharacterPreset
+  preset: AnyCharacter
   colors: { body: string; eyes: string }
   selected: boolean
   onSelect: () => void
   animation: string
   liveMotion: boolean
+}) {
+  const portrait = isPortraitPreset(preset)
+
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={`flex flex-col items-center rounded-2xl bg-white px-3 py-4 text-center transition ring-1 ${
+        selected ? 'ring-2 ring-ink shadow-sm' : 'ring-black/5 hover:ring-black/10'
+      }`}
+    >
+      <div
+        className={`flex items-end justify-center overflow-hidden rounded-xl ${
+          portrait ? 'h-[96px] w-[76px]' : 'size-[76px] items-center'
+        } ${selected ? 'bg-stone-100' : 'bg-stone-50'}`}
+        style={selected ? { backgroundColor: `${colors.body}22` } : undefined}
+      >
+        {portrait ? (
+          <ClayPortrait
+            preset={preset}
+            faceColor={colors.body}
+            size={72}
+            animation={liveMotion ? animation : 'idle'}
+            label={preset.name}
+            liveMotion={liveMotion}
+          />
+        ) : (
+          <BlobCardPreview
+            preset={preset}
+            colors={colors}
+            animation={liveMotion ? animation : 'idle'}
+          />
+        )}
+      </div>
+      <span className="mt-2 font-display text-[15px] tracking-tight text-ink">{preset.name}</span>
+      <span className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-ink-faint">
+        {preset.blurb}
+      </span>
+    </button>
+  )
+}
+
+function BlobCardPreview({
+  preset,
+  colors,
+  animation,
+}: {
+  preset: CharacterPreset
+  colors: { body: string; eyes: string }
+  animation: string
 }) {
   const definition = useMemo(
     () =>
@@ -302,30 +397,11 @@ function CharacterCard({
   )
 
   return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={`flex flex-col items-center rounded-2xl bg-white px-3 py-4 text-center transition ring-1 ${
-        selected ? 'ring-2 ring-ink shadow-sm' : 'ring-black/5 hover:ring-black/10'
-      }`}
-    >
-      <div
-        className={`flex size-[76px] items-center justify-center rounded-xl ${
-          selected ? 'bg-stone-100' : 'bg-stone-50'
-        }`}
-        style={selected ? { backgroundColor: `${colors.body}22` } : undefined}
-      >
-        <LiveAvatarPreview
-          definition={definition}
-          size={64}
-          animation={liveMotion ? animation : 'idle'}
-          label={preset.name}
-        />
-      </div>
-      <span className="mt-2 font-display text-[15px] tracking-tight text-ink">{preset.name}</span>
-      <span className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-ink-faint">
-        {preset.blurb}
-      </span>
-    </button>
+    <LiveAvatarPreview
+      definition={definition}
+      size={64}
+      animation={animation}
+      label={preset.name}
+    />
   )
 }
