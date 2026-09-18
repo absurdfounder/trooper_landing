@@ -11,6 +11,22 @@ import { ArrowRight } from 'lucide-react';
 
 const SHIPPED = [
   {
+    title: 'Character builder',
+    body: 'Half-body people and soft shapes for your virtual team — same animations, look-around included.',
+    date: '18 Sep 2026',
+    color: '#5b7fe5',
+    shape: 'circle' as const,
+    href: '/characters',
+  },
+  {
+    title: 'Buddy',
+    body: 'A personal iMessage assistant with its own computer. Text a task, watch it work, approve what ships.',
+    date: '8 Sep 2026',
+    color: '#FE9A00',
+    shape: 'round-rect' as const,
+    href: '/buddy-personal-assistant',
+  },
+  {
     title: 'Company Brain',
     body: 'Shared knowledge, skills, and live activity in one place agents and humans can use.',
     date: '4 Sep 2026',
@@ -30,20 +46,7 @@ const SHIPPED = [
     date: '28 Aug 2026',
     color: '#03A2FE',
     shape: 'squircle' as const,
-  },
-  {
-    title: 'Desktop apps',
-    body: 'Download for Mac and Windows. Troopers run on your machine with your keys.',
-    date: '20 Aug 2026',
-    color: '#FE9A00',
-    shape: 'round-rect' as const,
-  },
-  {
-    title: 'Channels that call home',
-    body: 'Slack, WhatsApp, and more — troopers meet your team where work already happens.',
-    date: '12 Aug 2026',
-    color: '#FB3C98',
-    shape: 'circle' as const,
+    href: '/loops',
   },
 ] as const;
 
@@ -99,7 +102,7 @@ function ShipMark({
 }
 
 function ShipCard({ item }: { item: (typeof SHIPPED)[number] }) {
-  return (
+  const inner = (
     <>
       <span className="relative z-[1] mb-3 inline-flex size-3.5 items-center justify-center bg-canvas md:mb-5">
         <ShipMark color={item.color} shape={item.shape} />
@@ -110,7 +113,17 @@ function ShipCard({ item }: { item: (typeof SHIPPED)[number] }) {
         {item.date}
       </p>
     </>
-  );
+  )
+
+  if ('href' in item && item.href) {
+    return (
+      <Link href={item.href} className="flex flex-1 flex-col rounded-sm outline-offset-4 hover:opacity-80">
+        {inner}
+      </Link>
+    )
+  }
+
+  return inner
 }
 
 export default function RecentlyShippedSection() {
