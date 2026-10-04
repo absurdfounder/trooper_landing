@@ -3,7 +3,7 @@
 import { useId } from 'react';
 import { Check, Lock, ArrowRight, MessageSquare, Calendar } from 'lucide-react';
 import SectionShell from '@/components/ui/SectionShell';
-import { TROOPER_LOGOMARK } from '@/lib/trooperLogomark';
+import TrooperLogo from '@/components/ui/TrooperLogo';
 import {
   OLD_STACK_ICONS,
   sumTools,
@@ -98,25 +98,6 @@ function ToolCard({
         </div>
       </div>
     </div>
-  );
-}
-
-function TrooperMark({ size = 28 }: { size?: number }) {
-  return (
-    <span
-      className="mt-0.5 inline-block shrink-0 -rotate-3 overflow-hidden rounded-[9px] bg-fern-50 ring-1 ring-fern-100"
-      style={{ width: size, height: size }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={TROOPER_LOGOMARK.w64}
-        alt=""
-        width={size}
-        height={size}
-        className="block object-cover"
-        style={{ width: size, height: size }}
-      />
-    </span>
   );
 }
 
@@ -255,17 +236,6 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
 
         <div className="m-auto flex justify-center lg:justify-start">
           <div className="w-full max-w-[440px] overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05),0_18px_40px_-12px_rgba(15,23,42,0.14)] ring-1 ring-black/[0.07]">
-            <div className="flex items-center gap-2.5 border-b border-neutral-100 px-4 py-3 sm:px-5">
-              <TrooperMark />
-              <div className="flex min-w-0 flex-col leading-tight">
-                <span className="text-[13px] font-semibold text-neutral-900">Mission Control</span>
-                <span className="flex items-center gap-1 text-[11px] text-fern-600">
-                  <span className="size-1.5 rounded-full bg-fern-500" />
-                  {content.agentLabel}
-                </span>
-              </div>
-            </div>
-
             <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
               <div className="flex justify-end">
                 <p className="max-w-[82%] rounded-2xl rounded-br-md bg-neutral-100 px-3.5 py-2.5 text-[13px] leading-snug text-neutral-800">
@@ -274,7 +244,6 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
               </div>
 
               <div className="flex gap-2.5">
-                <TrooperMark />
                 <div className="flex min-w-0 flex-1 flex-col gap-3">
                   <p className="text-[13px] leading-snug text-neutral-700">{content.agentAck}</p>
 
@@ -373,8 +342,8 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
             </div>
 
             <div className="border-t border-neutral-100 px-4 py-3 sm:px-5">
-              <div className="mb-2 flex items-center justify-between gap-2 rounded-lg bg-fern-50 px-3 py-2 ring-1 ring-fern-100">
-                <span className="text-[11px] font-medium text-fern-800">Trooper replaces the stack</span>
+              <div className="mb-2 flex items-center justify-between gap-3 px-1 py-1">
+                <TrooperLogo className="!h-6 sm:!h-6" />
                 <span className="font-display text-[15px] leading-none text-fern-700">
                   {content.trooperPriceLabel}
                 </span>

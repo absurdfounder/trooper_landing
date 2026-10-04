@@ -6,9 +6,9 @@ import PricingClient from "./PricingClient";
 import { buildPageMetadata } from "@/lib/og/buildMetadata";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Trooper Pricing – Solo Lifetime Deal, Cloud, and Enterprise",
+  title: "Trooper Pricing — $25 per human",
   description:
-    "Choose how you want to run Trooper. Self-host free on your machine, Solo Cloud for $149, hosted cloud from $25/mo, or enterprise self-host. Unlimited agents, all AI models, bring your own API keys.",
+    "One seat per person, $25 a month. Unlimited messaging, calls, and research. Bring your own Claude, ChatGPT, or API keys. Model usage stays on your account.",
   canonical: "https://trooper.so/pricing",
   ogKind: "page",
   ogSlug: "pricing",

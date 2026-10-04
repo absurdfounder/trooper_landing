@@ -368,7 +368,7 @@ const alternatives: Record<string, AlternativePageContent> = {
       { feature: 'Agent model', trooper: 'Multi-agent specialized roles', competitor: 'Single AI engineer' },
       { feature: 'Traceability', trooper: 'Ticket-grade diffs and CI logs', competitor: 'Session-based work logs' },
       { feature: 'Beyond code', trooper: 'Sales, support, ops on same unit', competitor: 'Software engineering only' },
-      { feature: 'Cost', trooper: 'Your model costs + Trooper hosting', competitor: 'Per-seat AI engineer pricing' },
+      { feature: 'Cost', trooper: '$25 per human / mo, plus your own model keys', competitor: 'Per-seat AI engineer pricing' },
     ],
     whenToChooseTrooper: [
       'You want control over which models run and when merges happen.',

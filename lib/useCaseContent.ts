@@ -347,7 +347,7 @@ const useCases: Record<string, UseCasePageContent> = {
     benefits: [
       { title: 'Multi-function unit', description: 'Sales, coding, support, and ops agents on one Trooper deployment.' },
       { title: 'Founder command', description: 'Delegate from Slack or mobile — agents execute while you focus on product.' },
-      { title: 'Startup-friendly pricing', description: 'Your model costs + Trooper hosting — not per-seat enterprise pricing.' },
+      { title: 'Startup-friendly pricing', description: 'A $25 seat, plus the model keys you already pay for.' },
     ],
     howItWorks: [
       'Deploy a Trooper unit and configure your first agents (sales + coding)',

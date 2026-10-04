@@ -43,21 +43,21 @@ const FAQS: FAQ[] = [
   {
     question: "Do I need my own API keys?",
     answer:
-      "Yes. Trooper follows a bring-your-own-key model. You connect your own OpenAI, Anthropic, Gemini, or other provider keys. Model usage is billed separately by those providers. This means no markup on AI usage. You pay providers directly at their rates.",
+      "No. Recharge credits on Trooper, or bring your own Claude, ChatGPT, or OpenRouter key. You can also use an existing Claude or ChatGPT subscription.",
   },
   {
-    question: "What is the difference between Solo, Cloud, and Enterprise?",
-    answer: `Self-host is free forever on your machine: one workspace, no connected devices. Solo Cloud is ${formatUsd(PRICING_USD.cloudLifetime)} one-time for hosted team collaboration forever: also one workspace, no connected devices. Trooper Cloud is ${formatUsd(PRICING_USD.cloudStandardMonthly)}/mo (Cloud) or ${formatUsd(PRICING_USD.cloudPremiumMonthly)}/mo (Cloud Max) with multi-workspace support and unlimited connected devices. Enterprise is custom pricing with self-hosting, multi-workspace support, SSO, VPC, and dedicated support. All plans include unlimited agents and chats.`,
+    question: "What does a seat cost?",
+    answer: `A seat is ${formatUsd(PRICING_USD.seatMonthly)} per person per month, with a 7-day free trial. Recharge credits on Trooper, or bring your own keys. You can also use an existing Claude or ChatGPT subscription. Self install is ${formatUsd(PRICING_USD.selfInstallLifetime)} once, for life, on a machine you own. Enterprise (SSO, private VPC) is a conversation.`,
   },
   {
     question: "Is my data secure?",
     answer:
-      "Yes. Every organization gets an isolated workspace with encrypted connections. API keys are never stored on our servers. Enterprise customers get additional controls: SSO, private VPC, on-prem deployment, and custom security agreements.",
+      "Yes. Every organization gets an isolated workspace with encrypted connections. When you bring your own keys, they stay yours. When you recharge credits, Trooper manages the API key. Enterprise customers get additional controls: SSO, private VPC, on-prem deployment, and custom security agreements.",
   },
   {
     question: "Can I self-host Trooper?",
     answer:
-      "Yes. Run it on your laptop or a virtual machine with the open-source app. Cloud is optional. Enterprise adds VPC, SSO, and on-prem.",
+      `Yes. Self install is ${formatUsd(PRICING_USD.selfInstallLifetime)} once, for life, on your laptop or a virtual machine. You bring your own keys. Enterprise adds VPC, SSO, and on-prem.`,
   },
 ];
 

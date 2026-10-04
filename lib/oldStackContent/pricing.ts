@@ -2,7 +2,7 @@ import type { OldStackContent } from './types';
 
 export const PRICING_OLD_STACK: OldStackContent = {
   "dividerLabel": "One Mission Control replaces all of it",
-  "trooperPriceLabel": "Cloud from $25/mo",
+  "trooperPriceLabel": "$25 per human / mo",
   "agentAck": "On it. Watch me work 👇",
   "userHire": "ok you're officially hired. run this every week forever 🫡",
   "closingCta": "Review board",

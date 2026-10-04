@@ -1,51 +1,19 @@
-/** Public marketing prices — keep in sync with app checkout when billing changes. */
+/** Public marketing prices.
+    A seat is per person. On that seat you recharge credits, bring your own keys,
+    or use an existing Claude or ChatGPT subscription.
+    Self install is a one-time lifetime purchase on a machine you own. */
 export const PRICING_USD = {
-  localLifetime: 0,
-  cloudLifetime: 149,
-  cloudStandardMonthly: 25,
-  cloudPremiumMonthly: 99,
-  cloudAdditionalMemberMonthly: 10,
-  cloudIncludedMembers: 2,
-  cloudIncludedWorkspaces: 1,
-  localIncludedMembers: 1,
-  localIncludedWorkspaces: 1,
+  seatMonthly: 25,
+  selfInstallLifetime: 149,
 } as const;
-
-export type CloudSubscriptionTier = 'standard' | 'premium';
-
-export const CLOUD_SUBSCRIPTION_TIERS: {
-  id: CloudSubscriptionTier;
-  label: string;
-  price: number;
-}[] = [
-  { id: 'standard', label: 'Cloud', price: PRICING_USD.cloudStandardMonthly },
-  { id: 'premium', label: 'Cloud Max', price: PRICING_USD.cloudPremiumMonthly },
-];
 
 export function formatUsd(amount: number) {
   return `$${amount}`;
 }
 
-export function getCloudTierMonthlyPrice(tier: CloudSubscriptionTier) {
-  return CLOUD_SUBSCRIPTION_TIERS.find((entry) => entry.id === tier)?.price ?? PRICING_USD.cloudStandardMonthly;
-}
-
-export function estimateCloudMonthly({
-  tier,
-  seatCount,
-  workspaceCount,
-}: {
-  tier: CloudSubscriptionTier;
-  seatCount: number;
-  workspaceCount: number;
-}) {
-  const tierPrice = getCloudTierMonthlyPrice(tier);
-  const additionalMembers = Math.max(0, seatCount - PRICING_USD.cloudIncludedMembers);
-  return tierPrice * workspaceCount + additionalMembers * PRICING_USD.cloudAdditionalMemberMonthly;
-}
-
-export const COMMON_PLAN_FEATURES = [
-  'Unlimited agents and chats',
-  'Adaptive memory and shared workflows',
-  'Skills, integrations, and browser automation',
+export const SEAT_INCLUDES = [
+  'Unlimited messaging and calls for your team and agents.',
+  'Recharge credits, or bring your own keys.',
+  'Use your existing Claude and ChatGPT subscription.',
+  'Unlimited research: web search, scraping, and extraction.',
 ] as const;

@@ -106,7 +106,7 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
         <Row tiles={bottom} reverse />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex justify-center">
         <Link href="/plugin" className="group link-mono">
           <span>Browse all {totalCount.toLocaleString()} integrations</span>
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />

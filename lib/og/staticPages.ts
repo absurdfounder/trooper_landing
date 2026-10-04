@@ -108,9 +108,9 @@ export const STATIC_OG_PAGES: Record<string, OgHeroContent> = {
   pricing: page(
     'pricing',
     'Pricing',
-    'Run Trooper',
-    'your way',
-    'Self-host, Solo Cloud, hosted cloud, and enterprise plans.',
+    '$25 a seat.',
+    'Your keys.',
+    'Unlimited messaging, calls, and research. Bring your own models.',
   ),
   download: page(
     'download',
