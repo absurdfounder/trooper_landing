@@ -276,27 +276,29 @@ function OfferCopy({
 function SelfInstallCard() {
   return (
     <article className="pricing-lifetime">
-      <div className="relative z-[1] flex items-end justify-between gap-4">
-        <div className="min-w-0">
-          <p className="pricing-lifetime-flag">Limited time only</p>
-          <p className="pricing-lifetime-title font-display">Self install</p>
-          <p className="pricing-lifetime-note">Lifetime, on a machine you own. 30-day money-back guarantee.</p>
+      <div className="pricing-lifetime-face">
+        <div className="relative z-[1] flex items-end justify-between gap-4">
+          <div className="min-w-0">
+            <p className="pricing-lifetime-flag">Limited time only</p>
+            <p className="pricing-lifetime-title font-display">Self install</p>
+            <p className="pricing-lifetime-note">Lifetime, on a machine you own. 30-day money-back guarantee.</p>
+          </div>
+          <p className="pricing-lifetime-price">
+            <span className="font-display">{formatUsd(PRICING_USD.selfInstallLifetime)}</span>
+            <span>one time</span>
+          </p>
         </div>
-        <p className="pricing-lifetime-price">
-          <span className="font-display">{formatUsd(PRICING_USD.selfInstallLifetime)}</span>
-          <span>one time</span>
-        </p>
-      </div>
-      <div className="relative z-[1] mt-3">
-        <PixelButton
-          href="/self-host"
-          size="sm"
-          tone="light"
-          className="w-full"
-          icon={<ArrowRight className="h-3.5 w-3.5" aria-hidden />}
-        >
-          Install Trooper
-        </PixelButton>
+        <div className="relative z-[1] mt-3">
+          <PixelButton
+            href="/self-host"
+            size="sm"
+            tone="light"
+            className="w-full"
+            icon={<ArrowRight className="h-3.5 w-3.5" aria-hidden />}
+          >
+            Install Trooper
+          </PixelButton>
+        </div>
       </div>
     </article>
   );
