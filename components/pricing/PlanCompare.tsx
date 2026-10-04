@@ -52,7 +52,6 @@ const GROUPS: { title: string; rows: Row[] }[] = [
   {
     title: 'Team',
     rows: [
-      { feature: 'Who it’s for', self: 'Your machine', seat: 'Per person' },
       { feature: 'Add team members', self: false, seat: true },
       { feature: 'Mac, Windows, iOS, and Android apps', self: true, seat: true },
     ],
