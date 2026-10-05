@@ -3,15 +3,15 @@ import type { OldStackContent } from './types';
 export const PRICING_OLD_STACK: OldStackContent = {
   "dividerLabel": "One Mission Control replaces all of it",
   "trooperPriceLabel": "$25 per human / mo",
-  "agentAck": "On it. Watch me work 👇",
-  "userHire": "ok you're officially hired. run this every week forever 🫡",
-  "closingCta": "Review board",
+  "agentAck": "On it.",
+  "userHire": "",
+  "closingCta": "",
   "footnote": "*you are still the orchestration layer",
   "timeLabel": "all week",
   "eyebrow": "What teams stitch together without Trooper",
-  "headline": "Ten subscriptions for one job",
-  "headlineEmphasis": "cost more than the work.",
-  "lede": "Builders, browsers, memory apps, and extra seats add up to ${total} a month. You still glue the work together.",
+  "headline": "Ten subscriptions.",
+  "headlineEmphasis": "One Trooper.",
+  "lede": "",
   "tools": [
     {
       "name": "Agent builder seat",
@@ -69,34 +69,40 @@ export const PRICING_OLD_STACK: OldStackContent = {
     }
   ],
   "agentLabel": "Mission Control · online",
-  "userAsk": "ok Trooper, replace this frankenstein stack. go.",
+  "userAsk": "Requirement: turn this stack into workflows that run every week.",
   "steps": [
     {
-      "title": "Stood up the workforce",
-      "detail": "Agents with shared memory online",
+      "title": "Support, sales, meetings",
+      "detail": "Weekly workflows on shared memory",
       "icon": "users",
-      "tags": [
-        "Support",
-        "Sales",
-        "Ops"
-      ]
+      "tags": ["Support", "Sales", "Meetings"]
     },
     {
-      "title": "Connected the tools you keep",
-      "detail": "Gmail, Slack, GitHub, CRM linked",
-      "icon": "code",
-      "tags": [
-        "3,000+ skills",
-        "BYO keys"
-      ]
+      "title": "Plugins",
+      "detail": "Gmail, Slack, GitHub, CRM — the tools you keep",
+      "icon": "mail",
+      "tags": ["1,000+ plugins"]
     },
     {
-      "title": "Ran the first mission",
-      "detail": "Traced end-to-end on the board",
-      "icon": "clipboard"
+      "title": "Skills",
+      "detail": "Builder, code, and the zaps, on your own keys",
+      "icon": "clipboard",
+      "tags": ["3,000+ skills", "BYO keys"]
+    },
+    {
+      "title": "Computer use",
+      "detail": "Browser automation on the cloud computer",
+      "icon": "search",
+      "tags": ["Cloud computer"]
+    },
+    {
+      "title": "Memory and tracing",
+      "detail": "One memory. Every run traced.",
+      "icon": "file",
+      "tags": ["RAG", "Tracing"]
     }
   ],
-  "pendingTitle": "Tuning approvals",
-  "pendingDetail": "Setting what can auto-send vs needs review",
-  "closingLine": "One Mission Control. Next workflow won’t need another vendor."
+  "pendingTitle": "Auto-run every week?",
+  "pendingDetail": "Approvals stay on. Nothing sends without your yes.",
+  "closingLine": "Done. Skills, plugins, and the computer run every week."
 };

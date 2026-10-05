@@ -13,17 +13,11 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         {children}
       </main>
 
-      <SectionShell rhythm eyebrow="Updates" bgClass="bg-canvas">
+      <SectionShell rhythm bgClass="bg-canvas">
         <RecentlyShippedSection />
       </SectionShell>
 
-      {/* No eyebrowNumber — the newsletter is site chrome, not a numbered
-          section, and it used to render a third [08] after the page's own. */}
-      <SectionShell
-        eyebrow="Deploy Orders"
-        bgClass="bg-canvas"
-        noBorderBottom={false}
-      >
+      <SectionShell bgClass="bg-canvas" noBorderBottom={false}>
         <Newsletter />
       </SectionShell>
       <Footer />

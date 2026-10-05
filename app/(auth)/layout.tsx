@@ -19,7 +19,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       {/* Match homepage canvas — gray-50 put a cool gutter beside the warm rail */}
       <main className="grow bg-canvas">{children}</main>
       {!hideNewsletter ? (
-        <SectionShell eyebrow="Deploy Orders" bgClass="bg-canvas" noBorderBottom={false}>
+        <SectionShell bgClass="bg-canvas" noBorderBottom={false}>
           <Newsletter />
         </SectionShell>
       ) : null}
