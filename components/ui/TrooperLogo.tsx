@@ -15,18 +15,18 @@ export default function TrooperLogo({
   priority = false,
   theme = 'light',
 }: TrooperLogoProps) {
-  // ?v=8 is the blob wordmark. The query busts the previous helmet lockup.
+  // ?v=9 is the vector wordmark. The query busts the earlier raster.
   const src =
     theme === 'dark'
-      ? '/images/trooper-wordmark-dark.png?v=8'
-      : '/images/trooper-wordmark.png?v=8'
+      ? '/images/trooper-wordmark-dark.svg?v=9'
+      : '/images/trooper-wordmark.svg?v=9'
 
   const content = (
     <img
       src={src}
       alt=""
-      width={122}
-      height={30}
+      width={123}
+      height={31}
       className={`block h-7 w-auto object-left object-contain sm:h-8 ${className}`}
       loading={priority ? 'eager' : 'lazy'}
       fetchPriority={priority ? 'high' : 'low'}

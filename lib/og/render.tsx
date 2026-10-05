@@ -40,7 +40,7 @@ function TrooperBrandMark() {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={trooperWordmarkSrc()} alt="" width={248} height={59} />
+      <img src={trooperWordmarkSrc()} alt="" width={236} height={59} />
     </div>
   );
 }
