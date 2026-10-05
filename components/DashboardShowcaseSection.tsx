@@ -18,10 +18,6 @@ export default function DashboardShowcaseSection() {
   return (
     <section className="relative bg-canvas">
       <div className="rail border-t border-[var(--color-line)] py-9 sm:py-16 lg:py-20">
-        <p className="mb-5 flex items-baseline justify-start gap-2 text-left sm:mb-7 sm:justify-center sm:text-center">
-          <span className="font-mono text-[11px] tabular-nums text-ink-faint sm:text-[12px]">02</span>
-          <span className="kicker !inline">Product</span>
-        </p>
         <motion.div
           className="mx-auto w-full min-w-0 text-left sm:text-center"
           initial={{ opacity: 0, y: 14 }}

@@ -142,7 +142,7 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
         </p>
       </div>
 
-      <div className="mt-14 grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:gap-0">
+      <div className="mt-14 grid items-center gap-10 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch lg:gap-0">
         <div className="relative">
           <div className="relative mx-auto mt-[18px] h-[444px] w-full max-w-[336px] lg:mt-5 lg:h-[460px] lg:w-[412px] lg:max-w-none">
             {tools.map((tool, i) => (
@@ -234,18 +234,18 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
           <span className="h-px min-w-[36px] flex-1 bg-neutral-900/[0.12] lg:h-auto lg:min-h-[54px] lg:w-px lg:min-w-0 lg:flex-none" />
         </div>
 
-        <div className="m-auto flex justify-center lg:justify-start">
-          <div className="w-full max-w-[440px] overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05),0_18px_40px_-12px_rgba(15,23,42,0.14)] ring-1 ring-black/[0.07]">
-            <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
+        <div className="m-auto flex h-full w-full justify-center lg:justify-end">
+          <div className="flex h-full w-full max-w-[440px] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05),0_18px_40px_-12px_rgba(15,23,42,0.14)] ring-1 ring-black/[0.07]">
+            <div className="flex flex-1 flex-col justify-center gap-5 px-5 py-6 sm:px-6">
               <div className="flex justify-end">
-                <p className="max-w-[82%] rounded-2xl rounded-br-md bg-neutral-100 px-3.5 py-2.5 text-[13px] leading-snug text-neutral-800">
+                <p className="max-w-[86%] rounded-2xl rounded-br-md bg-neutral-100 px-3.5 py-2.5 text-[14px] leading-snug text-neutral-800">
                   {content.userAsk}
                 </p>
               </div>
 
               <div className="flex gap-2.5">
                 <div className="flex min-w-0 flex-1 flex-col gap-3">
-                  <p className="text-[13px] leading-snug text-neutral-700">{content.agentAck}</p>
+                  <p className="text-[14px] leading-snug text-neutral-800">{content.agentAck}</p>
 
                   <div className="pt-0.5">
                     {content.steps.map((step, i) => {
@@ -267,12 +267,12 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
                           </span>
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[12.5px] font-medium text-neutral-800">
+                              <span className="text-[14px] font-medium text-neutral-900">
                                 {step.title}
                               </span>
                               <Check className="size-3 text-fern-500" strokeWidth={3} aria-hidden />
                             </div>
-                            <p className="mt-0.5 text-[11px] leading-snug text-neutral-400">
+                            <p className="mt-0.5 text-[13px] leading-snug text-neutral-500">
                               {step.detail}
                             </p>
                             {step.tags && step.tags.length > 0 ? (
@@ -299,7 +299,7 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[12.5px] font-medium text-neutral-800">
+                          <span className="text-[14px] font-medium text-neutral-900">
                             {content.pendingTitle}
                           </span>
                           <span className="inline-flex items-center gap-[3px]">
@@ -317,14 +317,14 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
                             />
                           </span>
                         </div>
-                        <p className="mt-0.5 text-[11px] leading-snug text-neutral-400">
+                        <p className="mt-0.5 text-[13px] leading-snug text-neutral-500">
                           {content.pendingDetail}
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <p className="text-[13px] font-medium leading-snug text-neutral-900">
+                  <p className="text-[14px] font-medium leading-snug text-neutral-900">
                     {content.closingLine}{' '}
                     <span className="ml-1 inline-flex translate-y-px items-center gap-1 font-normal text-fern-700">
                       {content.closingCta}
@@ -335,16 +335,16 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
               </div>
 
               <div className="flex justify-end">
-                <p className="max-w-[82%] rounded-2xl rounded-br-md bg-neutral-100 px-3.5 py-2.5 text-[13px] leading-snug text-neutral-800">
+                <p className="max-w-[86%] rounded-2xl rounded-br-md bg-neutral-100 px-3.5 py-2.5 text-[14px] leading-snug text-neutral-800">
                   {content.userHire}
                 </p>
               </div>
             </div>
 
-            <div className="border-t border-neutral-100 px-4 py-3 sm:px-5">
-              <div className="mb-2 flex items-center justify-between gap-3 px-1 py-1">
-                <TrooperLogo className="!h-6 sm:!h-6" />
-                <span className="font-display text-[15px] leading-none text-fern-700">
+            <div className="border-t border-neutral-100 px-5 py-4 sm:px-6">
+              <div className="mb-3 flex items-end justify-between gap-3">
+                <TrooperLogo className="!h-7 sm:!h-7" />
+                <span className="font-display text-[26px] font-semibold leading-none tracking-tight text-fern-700">
                   {content.trooperPriceLabel}
                 </span>
               </div>

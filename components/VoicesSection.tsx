@@ -11,8 +11,6 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 type VoicesSectionProps = {
   voices: Voice[];
-  /** Position in the host page's numbered section rhythm. */
-  eyebrowNumber?: string;
 };
 
 function Attribution({ voice, compact = false }: { voice: Voice; compact?: boolean }) {
@@ -78,10 +76,6 @@ export default function VoicesSection({ voices }: VoicesSectionProps) {
 
   return (
     <div className="py-9 sm:py-16 lg:py-20">
-      <p className="mb-5 flex items-baseline gap-2 sm:mb-7">
-        <span className="font-mono text-[11px] tabular-nums text-white/35 sm:text-[12px]">01</span>
-        <span className="kicker-dark !inline">Voices</span>
-      </p>
       {voices.length === 1 ? (
         <motion.figure
           className="relative"

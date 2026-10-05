@@ -209,9 +209,6 @@ export default function LoopApiSection() {
   return (
     <section className="relative bg-canvas">
       <div className="rail border-t border-[var(--color-line)] py-9 sm:py-16 lg:py-20">
-        <p className="mb-5 flex items-baseline justify-start gap-2 text-left sm:mb-7 sm:justify-center sm:text-center">
-          <span className="kicker !inline">Loop API</span>
-        </p>
         <motion.div
           className="mx-auto w-full max-w-2xl text-left sm:text-center"
           initial={{ opacity: 0, y: 14 }}

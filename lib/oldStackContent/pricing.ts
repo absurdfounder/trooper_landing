@@ -9,9 +9,9 @@ export const PRICING_OLD_STACK: OldStackContent = {
   "footnote": "*you are still the orchestration layer",
   "timeLabel": "all week",
   "eyebrow": "What teams stitch together without Trooper",
-  "headline": "An AI workforce across ten vendors,",
-  "headlineEmphasis": "costs more than the work.",
-  "lede": "Agent builders, schedulers, browser tools, memory apps, and seat-based “AI coworkers” quietly stack past {total}/mo — before anyone ships a durable workflow.",
+  "headline": "Ten subscriptions for one job",
+  "headlineEmphasis": "cost more than the work.",
+  "lede": "Builders, browsers, memory apps, and extra seats add up to ${total} a month. You still glue the work together.",
   "tools": [
     {
       "name": "Agent builder seat",

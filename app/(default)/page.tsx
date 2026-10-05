@@ -62,9 +62,6 @@ const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
 const MobileChannelsSection = dynamic(() => import('@/components/MobileChannelsSection'))
 const CompanyBrainSection = dynamic(() => import('@/components/CompanyBrainSection'))
 const OptimizeAgentsSection = dynamic(() => import('@/components/OptimizeAgentsSection'))
-const CastAtmosphereSection = dynamic(() => import('@/components/CastAtmosphereSection'))
-const TrooperCastSection = dynamic(() => import('@/components/TrooperCastSection'))
-
 export default function Home() {
   const loopRailItems = getLoopRailItems(8)
   const integrationTiles = getIntegrationTiles(36)
@@ -87,12 +84,6 @@ export default function Home() {
       {/* Ferndesk-style product frame: chat + board coordination after social proof.
           Owns its own section so the dither demo band can run edge-to-edge. */}
       <DashboardShowcaseSection />
-
-      <CastAtmosphereSection />
-
-      <SectionShell rhythm>
-        <TrooperCastSection />
-      </SectionShell>
 
       <SectionShell rhythm>
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
