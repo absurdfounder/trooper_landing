@@ -1,5 +1,5 @@
 /**
- * Optimized Trooper helmet logomark — WebP at multiple sizes for sharp
+ * Trooper blob logomark — WebP at multiple sizes for sharp
  * small/large displays without shipping the full 512px asset everywhere.
  */
 export const TROOPER_LOGOMARK = {

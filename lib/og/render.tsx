@@ -1,4 +1,6 @@
 import React from 'react';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import { mergeBadgeIcons } from '@/lib/og/agentIcons';
 import { loadOgFonts } from '@/lib/og/fonts';
@@ -12,8 +14,12 @@ const BRAND_GREEN = '#284800';
 const BRAND_GREEN_TEXT = '#325600';
 const SLATE_200 = '#e2e8f0';
 const SLATE_400 = '#94a3b8';
-const TROOPER_LOGOMARK_URL = 'https://trooper.so/images/trooper-logomark.png';
 const OG_BACKGROUND_URL = 'https://trooper.so/og/share-background.png';
+
+function trooperWordmarkSrc() {
+  const file = readFileSync(join(process.cwd(), 'public/images/trooper-wordmark.png'));
+  return `data:image/png;base64,${file.toString('base64')}`;
+}
 
 /** Scaled from site max-w-7xl + md:px-6 frame rhythm for 1200×630 OG canvas. */
 const FRAME_INSET = 28;
@@ -32,21 +38,9 @@ const CAMO_WASH_BG = [
 
 function TrooperBrandMark() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={TROOPER_LOGOMARK_URL} alt="" width={56} height={56} />
-      <span
-        style={{
-          fontSize: 36,
-          lineHeight: 1,
-          fontFamily: 'Silkscreen',
-          color: '#0f172a',
-          letterSpacing: '-0.02em',
-          textTransform: 'lowercase',
-        }}
-      >
-        trooper
-      </span>
+      <img src={trooperWordmarkSrc()} alt="" width={248} height={59} />
     </div>
   );
 }

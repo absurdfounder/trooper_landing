@@ -114,7 +114,7 @@ export default function RootLayout({
           trackOutboundLinks
           taggedEvents
         />
-        <link rel="preload" as="image" href="/images/trooper-wordmark.svg?v=7" type="image/svg+xml" />
+        <link rel="preload" as="image" href="/images/trooper-wordmark.png?v=8" type="image/png" />
       </head>
       <body
         className={`${inter.variable} ${silkscreen.variable} ${display.variable} bg-canvas font-sans antialiased text-ink`}

@@ -1,8 +1,8 @@
 type TrooperLogoProps = {
   className?: string
-  /** @deprecated Kept for call-site compat; wordmark is a single SVG. */
+  /** @deprecated Kept for call-site compat; wordmark is a single image. */
   characterClassName?: string
-  /** @deprecated Kept for call-site compat; wordmark is a single SVG. */
+  /** @deprecated Kept for call-site compat; wordmark is a single image. */
   textClassName?: string
   asLink?: boolean
   priority?: boolean
@@ -15,11 +15,11 @@ export default function TrooperLogo({
   priority = false,
   theme = 'light',
 }: TrooperLogoProps) {
-  // ?v=7 busts the broken transformed SVG that was accidentally shipped earlier.
+  // ?v=8 is the blob wordmark. The query busts the previous helmet lockup.
   const src =
     theme === 'dark'
-      ? '/images/trooper-wordmark-dark.svg?v=7'
-      : '/images/trooper-wordmark.svg?v=7'
+      ? '/images/trooper-wordmark-dark.png?v=8'
+      : '/images/trooper-wordmark.png?v=8'
 
   const content = (
     <img
