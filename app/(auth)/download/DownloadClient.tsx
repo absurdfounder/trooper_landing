@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -12,26 +11,21 @@ import {
 } from 'lucide-react';
 
 import Header from '@/components/ui/header';
-import {
-  PLATFORM_DOWNLOADS,
-  detectPlatform,
-  getPlatformDownload,
-  type Platform,
-  type PlatformDownload,
-} from '@/lib/platformDownload';
+import { PLATFORM_DOWNLOADS, type PlatformDownload } from '@/lib/platformDownload';
 
 type DownloadRow = PlatformDownload & {
   name: string;
+  available: boolean;
 };
 
 const MOBILE_ROWS: DownloadRow[] = [
-  { ...PLATFORM_DOWNLOADS.ios, name: 'iOS & iPadOS' },
-  { ...PLATFORM_DOWNLOADS.android, name: 'Android' },
+  { ...PLATFORM_DOWNLOADS.ios, name: 'iOS & iPadOS', available: false },
+  { ...PLATFORM_DOWNLOADS.android, name: 'Android', available: false },
 ];
 
 const DESKTOP_ROWS: DownloadRow[] = [
-  { ...PLATFORM_DOWNLOADS.mac, name: 'macOS' },
-  { ...PLATFORM_DOWNLOADS.windows, name: 'Windows' },
+  { ...PLATFORM_DOWNLOADS.mac, name: 'macOS', available: true },
+  { ...PLATFORM_DOWNLOADS.windows, name: 'Windows', available: false },
 ];
 
 const FEATURES: {
@@ -79,43 +73,18 @@ function PlatformIcon({
 }
 
 function PrimaryDownloadCta() {
-  const [platform, setPlatform] = useState<Platform>('unknown');
-
-  useEffect(() => {
-    setPlatform(detectPlatform());
-  }, []);
-
-  const download = getPlatformDownload(platform);
-  const label =
-    download.key === 'mac'
-      ? 'Download macOS app'
-      : download.key === 'windows'
-        ? 'Download Windows app'
-        : download.key === 'ios'
-          ? 'Download iOS app'
-          : download.key === 'android'
-            ? 'Download Android app'
-            : 'Download apps';
-
-  const showIcon =
-    download.key === 'mac' ||
-    download.key === 'ios' ||
-    download.key === 'windows' ||
-    download.key === 'android';
+  const download = PLATFORM_DOWNLOADS.mac;
 
   return (
     <Link
       href={download.href}
-      {...(download.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       className="inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-neutral-950 px-7 text-[15px] font-medium text-white transition-colors hover:bg-neutral-800"
     >
-      {showIcon ? (
-        <PlatformIcon
-          src={download.iconSrc}
-          className="h-4 w-4 object-contain brightness-0 invert"
-        />
-      ) : null}
-      {label}
+      <PlatformIcon
+        src={download.iconSrc}
+        className="h-4 w-4 object-contain brightness-0 invert"
+      />
+      Download macOS app
     </Link>
   );
 }
@@ -136,13 +105,19 @@ function DownloadOptionRow({ row, isLast }: { row: DownloadRow; isLast: boolean 
         </span>
         <span className="truncate text-[15px] font-medium text-neutral-800">{row.name}</span>
       </div>
-      <Link
-        href={row.href}
-        {...(row.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        className="inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-white px-4 text-[13px] font-medium text-neutral-800 shadow-xs ring-1 ring-black/10 transition-colors hover:bg-neutral-50"
-      >
-        Download
-      </Link>
+      {row.available ? (
+        <Link
+          href={row.href}
+          {...(row.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          className="inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-white px-4 text-[13px] font-medium text-neutral-800 shadow-xs ring-1 ring-black/10 transition-colors hover:bg-neutral-50"
+        >
+          Download
+        </Link>
+      ) : (
+        <span className="inline-flex h-9 shrink-0 items-center justify-center rounded-full bg-white px-4 text-[13px] font-medium text-neutral-400 shadow-xs ring-1 ring-black/10">
+          Coming soon
+        </span>
+      )}
     </div>
   );
 }
@@ -163,16 +138,17 @@ function DeviceDownloadCard({
       {/* Overflow lives on the media well only — pairing it with the card ring
           was clipping the stroke into a half-edge on the rounded corners. */}
       <div
-        className="relative w-full overflow-hidden rounded-t-2xl bg-neutral-100"
+        className="relative w-full overflow-hidden rounded-t-2xl bg-[#ebebeb]"
         style={{ aspectRatio: '16 / 9' }}
       >
+        {/* Zoom out and drop the shot so the same gray shows above the device, not only beside it. */}
         <Image
           src={imageSrc}
           alt={imageAlt}
           fill
           priority={priority}
           sizes="(max-width: 1024px) 100vw, 560px"
-          className="object-cover object-[center_20%]"
+          className="origin-bottom object-contain object-bottom scale-[0.86]"
         />
       </div>
       <div className="flex flex-1 flex-col">
@@ -198,8 +174,8 @@ export default function DownloadClient() {
                 Leave all to Trooper
               </h1>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-neutral-500 sm:text-[17px]">
-                The AI workforce that doesn&apos;t just think — it ships. Available for macOS,
-                Windows, iOS, and Android.
+                The AI workforce that doesn&apos;t just think — it ships. Available now on Mac.
+                Windows, iOS, and Android are coming soon.
               </p>
               <div className="mt-7 flex justify-center">
                 <PrimaryDownloadCta />
