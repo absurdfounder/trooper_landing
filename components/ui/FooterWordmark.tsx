@@ -20,6 +20,14 @@ const GLYPHS = [
   { presetId: 'cubee', body: LETTER_INK_DIM, animation: 'curious' },
 ] as const
 
+/** Same faces as the footer, in the navbar wordmark colors. */
+const NAV_GLYPHS = [
+  { presetId: 'strobi', body: '#5bc2e5', animation: 'idle' },
+  { presetId: 'cubee', body: '#69d8a6', animation: 'curious' },
+] as const
+
+const NAV_EYES = '#111316'
+
 function useEmPixels(host: HTMLElement | null, em: number) {
   const [px, setPx] = useState(48)
 
@@ -39,7 +47,7 @@ function useEmPixels(host: HTMLElement | null, em: number) {
 }
 
 /** Static letter-colored O — off-screen / reduced-motion. */
-function LetterOFallback({ size, body }: { size: number; body: string }) {
+function LetterOFallback({ size, body, eyes = EYE_INK }: { size: number; body: string; eyes?: string }) {
   const eye = Math.max(3, Math.round(size * 0.1))
   const gap = Math.max(3, Math.round(size * 0.12))
 
@@ -58,11 +66,11 @@ function LetterOFallback({ size, body }: { size: number; body: string }) {
       >
         <span
           className="rounded-full"
-          style={{ width: eye, height: Math.round(eye * 1.25), background: EYE_INK }}
+          style={{ width: eye, height: Math.round(eye * 1.25), background: eyes }}
         />
         <span
           className="rounded-full"
-          style={{ width: eye, height: Math.round(eye * 1.25), background: EYE_INK }}
+          style={{ width: eye, height: Math.round(eye * 1.25), background: eyes }}
         />
       </span>
     </span>
@@ -72,12 +80,14 @@ function LetterOFallback({ size, body }: { size: number; body: string }) {
 function FooterLiveO({
   presetId,
   body,
+  eyes = EYE_INK,
   animation,
   size,
   active,
 }: {
   presetId: string
   body: string
+  eyes?: string
   animation: string
   size: number
   active: boolean
@@ -88,12 +98,12 @@ function FooterLiveO({
     return assembleAvatarDefinition({
       name: `footer-${presetId}`,
       preset,
-      colors: { body, eyes: EYE_INK },
+      colors: { body, eyes },
     })
-  }, [presetId, body])
+  }, [presetId, body, eyes])
 
   if (!definition || !active) {
-    return <LetterOFallback size={size} body={body} />
+    return <LetterOFallback size={size} body={body} eyes={eyes} />
   }
 
   return (
@@ -111,12 +121,15 @@ function FooterLiveO({
  * Giant footer watermark: “tr” + two live letter-O faces + “per.”
  * Faces share the letter color (no bobbing) so they read as type, not stickers.
  */
-export default function FooterWordmark() {
+export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'watermark' | 'nav' }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const [host, setHost] = useState<HTMLElement | null>(null)
   const [reduceMotion, setReduceMotion] = useState(false)
   const nearFooter = useInView(rootRef, { amount: 0.01, margin: '40% 0px' })
-  const live = nearFooter && !reduceMotion
+  const nav = variant === 'nav'
+  const glyphs = nav ? NAV_GLYPHS : GLYPHS
+  const eyes = nav ? NAV_EYES : EYE_INK
+  const live = (nav || nearFooter) && !reduceMotion
 
   useEffect(() => {
     setHost(rootRef.current)
@@ -136,15 +149,19 @@ export default function FooterWordmark() {
   return (
     <div
       ref={rootRef}
-      aria-hidden
-      className="pointer-events-none flex select-none items-baseline justify-center gap-[0.02em] overflow-x-hidden whitespace-nowrap font-display text-[clamp(2.75rem,16vw,11rem)] font-medium lowercase leading-none tracking-[-0.045em] text-neutral-200"
+      aria-hidden={nav ? undefined : true}
+      className={
+        nav
+          ? 'flex select-none items-center whitespace-nowrap font-display text-[1.65rem] font-medium lowercase leading-none tracking-[-0.045em] text-[#090909] sm:text-[1.85rem]'
+          : 'pointer-events-none flex select-none items-baseline justify-center gap-[0.02em] overflow-x-hidden whitespace-nowrap font-display text-[clamp(2.75rem,16vw,11rem)] font-medium lowercase leading-none tracking-[-0.045em] text-neutral-200'
+      }
     >
       <span>tr</span>
       <span
-        className="inline-flex items-baseline"
-        style={{ gap: '0.06em', marginInline: '0.02em' }}
+        className="inline-flex items-center"
+        style={{ gap: nav ? '0.02em' : '0.06em', marginInline: '0.02em' }}
       >
-        {GLYPHS.map((g, i) => (
+        {glyphs.map((g, i) => (
           <span
             key={g.presetId}
             className="relative inline-flex shrink-0"
@@ -152,14 +169,15 @@ export default function FooterWordmark() {
               width: glyphSize,
               height: glyphSize,
               // Pull faces down onto the letter baseline (inline replaced boxes sit high otherwise).
-              transform: 'translateY(0.12em)',
+              transform: nav ? 'translateY(0.06em)' : 'translateY(0.12em)',
               marginLeft: i === 1 ? '-0.1em' : 0,
-              zIndex: GLYPHS.length - i,
+              zIndex: glyphs.length - i,
             }}
           >
             <FooterLiveO
               presetId={g.presetId}
               body={g.body}
+              eyes={eyes}
               animation={g.animation}
               size={glyphSize}
               active={live}
@@ -167,7 +185,7 @@ export default function FooterWordmark() {
           </span>
         ))}
       </span>
-      <span>per.</span>
+      <span>{nav ? 'per' : 'per.'}</span>
     </div>
   )
 }

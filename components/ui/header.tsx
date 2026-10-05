@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { ChevronDown, Github } from 'lucide-react'
 
-import TrooperLogo from '@/components/ui/TrooperLogo'
+import FooterWordmark from '@/components/ui/FooterWordmark'
 import HeroDownloadButtons from '@/components/HeroDownloadButtons'
 import MobileMenu from './mobile-menu'
 import PixelButton from '@/components/ui/PixelButton'
@@ -80,12 +80,9 @@ export default function Header() {
           darkNav ? '!border-white/[0.06]' : ''
         }`}
       >
-        <TrooperLogo
-          asLink
-          priority
-          theme={darkNav ? 'dark' : 'light'}
-          className="h-7 sm:h-8"
-        />
+        <a href="/" className="inline-flex shrink-0 items-center" aria-label="Trooper">
+          <FooterWordmark variant="nav" />
+        </a>
 
         <nav
           ref={navRef}
