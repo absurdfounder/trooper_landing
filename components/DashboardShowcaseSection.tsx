@@ -11,7 +11,7 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 /**
  * Ferndesk-style product showcase: centered section header, then the live
- * Trooper dashboard on the same dither ground as the old under-hero band.
+ * Trooper dashboard on the same grayscale desktop wallpaper as the hero.
  * Mobile gets a flush (non-rotated) demo so the section isn’t text-only.
  */
 export default function DashboardShowcaseSection() {
@@ -47,28 +47,28 @@ export default function DashboardShowcaseSection() {
 
         {/* Mobile / tablet: flush product frame (no rotate — fits narrow rails). */}
         <motion.div
-          className="hero-surface mt-9 overflow-hidden rounded-2xl border border-black/[0.06] bg-white lg:hidden"
+          className="desktop-wallpaper mt-9 overflow-hidden rounded-2xl border border-black/[0.06] lg:hidden"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.06, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <div className="overflow-x-clip overflow-y-hidden rounded-[inherit] px-2 py-4 sm:px-4 sm:py-6">
+          <div className="relative z-[1] overflow-x-clip overflow-y-hidden rounded-[inherit] px-2 py-4 sm:px-4 sm:py-6">
             <DeferredMount minHeight={280}>
               <LazyHeroArticleDemo flush maxHeight={360} />
             </DeferredMount>
           </div>
         </motion.div>
 
-        {/* Desktop: dither card with slight rotate for presence. */}
+        {/* Desktop: grayscale wallpaper behind the product, same as the hero. */}
         <motion.div
-          className="hero-surface mt-9 hidden rounded-2xl border border-black/[0.06] bg-white sm:mt-11 lg:block"
+          className="desktop-wallpaper mt-9 hidden overflow-hidden rounded-2xl border border-black/[0.06] sm:mt-11 lg:block"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.08, ease }}
           viewport={{ once: true, margin: '-60px' }}
         >
-          <div className="overflow-hidden rounded-[inherit] px-3 py-6 sm:px-6 sm:py-8">
+          <div className="relative z-[1] overflow-hidden rounded-[inherit] px-3 py-6 sm:px-6 sm:py-8">
             <DeferredMount desktopOnly minHeight={520}>
               <LazyHeroArticleDemo rotate flush />
             </DeferredMount>

@@ -8,7 +8,7 @@ const brandGreen = {
   400: '#7aa824',
   500: '#3f6b00',
   600: '#385f00',
-  700: '#325600',
+  700: '#2fb479',
   800: '#284800',
   900: '#1f3800',
   // 950 exists because the aliases below stand in for stock Tailwind ramps,

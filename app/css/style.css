@@ -717,6 +717,27 @@ body > iframe.goog-te-menu-frame {
     background-size: 8px 8px, 100% 100%;
   }
 
+  /* Grayscale desktop photo, tinted with #f3f3f6. Filter stays on ::before so children keep their color. */
+  .desktop-wallpaper {
+    position: relative;
+    background-color: #f3f3f6;
+  }
+
+  .desktop-wallpaper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: #f3f3f6;
+    background-image: url('/images/desktop/wallpaper.png');
+    background-repeat: no-repeat;
+    background-position: center 22%;
+    background-size: cover;
+    background-blend-mode: luminosity;
+    filter: grayscale(1);
+    opacity: 0.35;
+  }
+
   .dot-grid-dark {
     background-color: #0f120b;
     background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);

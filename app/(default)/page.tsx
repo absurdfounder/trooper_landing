@@ -49,8 +49,6 @@ import { getIntegrationTiles } from '@/lib/integrationScroller'
 import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
 import VoicesSection from '@/components/VoicesSection'
 import { getVoices } from '@/lib/voices'
-import SimplePricing from '@/components/SimplePricing'
-import GovernanceSection from '@/components/GovernanceSection'
 import FAQ from '@/components/faq'
 import FounderMessageSection from '@/components/FounderMessageSection'
 import DarkSplitSection from '@/components/ui/DarkSplitSection'
@@ -111,14 +109,6 @@ export default function Home() {
 
       {/* Field Comms — channels + phone pair on the page rail. */}
       <MobileChannelsSection />
-
-      <DarkSplitSection>
-        <GovernanceSection />
-      </DarkSplitSection>
-
-      <SectionShell rhythm>
-        <SimplePricing />
-      </SectionShell>
 
       <SectionShell rhythm>
         <FounderMessageSection />

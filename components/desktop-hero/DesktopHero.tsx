@@ -1381,14 +1381,14 @@ export default function DesktopHero() {
   useRailStageScale(sceneRef);
 
   return (
-    <section className="band relative bg-canvas text-ink">
+    <section className="band relative bg-[#f3f3f6] text-ink">
       <DhStyles />
 
       {/* Same page rail as every section below — side hairlines + max-w-7xl. */}
       <div className="rail relative overflow-hidden lg:h-[50rem] xl:h-[52rem]">
         {/* Wallpaper clipped to the rail (not full viewport). */}
         <div
-          className="dh-wallpaper pointer-events-none absolute inset-x-0 top-[var(--site-header-height)] bottom-0"
+          className="desktop-wallpaper pointer-events-none absolute inset-x-0 top-[var(--site-header-height)] bottom-0"
           aria-hidden
         />
 
@@ -1592,35 +1592,6 @@ export default function DesktopHero() {
 function DhStyles() {
   return (
     <style>{`
-.dh-wallpaper{
-  position:absolute;
-  /* Cool neutral wash under the photo — desktop atmosphere without olive cast. */
-  background-color:#eef0f3;
-}
-.dh-wallpaper::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background-image:url('/images/desktop/wallpaper.png');
-  background-repeat:no-repeat;
-  background-position:center 22%;
-  background-size:cover;
-  opacity:0.38;
-}
-/* Tint wash + system dot grid on top of the photo. */
-.dh-wallpaper::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background-image:
-    radial-gradient(circle at 1px 1px, rgba(23, 23, 23, 0.08) 1px, transparent 0),
-    linear-gradient(180deg, rgba(238,240,243,0.82) 0%, rgba(238,240,243,0.45) 30%, rgba(238,240,243,0.18) 55%, transparent 72%);
-  background-size:16px 16px, 100% 100%;
-  background-repeat:repeat, no-repeat;
-}
-
 .dh-hero-copy{
   text-shadow:none;
 }
