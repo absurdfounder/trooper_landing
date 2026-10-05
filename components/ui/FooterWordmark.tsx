@@ -23,28 +23,14 @@ const GLYPHS = [
 /** Same faces as the footer, in the navbar wordmark colors. */
 const NAV_GLYPHS = [
   { presetId: 'strobi', body: '#5bc2e5', animation: 'idle' },
-  { presetId: 'cubee', body: '#69d8a6', animation: 'curious' },
+  { presetId: 'cubee', body: '#69d8a6', animation: 'idle' },
 ] as const
 
 const NAV_EYES = '#111316'
 
-function useEmPixels(host: HTMLElement | null, em: number) {
-  const [px, setPx] = useState(48)
-
-  useEffect(() => {
-    if (!host) return
-    const sync = () => {
-      const fs = parseFloat(getComputedStyle(host).fontSize) || 48
-      setPx(Math.max(24, Math.round(fs * em)))
-    }
-    sync()
-    const ro = new ResizeObserver(sync)
-    ro.observe(host)
-    return () => ro.disconnect()
-  }, [host, em])
-
-  return px
-}
+/** Drawn once at this size, then scaled with the type so refresh doesn't flash a bigger face. */
+const FACE_PX = 128
+const FACE_EM = 0.72
 
 /** Static letter-colored O — off-screen / reduced-motion. */
 function LetterOFallback({ size, body, eyes = EYE_INK }: { size: number; body: string; eyes?: string }) {
@@ -123,7 +109,6 @@ function FooterLiveO({
  */
 export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'watermark' | 'nav' }) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const [host, setHost] = useState<HTMLElement | null>(null)
   const [reduceMotion, setReduceMotion] = useState(false)
   const nearFooter = useInView(rootRef, { amount: 0.01, margin: '40% 0px' })
   const nav = variant === 'nav'
@@ -132,19 +117,12 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
   const live = (nav || nearFooter) && !reduceMotion
 
   useEffect(() => {
-    setHost(rootRef.current)
-  }, [])
-
-  useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     const sync = () => setReduceMotion(mq.matches)
     sync()
     mq.addEventListener('change', sync)
     return () => mq.removeEventListener('change', sync)
   }, [])
-
-  // Match lowercase x-height; sit on the typographic baseline (not vertically centered).
-  const glyphSize = useEmPixels(host, 0.72)
 
   return (
     <div
@@ -166,22 +144,31 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
             key={g.presetId}
             className="relative inline-flex shrink-0"
             style={{
-              width: glyphSize,
-              height: glyphSize,
+              width: `${FACE_EM}em`,
+              height: `${FACE_EM}em`,
               // Pull faces down onto the letter baseline (inline replaced boxes sit high otherwise).
               transform: nav ? 'translateY(0.06em)' : 'translateY(0.12em)',
               marginLeft: i === 1 ? '-0.1em' : 0,
               zIndex: glyphs.length - i,
             }}
           >
-            <FooterLiveO
-              presetId={g.presetId}
-              body={g.body}
-              eyes={eyes}
-              animation={g.animation}
-              size={glyphSize}
-              active={live}
-            />
+            <span
+              className="absolute left-0 top-0 origin-top-left"
+              style={{
+                width: FACE_PX,
+                height: FACE_PX,
+                transform: `scale(calc(${FACE_EM}em / ${FACE_PX}px))`,
+              }}
+            >
+              <FooterLiveO
+                presetId={g.presetId}
+                body={g.body}
+                eyes={eyes}
+                animation={g.animation}
+                size={FACE_PX}
+                active={live}
+              />
+            </span>
           </span>
         ))}
       </span>

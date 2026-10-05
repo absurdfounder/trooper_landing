@@ -1,6 +1,5 @@
 'use client';
 
-import TrooperLogo from '@/components/ui/TrooperLogo';
 import FooterWordmark from '@/components/ui/FooterWordmark';
 import PixelButton from '@/components/ui/PixelButton';
 import Link from 'next/link';
@@ -248,7 +247,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand cell */}
           <div className="flex flex-col items-start gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-[var(--color-line)] border-b border-[var(--color-line)] sm:col-span-2 lg:col-span-1 lg:border-b-0">
-            <TrooperLogo className="block h-8 w-auto self-start sm:h-9" />
+            <FooterWordmark variant="nav" />
             <p className="text-sm leading-relaxed text-ink-muted">
               AI employees you can give real work to: coding, support, sales, ops. They run loops
               you approved across your tools.
