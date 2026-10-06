@@ -12,14 +12,13 @@ import type { OgHeroContent, OgKind } from '@/lib/og/types';
 
 const HOME_OG: OgHeroContent = {
   kind: 'home',
-  eyebrowIndex: '01',
-  eyebrowLabel: 'Mission briefing',
-  headlineLead: 'Agents + Humans',
-  headlinePrimary: 'Whole Team.',
-  headlineAccent: 'One App.',
-  description:
-    'Fire all your employees. An AI workforce that does everything for you — code, commits, ads, deals, support. Powered by OpenClaw.',
-  showSetup: true,
+  eyebrowIndex: '',
+  eyebrowLabel: '',
+  headlineLead: 'Give the order.',
+  headlinePrimary: 'Your troopers',
+  headlineAccent: 'ship it.',
+  description: 'Hire a workforce, not a chatbot. They use your tools and come back for your approval.',
+  showSetup: false,
   singleLineHeadline: true,
   pageUrl: 'https://trooper.so',
 };

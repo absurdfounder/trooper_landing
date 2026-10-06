@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { createElement, useEffect, useMemo, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
+import { Avatar as BsAvatar } from '@bible-strong/avatar-react'
 
 import LiveAvatarPreview from '@/components/character-builder/LiveAvatarPreview'
 import { assembleAvatarDefinition } from '@/lib/avatars/assembleAvatar'
@@ -17,7 +18,7 @@ const EYE_INK = '#a1a1aa' // neutral-400 — visible on light fills
 
 const GLYPHS = [
   { presetId: 'strobi', body: LETTER_INK, animation: 'idle' },
-  { presetId: 'cubee', body: LETTER_INK_DIM, animation: 'curious' },
+  { presetId: 'cubee', body: LETTER_INK_DIM, animation: 'idle' },
 ] as const
 
 /** Same faces as the footer, in the navbar wordmark colors. */
@@ -31,6 +32,35 @@ const NAV_EYES = '#111316'
 /** Drawn once at this size, then scaled with the type so refresh doesn't flash a bigger face. */
 const FACE_PX = 128
 const FACE_EM = 0.72
+
+/** Same deck the cast walks, so each logo face picks its own expressions. */
+const MOTIONS = [
+  'listening',
+  'thinking',
+  'searching',
+  'working',
+  'excited',
+  'happy',
+  'curious',
+  'confused',
+  'surprised',
+  'proud',
+  'playful',
+  'laughing',
+  'celebrate',
+  'idle',
+] as const
+
+function shuffle<T>(items: readonly T[]) {
+  const next = [...items]
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const held = next[i]
+    next[i] = next[j]
+    next[j] = held
+  }
+  return next
+}
 
 /** Static letter-colored O — off-screen / reduced-motion. */
 function LetterOFallback({ size, body, eyes = EYE_INK }: { size: number; body: string; eyes?: string }) {
@@ -70,6 +100,8 @@ function FooterLiveO({
   animation,
   size,
   active,
+  cycle = false,
+  opening,
 }: {
   presetId: string
   body: string
@@ -77,7 +109,11 @@ function FooterLiveO({
   animation: string
   size: number
   active: boolean
+  /** Walk a private shuffled deck so this face never matches its neighbor. */
+  cycle?: boolean
+  opening?: string
 }) {
+  const playerRef = useRef<{ play: (animation: string) => void }>(null)
   const definition = useMemo(() => {
     const preset = getCharacterPreset(presetId)
     if (!preset) return null
@@ -88,8 +124,46 @@ function FooterLiveO({
     })
   }, [presetId, body, eyes])
 
+  useEffect(() => {
+    if (!cycle || !active || !definition) return
+    let deck = shuffle(MOTIONS)
+    let cursor = 0
+    let last = opening ?? ''
+    let timer = 0
+    const step = () => {
+      if (cursor >= deck.length) {
+        const fresh = shuffle(MOTIONS)
+        if (fresh[0] === last) fresh.push(fresh.shift() as (typeof MOTIONS)[number])
+        deck = fresh
+        cursor = 0
+      }
+      const motion = deck[cursor]
+      cursor += 1
+      last = motion
+      playerRef.current?.play(motion)
+      timer = window.setTimeout(step, 2800 + Math.random() * 3600)
+    }
+    timer = window.setTimeout(step, 700 + Math.random() * 2400)
+    return () => window.clearTimeout(timer)
+  }, [cycle, active, definition, opening])
+
   if (!definition || !active) {
     return <LetterOFallback size={size} body={body} eyes={eyes} />
+  }
+
+  if (cycle) {
+    return (
+      <span className="inline-flex shrink-0 overflow-visible" style={{ width: size, height: size }}>
+        {createElement(BsAvatar as never, {
+          key: presetId,
+          ref: playerRef,
+          definition,
+          defaultAnimation: opening ?? animation,
+          size,
+          ariaLabel: '',
+        })}
+      </span>
+    )
   }
 
   return (
@@ -109,9 +183,16 @@ function FooterLiveO({
  */
 export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'watermark' | 'nav' }) {
   const rootRef = useRef<HTMLDivElement>(null)
+  const openings = useRef<string[] | null>(null)
   const [reduceMotion, setReduceMotion] = useState(false)
   const nearFooter = useInView(rootRef, { amount: 0.01, margin: '40% 0px' })
   const nav = variant === 'nav'
+  if (nav && openings.current === null) {
+    const first = shuffle(MOTIONS)
+    const second = shuffle(MOTIONS)
+    if (second[0] === first[0]) second.push(second.shift() as (typeof MOTIONS)[number])
+    openings.current = [first[0], second[0]]
+  }
   const glyphs = nav ? NAV_GLYPHS : GLYPHS
   const eyes = nav ? NAV_EYES : EYE_INK
   const live = (nav || nearFooter) && !reduceMotion
@@ -131,24 +212,26 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
       className={
         nav
           ? 'flex select-none items-center whitespace-nowrap font-display text-[1.65rem] font-medium lowercase leading-none tracking-[-0.045em] text-[#090909] sm:text-[1.85rem]'
-          : 'pointer-events-none flex select-none items-baseline justify-center gap-[0.02em] overflow-x-hidden whitespace-nowrap font-display text-[clamp(2.75rem,16vw,11rem)] font-medium lowercase leading-none tracking-[-0.045em] text-neutral-200'
+          : 'pointer-events-none flex select-none items-center justify-center gap-[0.02em] overflow-x-hidden whitespace-nowrap font-display text-[clamp(2.75rem,16vw,11rem)] font-medium lowercase leading-none tracking-[-0.045em] text-neutral-200'
       }
     >
       <span>tr</span>
       <span
         className="inline-flex items-center"
-        style={{ gap: nav ? '0.02em' : '0.06em', marginInline: '0.02em' }}
+        style={{ gap: '0.02em', marginInline: '0.02em' }}
       >
-        {glyphs.map((g, i) => (
+        {glyphs.map((g, i) => {
+          const faceEm = nav ? FACE_EM : 0.62
+          return (
           <span
             key={g.presetId}
             className="relative inline-flex shrink-0"
             style={{
-              width: `${FACE_EM}em`,
-              height: `${FACE_EM}em`,
-              // Pull faces down onto the letter baseline (inline replaced boxes sit high otherwise).
-              transform: nav ? 'translateY(0.06em)' : 'translateY(0.12em)',
-              marginLeft: i === 1 ? '-0.1em' : 0,
+              width: `${faceEm}em`,
+              height: `${faceEm}em`,
+              // Nav faces sit on the type. The giant watermark centers on the lowercase band.
+              transform: nav ? 'translateY(0.06em)' : 'translateY(-0.01em)',
+              marginLeft: i === 1 ? (nav ? '-0.1em' : '-0.04em') : 0,
               zIndex: glyphs.length - i,
             }}
           >
@@ -157,7 +240,7 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
               style={{
                 width: FACE_PX,
                 height: FACE_PX,
-                transform: `scale(calc(${FACE_EM}em / ${FACE_PX}px))`,
+                transform: `scale(calc(${faceEm}em / ${FACE_PX}px))`,
               }}
             >
               <FooterLiveO
@@ -167,10 +250,13 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
                 animation={g.animation}
                 size={FACE_PX}
                 active={live}
+                cycle={nav}
+                opening={nav ? openings.current?.[i] : undefined}
               />
             </span>
           </span>
-        ))}
+          )
+        })}
       </span>
       <span>{nav ? 'per' : 'per.'}</span>
     </div>
