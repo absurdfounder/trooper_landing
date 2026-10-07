@@ -31,6 +31,9 @@ async function fileExists(path: string) {
 }
 
 async function writeTarget(target: OgImageTarget, force: boolean) {
+  // Home is the designed artwork in public/og/prebuilt/home.png, not this template.
+  if (target.kind === 'home') return 'skipped' as const;
+
   const filePath = ogPrebuiltFilePath(target.kind, target.slug);
   if (!force && (await fileExists(filePath))) {
     return 'skipped' as const;

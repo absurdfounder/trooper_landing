@@ -27,8 +27,83 @@ function trooperWordmarkSrc() {
   return dataUrl('public/images/trooper-wordmark.png', 'image/png');
 }
 
-function wallpaperSrc() {
-  return dataUrl('public/og/wallpaper-tint.jpg', 'image/jpeg');
+/** Character-builder cast, in the same pastel washes as the root OG. */
+const PASTEL_CAST = [
+  { id: 'rex', wash: '#d7f5e3' },
+  { id: 'nova', wash: '#d5ebfb' },
+  { id: 'scout', wash: '#fde7c2' },
+  { id: 'pip', wash: '#e7d8fb' },
+  { id: 'wren', wash: '#fbd4e3' },
+] as const;
+
+const castSrcCache = new Map<string, string>();
+
+function castSrc(id: string) {
+  const cached = castSrcCache.get(id);
+  if (cached) return cached;
+  const svg = readFileSync(join(process.cwd(), 'public/images/cast', `${id}.svg`));
+  const src = `data:image/svg+xml;base64,${svg.toString('base64')}`;
+  castSrcCache.set(id, src);
+  return src;
+}
+
+function castSeed(text: string) {
+  let n = 0;
+  for (let i = 0; i < text.length; i += 1) n = (n * 33 + text.charCodeAt(i)) >>> 0;
+  return n;
+}
+
+function PastelCast({ seed }: { seed: string }) {
+  const n = castSeed(seed || 'trooper');
+  const front = PASTEL_CAST[n % PASTEL_CAST.length];
+  const back = PASTEL_CAST[(n + 2) % PASTEL_CAST.length];
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        right: 48,
+        bottom: 56,
+        width: 300,
+        height: 250,
+        display: 'flex',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          width: 156,
+          height: 148,
+          borderRadius: 28,
+          background: back.wash,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={castSrc(back.id)} alt="" width={112} height={112} />
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          width: 176,
+          height: 164,
+          borderRadius: 28,
+          background: front.wash,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={castSrc(front.id)} alt="" width={124} height={124} />
+      </div>
+    </div>
+  );
 }
 
 const PAD_X = 64;
@@ -94,31 +169,33 @@ function HeadlineBlock({ content }: { content: OgHeroContent }) {
   } as const;
 
   const primaryAccent = (
-    <>
-      <span
+    <div style={{ display: 'flex', width: '100%', flexWrap: 'wrap', alignItems: 'baseline' }}>
+      <div
         style={{
           ...headlineStyle,
           color: INK,
+          maxWidth: '100%',
           marginRight: content.headlineAccent && singleLine ? 12 : 0,
         }}
       >
         {content.headlinePrimary}
-      </span>
+      </div>
       {content.headlineAccent ? (
-        <span
+        <div
           style={{
             ...headlineStyle,
             color: FERN,
+            maxWidth: '100%',
           }}
         >
           {content.headlineAccent}
-        </span>
+        </div>
       ) : null}
-    </>
+    </div>
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', maxWidth: 1000 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: 760 }}>
       {content.headlineLead ? (
         <div
           style={{
@@ -208,14 +285,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
         backgroundColor: CANVAS,
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={wallpaperSrc()}
-        alt=""
-        width={OG_SIZE.width}
-        height={OG_SIZE.height}
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-      />
+      {content.kind === 'home' ? null : <PastelCast seed={`${content.kind}:${content.pageUrl || content.headlinePrimary}`} />}
 
       <div
         style={{
@@ -223,7 +293,7 @@ export function OgHeroImage({ content }: { content: OgHeroContent }) {
           display: 'flex',
           flexDirection: 'column',
           flex: 1,
-          padding: `${PAD_Y}px ${PAD_X}px 40px`,
+          padding: `${PAD_Y}px 340px 40px ${PAD_X}px`,
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
