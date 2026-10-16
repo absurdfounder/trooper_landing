@@ -84,7 +84,7 @@ export default function FounderMessageSection() {
       const loadCalApi = async () => {
         try {
           const getCalApi = await getCalApiImport();
-          const cal = await getCalApi({ namespace: 'setup-call' });
+          const cal = await getCalApi({ namespace: 'trooper' });
           cal('ui', { hideEventTypeDetails: false, layout: 'month_view' });
         } catch {
           // Cal.com widget failed to load silently
@@ -249,8 +249,8 @@ export default function FounderMessageSection() {
             tone="dark"
             className="shrink-0 sm:text-base"
             icon={<ArrowRight className="h-4 w-4" />}
-            data-cal-namespace="setup-call"
-            data-cal-link="set-meeting/setup-call"
+            data-cal-namespace="trooper"
+            data-cal-link="set-meeting/trooper"
             data-cal-config='{"layout":"month_view"}'
           >
             Talk to founder

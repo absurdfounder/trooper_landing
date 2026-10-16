@@ -43,7 +43,7 @@ export default function FeatureSubpageLayout({ content }: { content: FeaturePage
                 Get Started
               </PixelButton>
               <PixelButton
-                href="https://cal.com/trooper/setup-call"
+                href="https://cal.com/set-meeting/trooper"
                 external
                 size="lg"
                 variant="outline"
