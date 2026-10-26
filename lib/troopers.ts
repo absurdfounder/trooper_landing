@@ -28,7 +28,7 @@ export type TrooperMarkShape =
 export type Trooper = {
   /** Callsign — short, human, memorable. */
   name: string;
-  /** Mailbox handle rendered as `{handle}@trooper.so`. */
+  /** Mailbox handle rendered as `{handle}@troopermail.com`. */
   handle: string;
   /** What this trooper is hired for. */
   role: string;

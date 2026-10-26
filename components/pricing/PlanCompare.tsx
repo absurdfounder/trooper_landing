@@ -133,7 +133,7 @@ export default function PlanCompare() {
           </p>
         </div>
         <PixelButton
-          href="mailto:vaibhav@trooper.so"
+          href="mailto:vaibhav@troopermail.com"
           external
           size="md"
           tone="dark"

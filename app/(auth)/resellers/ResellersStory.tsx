@@ -213,7 +213,7 @@ export function ResellersFaq() {
     {
       question: 'How do I apply?',
       answer:
-        'Click Apply and email us. Tell us who you are, the clients you serve, and how you’d use Trooper. We’ll follow up from support@trooper.so.',
+        'Click Apply and email us. Tell us who you are, the clients you serve, and how you’d use Trooper. We’ll follow up from support@troopermail.com.',
     },
   ];
 
@@ -223,8 +223,8 @@ export function ResellersFaq() {
         <h2 className="h2-section">Questions before you apply.</h2>
         <p className="lede">
           Still unsure? Email{' '}
-          <a href="mailto:support@trooper.so" className="text-fern-700 hover:underline">
-            support@trooper.so
+          <a href="mailto:support@troopermail.com" className="text-fern-700 hover:underline">
+            support@troopermail.com
           </a>
           .
         </p>

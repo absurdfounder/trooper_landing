@@ -7,7 +7,7 @@ import PixelDitherGradient from '@/components/ui/PixelDitherGradient';
 import FernCircleCheckIcon from '@/components/ui/FernCircleCheckIcon';
 
 const APPLY_MAILTO =
-  'mailto:support@trooper.so?subject=Reseller%20Program%20Application&body=Hi%20Trooper%20team%2C%0A%0AI%27d%20like%20to%20apply%20to%20the%20Trooper%20Reseller%20Program.%0A%0AName%3A%0ACompany%20%2F%20practice%3A%0AWebsite%3A%0ANiche%20or%20client%20types%3A%0A%0AThanks!';
+  'mailto:support@troopermail.com?subject=Reseller%20Program%20Application&body=Hi%20Trooper%20team%2C%0A%0AI%27d%20like%20to%20apply%20to%20the%20Trooper%20Reseller%20Program.%0A%0AName%3A%0ACompany%20%2F%20practice%3A%0AWebsite%3A%0ANiche%20or%20client%20types%3A%0A%0AThanks!';
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

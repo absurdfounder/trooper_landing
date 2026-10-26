@@ -108,7 +108,7 @@ const featureColumn: FooterColumn = {
     {
       heading: 'Get help',
       links: [
-        { label: 'Contact us', href: 'mailto:support@trooper.so' },
+        { label: 'Contact us', href: 'mailto:support@troopermail.com' },
         { label: 'Privacy policy', href: '/privacy' },
         { label: 'Terms of service', href: '/terms' },
       ],

@@ -61,7 +61,7 @@ export default function TrooperCastSection() {
                   {trooper.name}
                 </h3>
                 <p className="mt-1 truncate font-mono text-[11px] tracking-tight text-ink-muted sm:text-xs">
-                  {`${trooper.handle}@trooper.so`}
+                  {`${trooper.handle}@troopermail.com`}
                 </p>
               </div>
               <span className="ml-auto shrink-0 bg-white px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-ink-faint ring-1 ring-[var(--color-line)]">

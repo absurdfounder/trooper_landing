@@ -115,12 +115,12 @@ const FAQ: React.FC = () => (
       <p className="lede">
         Missing something? Email{' '}
         <a
-          href="mailto:vaibhav@trooper.so"
+          href="mailto:vaibhav@troopermail.com"
           className="text-trooper hover:underline"
           target="_blank"
           rel="noopener"
         >
-          vaibhav@trooper.so
+          vaibhav@troopermail.com
         </a>
         .
       </p>

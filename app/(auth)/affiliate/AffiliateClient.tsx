@@ -136,7 +136,7 @@ const FAQ_ITEMS = [
   },
   {
     question: 'I have another question.',
-    answer: 'Email support@trooper.so and we will get back to you as soon as we can.',
+    answer: 'Email support@troopermail.com and we will get back to you as soon as we can.',
   },
 ];
 

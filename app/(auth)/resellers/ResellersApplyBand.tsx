@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import PixelButton from '@/components/ui/PixelButton';
 
 const APPLY_MAILTO =
-  'mailto:support@trooper.so?subject=Reseller%20Program%20Application&body=Hi%20Trooper%20team%2C%0A%0AI%27d%20like%20to%20apply%20to%20the%20Trooper%20Reseller%20Program.%0A%0AName%3A%0ACompany%20%2F%20practice%3A%0AWebsite%3A%0ANiche%20or%20client%20types%3A%0A%0AThanks!';
+  'mailto:support@troopermail.com?subject=Reseller%20Program%20Application&body=Hi%20Trooper%20team%2C%0A%0AI%27d%20like%20to%20apply%20to%20the%20Trooper%20Reseller%20Program.%0A%0AName%3A%0ACompany%20%2F%20practice%3A%0AWebsite%3A%0ANiche%20or%20client%20types%3A%0A%0AThanks!';
 
 export default function ResellersApplyBand() {
   return (
@@ -15,7 +15,7 @@ export default function ResellersApplyBand() {
           Ready to join the Trooper Reseller Program?
         </h2>
         <p className="mt-3 text-base leading-relaxed text-white/60">
-          Tell us who you serve and how you’d use Trooper. We’ll follow up at support@trooper.so.
+          Tell us who you serve and how you’d use Trooper. We’ll follow up at support@troopermail.com.
         </p>
       </div>
       <PixelButton
