@@ -4,6 +4,31 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import Header from '@/components/ui/header';
+import {
+  AudioLines,
+  Calendar,
+  Camera,
+  Clapperboard,
+  Code2,
+  FileText,
+  FolderSearch,
+  Globe,
+  Image as ImageIcon,
+  Laptop,
+  Library,
+  Mail,
+  MessageSquare,
+  Monitor,
+  MousePointer2,
+  PenLine,
+  Plug,
+  Search,
+  Sparkles,
+  Table2,
+  Terminal,
+  Users,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import TrooperMark from '@/components/ui/TrooperMark';
 import { TROOPERS } from '@/lib/troopers';
 
@@ -11,28 +36,73 @@ const LIVE_URL = 'https://app.trooper.so/api/public/live?limit=60';
 
 const TITLES = new Set([
   'Searched the web',
+  'Searched with Brave',
   'Researched',
   'Opened a page',
-  'Used the browser',
+  'Opened a Chrome tab',
+  'Read a Chrome page',
+  'Used Chrome',
+  'Opened a Brave tab',
+  'Used Brave',
   'Took a screenshot',
   'Read a file',
   'Edited a file',
   'Saved a file',
   'Looked through files',
   'Worked on code',
+  'Updated a table',
   'Ran a command',
-  'Used a computer',
+  'Used the cloud desktop',
+  'Used the Mac',
+  'Drew on the screen',
   'Used a skill',
-  'Used a connection',
+  'Used a plugin',
   'Set a schedule',
-  'Started a task',
-  'Used a tool',
+  'Delegated the work',
   'Sent a message',
   'Worked on mail',
   'Made an image',
   'Made audio',
   'Worked on a video',
 ]);
+
+const ACTION_ICONS: Record<string, LucideIcon> = {
+  'Searched the web': Search,
+  'Searched with Brave': Search,
+  Researched: Library,
+  'Opened a page': Globe,
+  'Opened a Chrome tab': Globe,
+  'Read a Chrome page': FileText,
+  'Used Chrome': Globe,
+  'Opened a Brave tab': Globe,
+  'Used Brave': Globe,
+  'Took a screenshot': Camera,
+  'Read a file': FileText,
+  'Edited a file': PenLine,
+  'Saved a file': FileText,
+  'Looked through files': FolderSearch,
+  'Worked on code': Code2,
+  'Updated a table': Table2,
+  'Ran a command': Terminal,
+  'Used the cloud desktop': Monitor,
+  'Used the Mac': Laptop,
+  'Drew on the screen': MousePointer2,
+  'Used a skill': Sparkles,
+  'Used a plugin': Plug,
+  'Set a schedule': Calendar,
+  'Delegated the work': Users,
+  'Sent a message': MessageSquare,
+  'Worked on mail': Mail,
+  'Made an image': ImageIcon,
+  'Made audio': AudioLines,
+  'Worked on a video': Clapperboard,
+};
+
+function actionMark(title: string) {
+  if (title.includes('Brave')) return '/images/live/brave.png';
+  if (title.includes('Chrome')) return '/images/live/chrome.png';
+  return '';
+}
 
 const FILTERS = [
   { id: 'all', label: 'All' },
@@ -86,6 +156,23 @@ function agentFor(id: string) {
   let n = 0;
   for (let i = 0; i < id.length; i += 1) n += id.charCodeAt(i);
   return TROOPERS[n % TROOPERS.length];
+}
+
+function ActionGlyph({ title }: { title: string }) {
+  const mark = actionMark(title);
+  if (mark) {
+    return (
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-50 ring-1 ring-black/5">
+        <img src={mark} alt="" className="h-4 w-4" />
+      </span>
+    );
+  }
+  const Icon = ACTION_ICONS[title] || Sparkles;
+  return (
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-50 text-neutral-700 ring-1 ring-black/5">
+      <Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden />
+    </span>
+  );
 }
 
 export default function LiveClient() {
@@ -216,9 +303,10 @@ export default function LiveClient() {
                       }`}
                     >
                       <TrooperMark trooper={agent} size={36} />
+                      <ActionGlyph title={event.title} />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-baseline justify-between gap-3">
-                          <p className="text-[14px] font-medium text-neutral-900">Agent</p>
+                          <p className="truncate text-[14px] font-medium text-neutral-900">{event.title}</p>
                           <time
                             className="shrink-0 text-[12px] tabular-nums text-neutral-400"
                             dateTime={new Date(event.at).toISOString()}
@@ -226,7 +314,7 @@ export default function LiveClient() {
                             {formatAge(event.at, now)}
                           </time>
                         </div>
-                        <p className="truncate text-[14px] text-neutral-500">{event.title}</p>
+                        <p className="text-[13px] text-neutral-500">Agent</p>
                       </div>
                     </li>
                   );
