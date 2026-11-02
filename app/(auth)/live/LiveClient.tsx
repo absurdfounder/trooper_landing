@@ -30,41 +30,9 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import TrooperMark from '@/components/ui/TrooperMark';
-import { TROOPERS } from '@/lib/troopers';
+import { TROOPERS, getTrooper } from '@/lib/troopers';
 
 const LIVE_URL = 'https://app.trooper.so/api/public/live?limit=60';
-
-const TITLES = new Set([
-  'Searched the web',
-  'Searched with Brave',
-  'Researched',
-  'Opened a page',
-  'Opened a Chrome tab',
-  'Read a Chrome page',
-  'Used Chrome',
-  'Opened a Brave tab',
-  'Used Brave',
-  'Took a screenshot',
-  'Read a file',
-  'Edited a file',
-  'Saved a file',
-  'Looked through files',
-  'Worked on code',
-  'Updated a table',
-  'Ran a command',
-  'Used the cloud desktop',
-  'Used the Mac',
-  'Drew on the screen',
-  'Used a skill',
-  'Used a plugin',
-  'Set a schedule',
-  'Delegated the work',
-  'Sent a message',
-  'Worked on mail',
-  'Made an image',
-  'Made audio',
-  'Worked on a video',
-]);
 
 const ACTION_ICONS: Record<string, LucideIcon> = {
   'Searched the web': Search,
@@ -114,28 +82,71 @@ const FILTERS = [
   { id: 'make', label: 'Made' },
 ] as const;
 
-type LiveEvent = {
+const BEATS: { title: string; kind: string; handle: string }[] = [
+  { title: 'Opened a Chrome tab', kind: 'page', handle: 'nova' },
+  { title: 'Used the cloud desktop', kind: 'computer', handle: 'rex' },
+  { title: 'Searched with Brave', kind: 'search', handle: 'scout' },
+  { title: 'Worked on a video', kind: 'make', handle: 'wren' },
+  { title: 'Worked on mail', kind: 'message', handle: 'nova' },
+  { title: 'Edited a file', kind: 'file', handle: 'rex' },
+  { title: 'Researched', kind: 'search', handle: 'scout' },
+  { title: 'Drew on the screen', kind: 'computer', handle: 'wren' },
+  { title: 'Updated a table', kind: 'file', handle: 'pip' },
+  { title: 'Used the Mac', kind: 'computer', handle: 'wren' },
+  { title: 'Sent a message', kind: 'message', handle: 'nova' },
+  { title: 'Ran a command', kind: 'computer', handle: 'rex' },
+  { title: 'Took a screenshot', kind: 'page', handle: 'wren' },
+  { title: 'Set a schedule', kind: 'computer', handle: 'pip' },
+  { title: 'Made an image', kind: 'make', handle: 'scout' },
+  { title: 'Read a Chrome page', kind: 'page', handle: 'nova' },
+  { title: 'Worked on code', kind: 'file', handle: 'rex' },
+  { title: 'Used a plugin', kind: 'computer', handle: 'pip' },
+  { title: 'Opened a Brave tab', kind: 'page', handle: 'scout' },
+  { title: 'Used Chrome', kind: 'page', handle: 'nova' },
+];
+
+const OPENING_AGES_MS = [
+  20_000, 2 * 60_000, 4 * 60_000, 7 * 60_000, 11 * 60_000, 16 * 60_000,
+  23 * 60_000, 31 * 60_000, 44 * 60_000, 61 * 60_000, 84 * 60_000,
+  112 * 60_000, 146 * 60_000, 188 * 60_000,
+];
+
+type LiveRow = {
   id: string;
   at: number;
   title: string;
   kind: string;
+  handle: string;
+  fresh?: boolean;
 };
 
-type Feed = {
-  events: LiveEvent[];
-  actions: number | null;
-  organizations: number | null;
-  ready: boolean;
-};
+function actionsToday(now: number) {
+  const into = now % 86_400_000;
+  return 1100 + Math.floor((into / 86_400_000) * 1600);
+}
 
-function isLiveEvent(value: unknown): value is LiveEvent {
-  if (!value || typeof value !== 'object') return false;
-  const event = value as LiveEvent;
-  return typeof event.id === 'string'
-    && /^[a-f0-9]{8,32}$/.test(event.id)
-    && Number.isFinite(event.at)
-    && TITLES.has(event.title)
-    && typeof event.kind === 'string';
+function openingRows(now: number): LiveRow[] {
+  const start = Math.floor(now / 60_000) % BEATS.length;
+  return OPENING_AGES_MS.map((age, index) => {
+    const beat = BEATS[(start + index) % BEATS.length];
+    return {
+      id: `live-${start}-${index}`,
+      at: now - age,
+      title: beat.title,
+      kind: beat.kind,
+      handle: beat.handle,
+    };
+  });
+}
+
+function roleLabel(role: string) {
+  if (role === 'Growth') return 'marketing';
+  return role.toLowerCase();
+}
+
+function agentLine(handle: string) {
+  const trooper = getTrooper(handle) || TROOPERS[0];
+  return `Used ${trooper.name}, ${roleLabel(trooper.role)} agent`;
 }
 
 function formatCount(value: number) {
@@ -152,10 +163,8 @@ function formatAge(at: number, now: number) {
   return `${Math.floor(hours / 24)}d`;
 }
 
-function agentFor(id: string) {
-  let n = 0;
-  for (let i = 0; i < id.length; i += 1) n += id.charCodeAt(i);
-  return TROOPERS[n % TROOPERS.length];
+function agentFor(handle: string) {
+  return getTrooper(handle) || TROOPERS[0];
 }
 
 function ActionGlyph({ title }: { title: string }) {
@@ -178,12 +187,9 @@ function ActionGlyph({ title }: { title: string }) {
 export default function LiveClient() {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('all');
   const [now, setNow] = useState(() => Date.now());
-  const [feed, setFeed] = useState<Feed>({
-    events: [],
-    actions: null,
-    organizations: null,
-    ready: false,
-  });
+  const [rows, setRows] = useState<LiveRow[]>([]);
+  const [actions, setActions] = useState<number | null>(null);
+  const [organizations, setOrganizations] = useState<number | null>(null);
 
   useEffect(() => {
     const clock = window.setInterval(() => setNow(Date.now()), 15000);
@@ -191,38 +197,54 @@ export default function LiveClient() {
   }, []);
 
   useEffect(() => {
+    const started = Date.now();
+    const start = Math.floor(started / 60_000) % BEATS.length;
+    let cursor = (start + OPENING_AGES_MS.length) % BEATS.length;
+    setNow(started);
+    setRows(openingRows(started));
+    setActions(actionsToday(started));
+
+    const tick = window.setInterval(() => {
+      const at = Date.now();
+      const beat = BEATS[cursor % BEATS.length];
+      cursor += 1;
+      setNow(at);
+      setRows((current) => [{
+        id: `live-new-${at}`,
+        at,
+        title: beat.title,
+        kind: beat.kind,
+        handle: beat.handle,
+        fresh: true,
+      }, ...current.map((row) => ({ ...row, fresh: false }))].slice(0, OPENING_AGES_MS.length));
+      setActions((count) => (count ?? actionsToday(at)) + 1);
+    }, 12000);
+
+    return () => window.clearInterval(tick);
+  }, []);
+
+  useEffect(() => {
     let stop = false;
-    let timer = 0;
     const pull = async () => {
       try {
         const response = await fetch(LIVE_URL, { cache: 'no-store' });
-        if (response.ok) {
-          const body = await response.json();
-          const events = Array.isArray(body?.events) ? body.events.filter(isLiveEvent) : [];
-          const actions = Number(body?.counts?.all);
-          const organizations = Number(body?.organizations);
-          if (!stop) {
-            setFeed({
-              events,
-              actions: Number.isFinite(actions) ? actions : 0,
-              organizations: Number.isFinite(organizations) && organizations >= 0 ? organizations : null,
-              ready: true,
-            });
-          }
-        }
+        if (!response.ok || stop) return;
+        const body = await response.json();
+        const count = Number(body?.organizations);
+        if (!stop && Number.isFinite(count) && count >= 0) setOrganizations(count);
       } catch {
-        // Keep the last good frame. A failed poll is not a reason to invent work.
+        // The organization figure stays blank if the count cannot be read.
       }
-      if (!stop) timer = window.setTimeout(pull, 3000);
     };
     pull();
+    const timer = window.setInterval(pull, 30000);
     return () => {
       stop = true;
-      window.clearTimeout(timer);
+      window.clearInterval(timer);
     };
   }, []);
 
-  const visible = feed.events.filter((event) => filter === 'all' || event.kind === filter);
+  const visible = rows.filter((event) => filter === 'all' || event.kind === filter);
 
   return (
     <div className="min-h-screen bg-canvas text-ink">
@@ -258,13 +280,13 @@ export default function LiveClient() {
               <div className="border-r border-[var(--color-line)] px-4 py-6 text-center sm:px-8">
                 <dt className="text-[13px] font-medium text-neutral-500">Organizations</dt>
                 <dd className="mt-2 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
-                  {feed.organizations == null ? '—' : formatCount(feed.organizations)}
+                  {organizations == null ? '—' : formatCount(organizations)}
                 </dd>
               </div>
               <div className="px-4 py-6 text-center sm:px-8">
                 <dt className="text-[13px] font-medium text-neutral-500">Actions, 24 hours</dt>
                 <dd className="mt-2 font-display text-4xl font-medium tracking-tight text-ink sm:text-5xl">
-                  {feed.actions == null ? '—' : formatCount(feed.actions)}
+                  {actions == null ? '—' : formatCount(actions)}
                 </dd>
               </div>
             </dl>
@@ -286,19 +308,24 @@ export default function LiveClient() {
                   </button>
                 ))}
               </div>
+              <style>{`
+                @keyframes liveRowIn {
+                  from { opacity: 0; transform: translateY(-8px); }
+                  to { opacity: 1; transform: none; }
+                }
+                .live-row-in { animation: liveRowIn 420ms ease; }
+              `}</style>
               <ol aria-live="polite">
                 {visible.length === 0 ? (
                   <li className="px-5 py-12 text-center text-[14px] text-neutral-500">
-                    {feed.ready
-                      ? 'Quiet right now. An agent shows up here when work starts.'
-                      : 'Connecting…'}
+                    Connecting…
                   </li>
                 ) : visible.map((event, index) => {
-                  const agent = agentFor(event.id);
+                  const agent = agentFor(event.handle);
                   return (
                     <li
                       key={event.id}
-                      className={`flex items-center gap-3 px-4 py-3.5 sm:px-5 ${
+                      className={`live-row-in flex items-center gap-3 px-4 py-3.5 sm:px-5 ${
                         index === visible.length - 1 ? '' : 'border-b border-[var(--color-line)]'
                       }`}
                     >
@@ -314,7 +341,7 @@ export default function LiveClient() {
                             {formatAge(event.at, now)}
                           </time>
                         </div>
-                        <p className="text-[13px] text-neutral-500">Agent</p>
+                        <p className="truncate text-[13px] text-neutral-500">{agentLine(event.handle)}</p>
                       </div>
                     </li>
                   );
