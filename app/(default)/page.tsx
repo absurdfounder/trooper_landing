@@ -94,8 +94,6 @@ export default function Home() {
         <CompanyBrainSection />
       </SectionShell>
 
-      <ConnectSection />
-
       {/* Orgs / action / memory / workflows / surfaces */}
       <SectionShell id="capabilities" rhythm>
         <OldWays />
@@ -108,6 +106,8 @@ export default function Home() {
       <SectionShell rhythm>
         <OptimizeAgentsSection />
       </SectionShell>
+
+      <ConnectSection />
 
       {/* Loop APIs — owns its own section so the dither band runs edge-to-edge. */}
       <LoopApiSection />
