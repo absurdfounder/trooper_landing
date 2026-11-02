@@ -7,7 +7,6 @@ import { getFaviconUrl } from '@/lib/favicon';
 import { trooperLogomarkForSize } from '@/lib/trooperLogomark';
 
 import connect from './connect.module.css';
-import frame from './moat.module.css';
 import SlideFrame from './SlideFrame';
 
 /**
@@ -213,15 +212,13 @@ export default function ConnectSection() {
 
   return (
     <SlideFrame id="connect" labelledBy="connect-title">
-      <p className={connect.thesis}>Trooper Brain is an MCP</p>
-      <div className={connect.split}>
-        <h2 id="connect-title" className={frame.h2}>
-          Ask anywhere.
-          <br />
-          <span>Same facts come back.</span>
-        </h2>
-      </div>
-      <p className={connect.lead}>
+      <p className="h2-section !text-ink-muted">Trooper Brain is an MCP</p>
+      <h2 id="connect-title" className="h2-section mt-3">
+        Ask anywhere.
+        <br />
+        Same facts come back.
+      </h2>
+      <p className="lede mt-4 max-w-xl">
         Cursor, Claude, ChatGPT, Claude Code, Gemini. Nothing pasted in. Each one calls the
         company brain and drafts from the facts already kept — who decides, what happened, when it
         is due, and why.

@@ -6,7 +6,6 @@ import {
   Check,
   Loader2,
   Search,
-  Brain,
   ArrowRight,
   GitBranch,
   Globe2,
@@ -28,6 +27,7 @@ import {
   DevicesScene,
 } from './where-they-work/WorkSurfaceScenes';
 import dynamic from 'next/dynamic';
+import BrainLedger from './moat/BrainLedger';
 
 const VideoEditorCapabilityVisual = dynamic(() => import('./VideoEditorCapabilityVisual'), {
   ssr: false,
@@ -568,157 +568,10 @@ function ActionVisual({ focused }: { focused: boolean }) {
 /* ═══════════════════════════════════════════════════════════════
  * 3. Memory — chat asks about refunds → search → graph → inject
  * ═══════════════════════════════════════════════════════════════ */
-const MEMORY_ROWS = [
-  {
-    title: 'Refund policy — Jan decision',
-    category: 'Operations',
-    updated: '12d ago',
-    hit: true,
-    snippet: 'Full refund within 14 days if unused…',
-  },
-  {
-    title: 'Q3 refund SLA memo',
-    category: 'Finance',
-    updated: '1mo ago',
-    hit: true,
-    snippet: 'Support may approve under $50 without…',
-  },
-  {
-    title: 'Brand voice guidelines',
-    category: 'Marketing',
-    updated: '1w ago',
-    hit: false,
-    snippet: '',
-  },
-  {
-    title: 'Wonder launch playbook',
-    category: 'Operations',
-    updated: '2d ago',
-    hit: false,
-    snippet: '',
-  },
-] as const;
 
-/** Query → Answer knowledge graph — circular nodes + labeled edges. */
-function MemoryConnectionGraph({ lit }: { lit: boolean }) {
-  return (
-    <svg
-      className="mx-auto h-full min-h-[180px] w-full max-w-md flex-1"
-      viewBox="0 0 360 220"
-      fill="none"
-      aria-hidden
-    >
-      <defs>
-        <marker
-          id="ow-mem-arrow"
-          viewBox="0 0 10 10"
-          refX="8"
-          refY="5"
-          markerWidth="6"
-          markerHeight="6"
-          orient="auto-start-reverse"
-        >
-          <path d="M1 1 L9 5 L1 9 Z" fill="#7c6bb5" />
-        </marker>
-        <marker
-          id="ow-mem-arrow-gold"
-          viewBox="0 0 10 10"
-          refX="8"
-          refY="5"
-          markerWidth="6"
-          markerHeight="6"
-          orient="auto-start-reverse"
-        >
-          <path d="M1 1 L9 5 L1 9 Z" fill="#c4a035" />
-        </marker>
-        <pattern id="ow-mem-dots" width="12" height="12" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r="0.8" fill="#d4d4d8" />
-        </pattern>
-      </defs>
-
-      <rect width="360" height="220" fill="url(#ow-mem-dots)" opacity="0.55" />
-
-      <g
-        className={lit ? 'ow-graph-edge-on' : 'ow-graph-edge-off'}
-        strokeLinecap="round"
-        markerEnd="url(#ow-mem-arrow)"
-      >
-        <path
-          d="M78 108 C 95 70, 110 58, 128 52"
-          stroke="#c4a035"
-          strokeWidth="1.6"
-          fill="none"
-          markerEnd="url(#ow-mem-arrow-gold)"
-        />
-        <path d="M78 118 L 168 112" stroke="#b7a8d9" strokeWidth="1.35" fill="none" />
-        <path d="M148 58 L 172 100" stroke="#8b7cc0" strokeWidth="1.5" fill="none" />
-        <path
-          d="M158 48 C 200 28, 240 36, 248 58"
-          stroke="#cfc6e6"
-          strokeWidth="1.1"
-          fill="none"
-          opacity={lit ? 0.85 : 0.4}
-        />
-        <path d="M198 112 L 248 100" stroke="#8b7cc0" strokeWidth="1.5" fill="none" />
-        <path d="M188 128 L 198 162" stroke="#a898d0" strokeWidth="1.35" fill="none" />
-        <path d="M258 112 L 210 162" stroke="#8b7cc0" strokeWidth="1.5" fill="none" />
-        <path d="M230 172 L 290 172" stroke="#8b7cc0" strokeWidth="1.7" fill="none" />
-      </g>
-
-      <g className={lit ? 'opacity-100' : 'opacity-40'} style={{ fontSize: '9px', fontWeight: 500 }}>
-        <text x="98" y="68" fill="#b8952e">
-          works at
-        </text>
-        <text x="152" y="82" fill="#7c6bb5">
-          colleague
-        </text>
-        <text x="210" y="98" fill="#7c6bb5">
-          uses tool
-        </text>
-        <text x="168" y="152" fill="#7c6bb5">
-          likes topic
-        </text>
-        <text x="232" y="148" fill="#7c6bb5">
-          likes topic
-        </text>
-      </g>
-
-      <g className={lit ? 'ow-graph-node-on' : undefined}>
-        <rect x="18" y="100" width="58" height="28" rx="14" fill="#f5e6a3" />
-        <text x="47" y="118" textAnchor="middle" fill="#1c1917" style={{ fontSize: '11px', fontWeight: 600 }}>
-          Query
-        </text>
-      </g>
-
-      {(
-        [
-          { cx: 142, cy: 48, r: 16, strong: true },
-          { cx: 182, cy: 112, r: 18, strong: true },
-          { cx: 262, cy: 96, r: 16, strong: true },
-          { cx: 204, cy: 168, r: 16, strong: true },
-          { cx: 256, cy: 52, r: 11, strong: false },
-        ] as const
-      ).map((n, i) => (
-        <g key={i} className={lit && n.strong ? 'ow-graph-node-on' : undefined} opacity={n.strong || lit ? 1 : 0.45}>
-          <circle cx={n.cx} cy={n.cy} r={n.r} fill={n.strong ? '#e8e0f5' : '#f3f0f8'} stroke={n.strong ? '#9b8bc9' : '#d4cce6'} strokeWidth="1.25" />
-          <circle cx={n.cx} cy={n.cy} r={n.r * 0.55} fill={n.strong ? '#c4b5e0' : '#e4dcf0'} />
-          <circle cx={n.cx} cy={n.cy} r={n.r * 0.22} fill={n.strong ? '#5b4a8a' : '#9b8bc9'} />
-        </g>
-      ))}
-
-      <g className={lit ? 'ow-graph-node-on' : undefined}>
-        <rect x="288" y="158" width="58" height="28" rx="14" fill={lit ? '#ddd6f3' : '#ebe6f5'} stroke="#b7a8d9" strokeWidth="1" />
-        <text x="317" y="176" textAnchor="middle" fill="#1c1917" style={{ fontSize: '11px', fontWeight: 600 }}>
-          Answer
-        </text>
-      </g>
-    </svg>
-  );
-}
 
 function MemoryVisual({ focused }: { focused: boolean }) {
   const phase = useSimPhase(focused, MEMORY_DELAYS);
-  const [tab, setTab] = useState<'memory' | 'graph'>('memory');
   // 0 idle, 1 typing query, 2 hits filtered, 3 graph lit, 4 injected
   const queryFull = 'refunds last month';
   const [typedLen, setTypedLen] = useState(queryFull.length);
@@ -746,42 +599,26 @@ function MemoryVisual({ focused }: { focused: boolean }) {
     return () => window.clearInterval(id);
   }, [focused, phase, queryFull.length]);
 
-  const pickTab = (id: 'memory' | 'graph') => {
-    setTab(id);
-  };
-
   const query = queryFull.slice(0, typedLen);
   const showHits = phase >= 2;
-  const graphLit = phase >= 3 || tab === 'graph';
   const injected = phase >= 4;
-  const listRows = showHits ? MEMORY_ROWS.filter((m) => m.hit) : MEMORY_ROWS.slice(0, 3);
-  const showGraph = tab === 'graph';
 
   return (
     <MockShell className="flex flex-col">
       <div className="flex gap-1 border-b border-black/[0.06] px-2 py-2 sm:px-3">
-        {(
-          [
-            { id: 'memory' as const, label: 'Adaptive Memory' },
-            { id: 'graph' as const, label: 'Knowledge Graph' },
-          ] as const
-        ).map((t) => {
-          const active = tab === t.id;
-          return (
-            <button
-              key={t.id}
-              type="button"
-              onClick={() => pickTab(t.id)}
-              className={`rounded-lg px-2.5 py-1.5 text-[11px] font-medium transition-colors ${
-                active
-                  ? 'bg-white text-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08]'
-                  : 'text-neutral-400 hover:text-neutral-600'
-              }`}
-            >
-              {t.label}
-            </button>
-          );
-        })}
+        <button
+          type="button"
+          className="rounded-lg bg-white px-2.5 py-1.5 text-[11px] font-medium text-ink shadow-[0_1px_2px_rgba(0,0,0,0.05)] ring-1 ring-black/[0.08]"
+        >
+          Adaptive Memory
+        </button>
+        <button
+          type="button"
+          className="rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-neutral-400"
+          onClick={(event) => event.preventDefault()}
+        >
+          Knowledge Graph
+        </button>
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col px-3 py-3 sm:px-4">
@@ -797,62 +634,9 @@ function MemoryVisual({ focused }: { focused: boolean }) {
           </div>
         </div>
 
-        {!showGraph ? (
-          <div className="overflow-hidden rounded-xl border border-black/[0.06]">
-            {listRows.map((m, i) => {
-              const isHit = showHits && m.hit;
-              return (
-                <div
-                  key={m.title}
-                  className={`flex items-start gap-2.5 px-3 py-2.5 transition-colors ${
-                    i ? 'border-t border-black/[0.04]' : ''
-                  } ${isHit ? 'ow-hit-flash bg-ok-50/70' : 'bg-white'}`}
-                >
-                  <Brain
-                    className={`mt-0.5 size-3.5 shrink-0 ${
-                      isHit ? 'text-ok-700' : 'text-neutral-400'
-                    }`}
-                    strokeWidth={2}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="truncate text-[12px] font-medium text-ink">{m.title}</p>
-                      {isHit ? (
-                        <span className="ow-badge-in shrink-0 rounded bg-ok-700 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide text-white">
-                          Hit
-                        </span>
-                      ) : null}
-                    </div>
-                    <p className="text-[11px] text-neutral-400">
-                      {m.category} · {m.updated}
-                    </p>
-                    {isHit && m.snippet ? (
-                      <p className="mt-0.5 truncate text-[11px] text-neutral-600">{m.snippet}</p>
-                    ) : null}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-black/[0.06] bg-[#fafafa]">
-            <MemoryConnectionGraph lit={graphLit} />
-            <div className="flex flex-wrap gap-x-3 gap-y-1 border-t border-black/[0.05] px-3 py-2">
-              <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-full bg-[#f5e6a3] ring-1 ring-[#c4a035]/40" />
-                Query
-              </span>
-              <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-full bg-[#c4b5e0] ring-1 ring-[#8b7cc0]/50" />
-                Relations
-              </span>
-              <span className="inline-flex items-center gap-1 text-[9px] font-medium uppercase tracking-[0.08em] text-neutral-500">
-                <span className="size-2 rounded-full bg-[#ddd6f3] ring-1 ring-[#b7a8d9]/60" />
-                Answer
-              </span>
-            </div>
-          </div>
-        )}
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-black/[0.06] bg-white">
+          <BrainLedger />
+        </div>
       </div>
 
       <div
