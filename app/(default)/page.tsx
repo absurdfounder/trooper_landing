@@ -54,6 +54,9 @@ import FounderMessageSection from '@/components/FounderMessageSection'
 import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
 
+import ConnectSection from '@/components/moat/ConnectSection'
+import PlansFlowSection from '@/components/moat/PlansFlowSection'
+
 const DashboardShowcaseSection = dynamic(() => import('@/components/DashboardShowcaseSection'))
 const OldWays = dynamic(() => import('@/components/OldWays'))
 const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
@@ -91,9 +94,15 @@ export default function Home() {
         <CompanyBrainSection />
       </SectionShell>
 
+      <ConnectSection />
+
       {/* Orgs / action / memory / workflows / surfaces */}
-      <SectionShell rhythm>
+      <SectionShell id="capabilities" rhythm>
         <OldWays />
+      </SectionShell>
+
+      <SectionShell id="plans" rhythm>
+        <PlansFlowSection />
       </SectionShell>
 
       <SectionShell rhythm>

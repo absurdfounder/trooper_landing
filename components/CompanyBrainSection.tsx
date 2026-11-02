@@ -91,13 +91,18 @@ const ACTIVITY = [
 export default function CompanyBrainSection() {
   return (
     <div className="gl-company-brain w-full">
+      <p
+        className="mx-auto mb-16 max-w-[68rem] border-b border-black/20 pb-24 text-center font-display text-[clamp(2.25rem,4vw,3rem)] leading-[1.05] tracking-tight text-ink"
+        style={{ fontWeight: 700, opacity: 0.5 }}
+      >
+        The brain is the product, and it compounds every day your company runs through it.
+      </p>
       <div className="mx-auto flex max-w-2xl flex-col items-start text-left sm:items-center sm:text-center">
-        <h2 className="h2-section">Complete context on your company</h2>
+        <h2 className="h2-section">One brain, powering everything you own.</h2>
         <p className="lede mt-3 max-w-lg sm:mx-auto">
           <span className="block">
             Your company knowledge, the skills your team runs on, and live context from every tool
           </span>
-          <span className="block">connect into one company brain.</span>
         </p>
       </div>
 
