@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const { withPlausibleProxy } = require('next-plausible')
-
 const nextConfig = {
   transpilePackages: ['@trooper/demo', '@bible-strong/avatar-core', '@bible-strong/avatar-react'],
   images: {
@@ -130,9 +128,4 @@ const nextConfig = {
   },
 };
 
-// First-party proxy so adblockers don't drop Plausible (script + events on trooper.so).
-// Subdirectory "q" avoids blocked path names like analytics / plausible / stats.
-// @see https://plausible.io/docs/proxy/guides/nextjs
-module.exports = withPlausibleProxy({
-  subdirectory: 'q',
-})(nextConfig);
+module.exports = nextConfig;

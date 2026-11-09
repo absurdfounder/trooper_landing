@@ -103,13 +103,8 @@ export default function RootLayout({
         {/* LLM Indexing - llms.txt standard */}
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
-        {/*
-          Plausible via first-party proxy (withPlausibleProxy → /q/js/... + /q/proxy/api/event).
-          Rendered in <head> so the tag is present in SSR HTML for installer checks.
-          Do not pass Next.js Script `strategy` via scriptProps — that prop is not on
-          HTMLScriptAttributes and fails `next build` typecheck.
-        */}
         <PlausibleProvider
+          src="https://plausible-d1.vaibhavkalra1212.workers.dev/js/script.outbound-links.js"
           domain="trooper.so"
           trackOutboundLinks
           taggedEvents
