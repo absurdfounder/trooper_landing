@@ -104,10 +104,10 @@ export default function RootLayout({
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms.txt" title="LLM-readable summary" />
         <link rel="alternate" type="text/plain" href="https://trooper.so/llms-full.txt" title="LLM-readable full reference" />
         <PlausibleProvider
-          src="https://plausible-d1.vaibhavkalra1212.workers.dev/js/script.outbound-links.js"
           domain="trooper.so"
           trackOutboundLinks
           taggedEvents
+          scriptProps={{ src: "https://plausible-d1.vaibhavkalra1212.workers.dev/js/script.outbound-links.js" }}
         />
         <link rel="preload" as="image" href="/images/trooper-wordmark.svg?v=9" type="image/svg+xml" />
       </head>
