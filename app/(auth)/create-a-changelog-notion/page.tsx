@@ -22,6 +22,7 @@ import HowToChangelog from "@/components/HowToChangelog";
 
 
 export const metadata = {
+    robots: { index: false, follow: true },
     title: "Create a changelog with Notion (no-code and free)",
     description:
         "Build a changelog in Notion with our Notion changelog maker. Go live in under a minute. Build your free Trooper changelog website in a minute!",

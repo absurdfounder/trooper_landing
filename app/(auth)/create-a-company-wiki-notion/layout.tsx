@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Company Wiki from Notion | Trooper",
   description: "Internal wiki and knowledge base publishing from Notion.",
   canonical: "https://trooper.so/create-a-company-wiki-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-company-wiki-notion",
 });

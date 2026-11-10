@@ -21,6 +21,7 @@ import HowToBlog from "@/components/HowToBlog";
 
 
 export const metadata = {
+    robots: { index: false, follow: true },
     title: "Get a blog with Notion (no-code and free)",
     description:
         "Build a blog in Notion, with our Notion blog maker. Go live in under a minute. Build your free Trooper blog website in a minute!",

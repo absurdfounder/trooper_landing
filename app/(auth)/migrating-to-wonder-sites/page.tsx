@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Header from '@/components/ui/header';
 
 export const metadata = {
+    robots: { index: false, follow: true },
     title: 'Migrate to Trooper',
     description: 'Migrate your helpdesk, blog, or even marketplace to Trooper. Start living a hassle free life just SET and FORGET.',
     alternates: {

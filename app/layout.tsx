@@ -38,9 +38,6 @@ export const metadata = {
   title: 'Trooper: AI teammates that ship real work',
   description:
     'Give tasks to AI employees like teammates. They use your tools, run loops you approved, and come back when they need a sign-off.',
-  alternates: {
-    canonical: 'https://trooper.so',
-  },
   openGraph: {
     title: 'Trooper: AI teammates that ship real work',
     description:

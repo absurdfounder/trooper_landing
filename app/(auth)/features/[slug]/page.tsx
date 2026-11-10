@@ -14,6 +14,23 @@ import {
 
 type Props = { params: { slug: string } };
 
+/** Old documentation-product URLs. They are not this product. */
+const NOINDEX_FEATURES = new Set([
+  'ai-documentation-agent',
+  'ai-help-center',
+  'automated-screenshots-for-docs',
+  'chrome-extension-for-documentation',
+  'code-to-docs',
+  'generative-ai-customer-service',
+  'internal-knowledge-base',
+  'multilingual-knowledge-base',
+  'self-service-help-widget',
+]);
+
+function robotsFor(slug: string) {
+  return NOINDEX_FEATURES.has(slug) ? ({ index: false, follow: true } as const) : undefined;
+}
+
 export function generateStaticParams() {
   const slugs = Array.from(new Set([...allFeatureSlugs(), ...allRichFeatureSlugs()]));
   return slugs.map((slug) => ({ slug }));
@@ -38,6 +55,7 @@ export function generateMetadata({ params }: Props): Metadata {
         description: rich.meta.description,
         ...og.twitter,
       },
+      robots: robotsFor(params.slug),
     };
   }
 
@@ -59,6 +77,7 @@ export function generateMetadata({ params }: Props): Metadata {
       description: page.meta.description,
       ...og.twitter,
     },
+    robots: robotsFor(params.slug),
   };
 }
 

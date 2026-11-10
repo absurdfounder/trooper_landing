@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Changelog from Notion | Trooper",
   description: "Ship product updates with a Notion-backed changelog site.",
   canonical: "https://trooper.so/create-a-changelog-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-changelog-notion",
 });

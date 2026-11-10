@@ -265,9 +265,9 @@ const featureContent: Record<string, SubpageContent> = {
     slug: 'openclaw-powered',
     kind: 'feature',
     missionLabel: 'Feature brief',
-    title: 'OpenClaw runtime',
-    titleAccent: 'you control',
-    description: 'Trooper deploys OpenClaw on a private server per org — full runtime with a polished command UI.',
+    title: 'OpenClaw for a company',
+    titleAccent: 'on your machine',
+    description: 'Trooper is the company layer on OpenClaw. Same open-source runtime, with roles, a company brain, and a sign-off before work ships. OpenClaw stays free.',
     overviewTitle: 'Private server per organization',
     overviewParagraphs: [
       'OpenClaw handles orchestration, memory, skills, and tool execution under the hood.',

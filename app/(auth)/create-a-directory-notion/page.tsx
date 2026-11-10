@@ -22,6 +22,7 @@ import 'aos/dist/aos.css'
 
 
 export const metadata = {
+    robots: { index: false, follow: true },
     title: "Get a directory with Notion (no-code and free)",
     description:
         "Build a directory in Notion, with our Notion directory maker. Go live in under a minute. Build your free Trooper directory website in a minute!",

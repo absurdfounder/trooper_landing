@@ -20,6 +20,7 @@ import 'aos/dist/aos.css'
 
 
 export const metadata = {
+    robots: { index: false, follow: true },
     title: "Get a company wiki with Notion (no-code and free)",
     description:
         "Build a company wiki in Notion, with our Notion company wiki maker. Go live in under a minute. Build your free Trooper company wiki website in a minute!",

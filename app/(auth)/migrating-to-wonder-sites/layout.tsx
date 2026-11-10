@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Migrate to Wonder Sites | Trooper",
   description: "Migrate helpdesks, docs, and sites to Trooper-powered publishing.",
   canonical: "https://trooper.so/migrating-to-wonder-sites",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "migrating-to-wonder-sites",
 });

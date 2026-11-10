@@ -12,6 +12,7 @@ type BuildPageMetadataInput = {
   type?: 'website' | 'article';
   twitter?: Metadata['twitter'];
   other?: Metadata['other'];
+  robots?: Metadata['robots'];
 };
 
 /** Attach dynamic /og images to page metadata. */
@@ -35,6 +36,7 @@ export function buildPageMetadata(input: BuildPageMetadataInput): Metadata {
       ...input.twitter,
     },
     other: input.other,
+    robots: input.robots,
   };
 }
 

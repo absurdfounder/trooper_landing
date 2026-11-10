@@ -26,8 +26,9 @@ export const metadata = {
     description:
         "Build a blog in Notion, with our Notion blog maker. Go live in under a minute. Build your free Trooper blog website in a minute!",
     alternates: {
-        canonical: "https://trooper.so/create-a-blog-notion",
+        canonical: "https://trooper.so/watch-the-burn-wonder",
     },
+    robots: { index: false, follow: true },
     openGraph: {
         images: [
             {

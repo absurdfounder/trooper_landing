@@ -25,8 +25,9 @@ export const metadata = {
     description:
         "Build a marketplace in Notion, with our Notion marketplace maker. Go live in under a minute. Build your free Trooper marketplace website in a minute!",
     alternates: {
-        canonical: "https://trooper.so/create-a-company-wiki-notion",
+        canonical: "https://trooper.so/create-a-marketplace-notion",
     },
+    robots: { index: false, follow: true },
     openGraph: {
         images: [
             {

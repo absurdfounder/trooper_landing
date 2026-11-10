@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Wonder Token | Trooper",
   description: "Wonder token utilities and ecosystem pages on Trooper.",
   canonical: "https://trooper.so/wonder-token",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "wonder-token",
 });

@@ -22,6 +22,7 @@ import HowToProductDocs from "@/components/HowToProductDocs";
 
 
 export const metadata = {
+    robots: { index: false, follow: true },
     title: "Create documentation with Notion (no-code and free)",
     description:
         "Build documentation in Notion with our Notion documentation maker. Go live in under a minute. Build your free Trooper documentation website in a minute!",

@@ -59,11 +59,11 @@ function build(args: BuildArgs): UseCasePageContent {
 const useCases: Record<string, UseCasePageContent> = {
   'lead-generation': build({
     slug: 'lead-generation',
-    title: 'AI agent for lead generation',
-    titleAccent: 'prospects to pipeline, traced',
+    title: 'Lead generation agent',
+    titleAccent: 'from the list to the first email',
     description:
-      'Trooper agents research prospects on LinkedIn, enrich accounts, find emails, draft personalized outreach, and log everything to HubSpot — one autonomous mission from list to first touch.',
-    overviewTitle: 'Lead gen that executes, not just researches',
+      'A lead generation agent that researches prospects, finds emails, and drafts outreach. An AI lead generator for the model plan you already pay for.',
+    overviewTitle: 'A lead generation agent that finishes the list',
     overviewParagraphs: [
       'Traditional lead gen stacks require exporting between Clay, Hunter, Apollo, and your CRM. Trooper agents run the full chain: LinkedIn research, account briefs, email discovery, outreach drafts, and CRM updates on one traced board.',
       'Every prospect touch is a ticket with sources, drafts, and approval gates. Reps review before send; managers audit the full thread.',
@@ -94,11 +94,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'sales-research': build({
     slug: 'sales-research',
-    title: 'AI agent for sales research',
+    title: 'Sales intelligence',
     titleAccent: 'account intel before every call',
     description:
-      'Deploy agents that build account briefs, map decision-makers, track company news, and prepare talking points — grounded in LinkedIn, CRM, and web research before every sales conversation.',
-    overviewTitle: 'Research ops that reps actually use',
+      'Sales intelligence before the call: account briefs, decision-makers, and recent news, written onto the deal.',
+    overviewTitle: 'Sales intelligence the rep actually reads',
     overviewParagraphs: [
       'Reps spend hours in tabs before discovery calls. Trooper agents compile account briefs from LinkedIn, HubSpot history, recent news, and competitive signals — delivered as a one-page brief linked to the deal record.',
       'Research missions are traced tickets. Managers see sources, reasoning, and output — not black-box summaries.',
@@ -129,11 +129,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'crm-updates': build({
     slug: 'crm-updates',
-    title: 'AI agent that updates CRM',
-    titleAccent: 'HubSpot hygiene on autopilot',
+    title: 'AI CRM',
+    titleAccent: 'HubSpot writes you approve',
     description:
-      'Trooper agents log calls, update deal stages, create tasks, fix data hygiene issues, and sync meeting notes to HubSpot — with human approval before every write.',
-    overviewTitle: 'CRM ops without the data-entry tax',
+      'AI CRM updates for the HubSpot you already run. Calls, stages, and notes wait for approval before they write.',
+    overviewTitle: 'AI CRM writes, after you approve them',
     overviewParagraphs: [
       'Reps hate CRM data entry. Trooper agents listen to meeting outcomes, email threads, and Slack updates — then propose CRM writes you approve in one click.',
       'Pipeline health reviews run on cron: stale deals flagged, slipping close dates surfaced, missing fields audited.',
@@ -163,11 +163,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'find-emails': build({
     slug: 'find-emails',
-    title: 'AI agent that finds emails',
-    titleAccent: 'and drafts the first touch',
+    title: 'Find email',
+    titleAccent: 'then draft the first note',
     description:
-      'Agents research prospects, find verified email addresses, draft personalized outreach, and log contacts to CRM — the complete find-and-reach workflow, not just a lookup tool.',
-    overviewTitle: 'Beyond email lookup',
+      'Find email addresses from a name and a company, then draft the outreach and log the contact. The lookup and the first note, on one ticket.',
+    overviewTitle: 'Find the email, then write the first note',
     overviewParagraphs: [
       'Email finders give you an address. Trooper agents find the email, research the prospect for personalization context, draft the first touch, and create the CRM record — ready for your approval before send.',
       'Combine LinkedIn research with email discovery in one mission. No exporting between Hunter, Clay, and your sequencing tool.',
@@ -197,11 +197,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'writes-code': build({
     slug: 'writes-code',
-    title: 'AI agent that writes code',
+    title: 'AI that codes',
     titleAccent: 'real PRs, not snippets',
     description:
-      'Deploy coding agents (Claude Code, Codex, OpenCode) that open PRs, fix CI, address review comments, and ship features — with traced diffs, test output, and human merge approval.',
-    overviewTitle: 'Coding agents that ship',
+      'AI that codes on your repos: it branches, runs tests, and opens the PR. An AI coding assistant on the Claude or Cursor plan you already pay for.',
+    overviewTitle: 'An AI coding assistant that opens the PR',
     overviewParagraphs: [
       'Chat-based code assistants suggest snippets. Trooper coding agents operate on real repos — branching, committing, opening PRs, and debugging CI with full terminal traces on the ticket Canvas.',
       'Run multiple harnesses in parallel: Claude Code hardens a parser, Codex dedupes ETL rows, your custom agent drafts release notes — one board, shared org memory.',
@@ -231,11 +231,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'uses-browser': build({
     slug: 'uses-browser',
-    title: 'AI agent that uses a browser',
+    title: 'Browser agent',
     titleAccent: 'navigate, fill forms, extract data',
     description:
-      'Trooper agents control a real browser — navigating websites, filling forms, extracting data, and completing web workflows that APIs alone cannot handle.',
-    overviewTitle: 'Web automation with agent judgment',
+      'A browser agent that opens a real browser, fills forms, and pulls the data back onto the ticket. For sites that have no API.',
+    overviewTitle: 'A browser agent for the sites with no API',
     overviewParagraphs: [
       'Many workflows require browser interaction — legacy portals, dynamic forms, and sites without APIs. Trooper agents use OpenClaw browser control to navigate, interact, and extract data with full screenshot traces.',
       'Agents reason about page state, handle CAPTCHAs by escalating to humans, and adapt when layouts change — unlike brittle scrapers.',
@@ -266,11 +266,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'customer-support': build({
     slug: 'customer-support',
-    title: 'AI agent for customer support',
-    titleAccent: 'triage, draft, resolve — 24/7',
+    title: 'Customer service AI',
+    titleAccent: 'triage, draft, resolve',
     description:
-      'Deploy support agents that triage tickets, search knowledge bases, draft responses, and escalate complex issues — with human approval before customer-facing replies.',
-    overviewTitle: 'Support ops that scale without burnout',
+      'Customer service AI that triages tickets, searches your docs, and drafts the reply. A person approves it before it sends.',
+    overviewTitle: 'Customer service AI that drafts, then waits',
     overviewParagraphs: [
       'Support teams drown in repetitive tickets. Trooper agents triage incoming requests, search Notion and help-center docs for answers, and draft responses grounded in your actual knowledge base.',
       'Complex issues escalate to humans with full context — conversation history, attempted resolutions, and customer account data from CRM.',
@@ -300,11 +300,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   operations: build({
     slug: 'operations',
-    title: 'AI agent for operations',
-    titleAccent: 'runbooks, reports, and process automation',
+    title: 'Business process automation',
+    titleAccent: 'runbooks, reports, and the daily close',
     description:
-      'Trooper ops agents execute runbooks, generate reports, sync data between tools, and keep processes running on schedule — traced, approval-gated, and running 24/7.',
-    overviewTitle: 'Ops that runs while you command',
+      'Business process automation for the runbooks you already run: reports, data sync, and checklists, with a trace when a step fails.',
+    overviewTitle: 'Business process automation your team can audit',
     overviewParagraphs: [
       'Operations teams juggle spreadsheets, email threads, Slack channels, and manual checklists. Trooper agents execute runbooks on cron — daily reports, data syncs, onboarding checklists, and incident response.',
       'Every ops mission is a traced ticket. When something fails, you see exactly which step broke and why.',
@@ -334,11 +334,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   startups: build({
     slug: 'startups',
-    title: 'AI workforce for startups',
-    titleAccent: '10-person output, 3-person team',
+    title: 'AI for startups',
+    titleAccent: 'the output of a larger team',
     description:
-      'Deploy an AI workforce that handles sales outreach, code reviews, customer support, and ops runbooks — giving startup teams the output of a much larger org from day one.',
-    overviewTitle: 'Scale without scaling headcount',
+      'AI for startups that need sales, code, support, and ops before they can hire for all four. One workforce, on the model plan you already pay for.',
+    overviewTitle: 'AI for startups that cannot hire four teams',
     overviewParagraphs: [
       'Startups need sales, engineering, support, and ops — but can\'t hire for all four at once. Trooper deploys AI employees for each function on one unit, sharing org memory and a unified task board.',
       'Founders command from Slack. Agents execute sales research, PR reviews, support triage, and weekly reports — 24/7 across time zones.',
@@ -369,11 +369,11 @@ const useCases: Record<string, UseCasePageContent> = {
   }),
   'small-business': build({
     slug: 'small-business',
-    title: 'AI employees for small business',
-    titleAccent: 'affordable ops without hiring',
+    title: 'AI for small business',
+    titleAccent: 'inbox, follow-ups, and the books',
     description:
-      'Give your small business AI employees for email, scheduling, customer follow-ups, invoicing, and social media — working 24/7 so you can focus on customers and growth.',
-    overviewTitle: 'Enterprise capability, small business budget',
+      'AI for small business: inbox triage, follow-ups, and invoice reminders, with your approval before a customer email goes out.',
+    overviewTitle: 'AI for a small business that still wants a say',
     overviewParagraphs: [
       'Small businesses wear every hat — sales, support, bookkeeping, marketing. Trooper agents handle the repetitive work: inbox triage, appointment reminders, invoice follow-ups, and weekly reports.',
       'No IT team required. Connect Gmail, Google Calendar, and Stripe in minutes. Command agents from your phone via WhatsApp or Slack.',
@@ -413,9 +413,9 @@ export function allUseCaseSlugs(): string[] {
 }
 
 export const useCaseHubMeta = {
-  title: 'AI Agent Use Cases | Trooper',
+  title: 'AI Employees for the Work | Trooper',
   description:
-    'See how Trooper AI agents handle lead generation, sales research, CRM updates, code writing, browser automation, customer support, and operations for startups and small businesses.',
+    'Lead generation agent, AI that codes, browser agent, customer service AI, and AI for small business. One workforce. Checked 11 Nov 2026.',
   canonical: 'https://trooper.so/use-cases',
 };
 

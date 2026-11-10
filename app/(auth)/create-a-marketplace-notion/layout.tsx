@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Marketplace from Notion | Trooper",
   description: "Two-sided marketplace sites with Notion as the content layer.",
   canonical: "https://trooper.so/create-a-marketplace-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-marketplace-notion",
 });

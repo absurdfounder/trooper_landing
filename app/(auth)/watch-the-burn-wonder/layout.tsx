@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Watch the Burn | Wonder",
   description: "Wonder burn tracker and ecosystem updates.",
   canonical: "https://trooper.so/watch-the-burn-wonder",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "watch-the-burn-wonder",
 });

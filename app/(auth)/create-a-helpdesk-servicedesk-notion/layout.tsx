@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Helpdesk from Notion | Trooper",
   description: "Customer helpdesk and service desk sites from Notion content.",
   canonical: "https://trooper.so/create-a-helpdesk-servicedesk-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-helpdesk-servicedesk-notion",
 });

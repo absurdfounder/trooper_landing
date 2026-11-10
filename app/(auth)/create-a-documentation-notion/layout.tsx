@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Docs from Notion | Trooper",
   description: "Developer and product documentation powered by Notion.",
   canonical: "https://trooper.so/create-a-documentation-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-documentation-notion",
 });

@@ -409,6 +409,230 @@ const alternatives: Record<string, AlternativePageContent> = {
     ],
     demoId: 'sales',
   }),
+  odella: build({
+    slug: 'odella',
+    competitorName: 'Odella',
+    titleAccent: 'on the plans you already pay for',
+    description:
+      'Odella hires specialized AI employees by the hour from a marketplace. Trooper runs AI teammates on the Claude, ChatGPT, Gemini, or Cursor plan you already pay for, with one company brain across the work.',
+    overviewTitle: 'Hourly marketplace vs. the plans you already have',
+    overviewParagraphs: [
+      'Odella sells specialized AI employees from a marketplace. Each one connects to tools, works scheduled hours, and bills from about $0.30 per working hour on Odella’s computers.',
+      'Trooper is the workforce for a company that already pays for Claude, ChatGPT, Gemini, or Cursor. The teammates use those plans. The company brain keeps who decides, what happened, and when it is due.',
+      'Checked against Odella’s public site on 11 Nov 2026.',
+    ],
+    benefits: [
+      { title: 'Plans you already pay for', description: 'Claude, ChatGPT, Gemini, Cursor, or your own API keys. No second hourly meter.' },
+      { title: 'One company brain', description: 'Facts stay in the company, and every client reads the same ones.' },
+      { title: 'Your machine', description: 'The work runs where you put Trooper, not on a rented employee computer.' },
+    ],
+    comparisonRows: [
+      { feature: 'What you hire', trooper: 'A team of AI teammates on one brain', competitor: 'Specialized employees from a marketplace' },
+      { feature: 'How you pay', trooper: 'The model plans you already have', competitor: 'About $0.30 per working hour' },
+      { feature: 'Where it runs', trooper: 'Your machine', competitor: 'Odella’s secure computer' },
+      { feature: 'Memory', trooper: 'Company facts, shared by every client', competitor: 'Per employee, inside Odella' },
+      { feature: 'Approvals', trooper: 'A person signs off before sensitive work ships', competitor: 'A manager approves sensitive actions' },
+      { feature: 'Tools', trooper: 'The apps already connected to Trooper', competitor: '100+ apps connected inside Odella' },
+    ],
+    whenToChooseTrooper: [
+      'You already pay for Claude, ChatGPT, Gemini, or Cursor and do not want a second hourly bill.',
+      'The same facts have to come back in Cursor, Claude, and ChatGPT.',
+      'The work should run on your machine.',
+    ],
+    demoId: 'launch',
+  }),
+  plumo: build({
+    slug: 'plumo',
+    competitorName: 'Plumo',
+    titleAccent: 'with a company brain',
+    description:
+      'Plumo hires pre-trained AI employees that run on machines you own, with n8n-style workflows. Trooper is the company brain those teammates read from, on the model plans you already pay for.',
+    overviewTitle: 'A hired employee vs. a company brain',
+    overviewParagraphs: [
+      'Plumo’s public site offers pre-trained AI employees with a role, tools, memory, and workflows you can run on your own machines. The project is open source.',
+      'Trooper keeps the company facts in one brain and lets Cursor, Claude, ChatGPT, Claude Code, and Gemini read them. The teammates use the plans you already pay for.',
+      'Checked against Plumo’s public site on 11 Nov 2026.',
+    ],
+    benefits: [
+      { title: 'Same facts everywhere', description: 'A new session in Cursor or Claude still gets who decides and what is due.' },
+      { title: 'Plans you already pay for', description: 'No separate employee runtime to fund on top of your model plans.' },
+      { title: 'A team, not one hire', description: 'Engineering, sales, support, and ops share one brain.' },
+    ],
+    comparisonRows: [
+      { feature: 'Shape', trooper: 'A workforce sharing one company brain', competitor: 'Pre-trained employees with their own agents' },
+      { feature: 'Workflows', trooper: 'Loops you approved, with a sign-off', competitor: 'n8n-style workflows' },
+      { feature: 'Where it runs', trooper: 'Your machine', competitor: 'Machines you add as workers' },
+      { feature: 'Source', trooper: 'Trooper on OpenClaw', competitor: 'Open source, hire one free' },
+      { feature: 'Memory', trooper: 'Company facts, with old facts marked superseded', competitor: 'Shared team memory and private memory' },
+      { feature: 'Clients', trooper: 'Cursor, Claude, ChatGPT, Claude Code, Gemini', competitor: 'Web, desktop, and mobile apps' },
+    ],
+    whenToChooseTrooper: [
+      'You want every client to read the same company facts.',
+      'You want the model bill to stay on the plans you already pay.',
+      'The work is a team, not a single hired role.',
+    ],
+    demoId: 'launch',
+  }),
+  viktor: build({
+    slug: 'viktor',
+    competitorName: 'Viktor',
+    titleAccent: 'for the whole company, not one Slack bot',
+    description:
+      'Viktor is one AI employee in Slack or Teams, with a team plan at $100 a month. Trooper is a workforce of teammates on the plans you already pay for, with the same facts in every client.',
+    overviewTitle: 'One Slack employee vs. a company workforce',
+    overviewParagraphs: [
+      'Viktor’s public site describes one AI employee the whole team talks to in Slack, Teams, or email. The team plan is $100 a month, and it connects to a large tool catalog.',
+      'Trooper is the company brain plus the roles that read it: engineering, support, sales, finance, and the rest. They use Claude, ChatGPT, Gemini, or Cursor.',
+      'Checked against Viktor’s public site on 11 Nov 2026.',
+    ],
+    benefits: [
+      { title: 'More than one role', description: 'Engineering, support, sales, and finance, not a single shared bot.' },
+      { title: 'Plans you already pay for', description: 'The model cost stays on the subscriptions the company already has.' },
+      { title: 'Same facts in every client', description: 'Slack is one place the work shows up. Cursor and Claude see the same facts.' },
+    ],
+    comparisonRows: [
+      { feature: 'Who you hire', trooper: 'A workforce of roles', competitor: 'One AI employee for the workspace' },
+      { feature: 'Where you talk', trooper: 'Cursor, Claude, ChatGPT, Claude Code, Gemini, and chat', competitor: 'Slack, Teams, or email' },
+      { feature: 'Price named publicly', trooper: 'The model plans you already pay for', competitor: 'Team plan at $100 a month' },
+      { feature: 'Memory', trooper: 'Company facts, including what was superseded', competitor: 'Memory of tools, names, and preferences' },
+      { feature: 'Approvals', trooper: 'Sign-off before sensitive work ships', competitor: 'Irreversible actions wait for approval' },
+      { feature: 'Tools', trooper: 'The company stack, including code', competitor: 'A large catalog, named at 9,800+' },
+    ],
+    whenToChooseTrooper: [
+      'The company needs several roles, not one bot in Slack.',
+      'Engineers already live in Cursor or Claude Code and should see the same facts.',
+      'You would rather use the model plans you have than add a $100 workspace plan.',
+    ],
+    demoId: 'launch',
+  }),
+  ema: build({
+    slug: 'ema',
+    competitorName: 'Ema',
+    titleAccent: 'without building the workforce yourself',
+    description:
+      'Ema is an enterprise builder for AI employees, aimed at teams who design the agents. Trooper ships the teammates and the company brain, on the model plans you already pay for.',
+    overviewTitle: 'A builder vs. a workforce that is already running',
+    overviewParagraphs: [
+      'Ema’s public site is an AI employee builder. A business user describes an employee, and Ema turns that into an agentic workflow, with many models combined behind the product.',
+      'Trooper is the other shape. The roles are already there. The company brain already holds the facts. The models are the Claude, ChatGPT, Gemini, or Cursor plans the company pays for.',
+      'Checked against Ema’s public site on 11 Nov 2026. Ema does not publish a price on that page.',
+    ],
+    benefits: [
+      { title: 'Already a team', description: 'Engineering, support, sales, finance, and the rest. Not a blank builder.' },
+      { title: 'Facts before workflows', description: 'The brain keeps who decides and what is due, then the work is drafted from that.' },
+      { title: 'Your model plans', description: 'No second model layer to buy on top of Claude or ChatGPT.' },
+    ],
+    comparisonRows: [
+      { feature: 'Starting point', trooper: 'A workforce and a company brain', competitor: 'A builder for AI employees' },
+      { feature: 'Who sets it up', trooper: 'Connect the plans you already pay for', competitor: 'A business user designs the employee' },
+      { feature: 'Models', trooper: 'Claude, ChatGPT, Gemini, Cursor, or your keys', competitor: 'Many models combined inside Ema' },
+      { feature: 'Price', trooper: 'The plans you already pay for', competitor: 'Not published on the builder page' },
+      { feature: 'Memory', trooper: 'Company facts every client can read', competitor: 'Workflow context inside Ema' },
+      { feature: 'Approvals', trooper: 'A person signs off before work ships', competitor: 'The employee decides when to involve a person' },
+    ],
+    whenToChooseTrooper: [
+      'You want the team running, not a project to design agents.',
+      'The facts have to be the same in Cursor, Claude, and ChatGPT.',
+      'The model bill should stay on the plans the company already has.',
+    ],
+    demoId: 'launch',
+  }),
+  'grok-bot': build({
+    slug: 'grok-bot',
+    competitorName: 'Grok Bot',
+    titleAccent: 'on the plans you already pay for',
+    description:
+      'Grok Bot is a team of AI teammates on a cloud computer, included with paid Cursor and SuperGrok plans. Trooper runs teammates on your machine, on the Claude, ChatGPT, Gemini, or Cursor plan you already pay for.',
+    overviewTitle: 'A cloud computer vs. the plans and machine you already have',
+    overviewParagraphs: [
+      'Grok Bot is a team of AI teammates. They share a cloud computer with a browser, a filesystem, and a terminal, work across the apps you sign them into, and come back when something needs approval. The launch post says it is in beta for SuperGrok, SuperGrok Plus, SuperGrok Heavy, and paid Cursor plans, with its own usage on top of those plans.',
+      'Trooper is the same kind of handoff, on the machine you run and the model plans the company already pays for. The company brain keeps who decides, what happened, and when it is due, and a person signs off before work ships.',
+      'Checked against the Grok Bot launch post and the Cursor docs on 11 Nov 2026. Neither page publishes a separate Grok Bot price.',
+    ],
+    benefits: [
+      { title: 'Plans you already pay for', description: 'Claude, ChatGPT, Gemini, Cursor, or your own keys. No second usage meter.' },
+      { title: 'Your machine', description: 'The work runs where you put Trooper, not on a shared cloud computer.' },
+      { title: 'One company brain', description: 'The same facts come back in every client, including Cursor.' },
+    ],
+    comparisonRows: [
+      { feature: 'Shape', trooper: 'AI teammates on one company brain', competitor: 'AI teammates on one cloud computer' },
+      { feature: 'Where it runs', trooper: 'Your machine', competitor: 'A cloud computer with a browser, files, and a terminal' },
+      { feature: 'How you pay', trooper: 'The model plans you already pay for', competitor: 'Included with paid Cursor and SuperGrok, with separate usage' },
+      { feature: 'Models', trooper: 'Claude, ChatGPT, Gemini, Cursor, or your keys', competitor: 'Picked for the Bot' },
+      { feature: 'Where you talk to it', trooper: 'The Trooper workspace and the clients you already use', competitor: 'Grok Bot apps, and Slack for teams' },
+      { feature: 'Before work ships', trooper: 'A person signs off', competitor: 'The Bot comes back when approval is needed' },
+    ],
+    whenToChooseTrooper: [
+      'The company already pays for Claude, ChatGPT, Gemini, or Cursor and does not want a second usage meter.',
+      'The work should stay on your machine.',
+      'Cursor, Claude, and ChatGPT should read the same company facts.',
+    ],
+    demoId: 'launch',
+  }),
+  hermes: build({
+    slug: 'hermes',
+    competitorName: 'Hermes Agent',
+    titleAccent: 'when the company needs more than a harness',
+    description:
+      'Hermes Agent is a free, open-source agent from Nous Research. You bring a model and run it yourself. Trooper is the company layer on OpenClaw: roles, a company brain, and a sign-off.',
+    overviewTitle: 'A personal harness vs. a company workforce',
+    overviewParagraphs: [
+      'Hermes Agent is MIT-licensed. It runs on your machine or a cloud runtime, remembers across sessions, writes skills as it learns, and reaches Telegram, Discord, Slack, and WhatsApp. You connect a model provider. The software is free. You pay that provider.',
+      'OpenClaw is the closer match if you want another personal harness. Trooper is built on OpenClaw. It adds the company brain, the roles, and a person who signs off before work ships.',
+      'Checked against the Hermes Agent site and repository on 11 Nov 2026.',
+    ],
+    benefits: [
+      { title: 'A company, not a CLI', description: 'Roles for the work, and one brain those roles read.' },
+      { title: 'OpenClaw underneath', description: 'The runtime stays the open-source agent. Trooper is the layer a company runs.' },
+      { title: 'Plans you already pay for', description: 'Claude, ChatGPT, Gemini, Cursor, or your own keys.' },
+    ],
+    comparisonRows: [
+      { feature: 'Shape', trooper: 'A workforce on OpenClaw', competitor: 'An open-source agent harness' },
+      { feature: 'License', trooper: 'OpenClaw is open source. Trooper is the company product on it', competitor: 'MIT' },
+      { feature: 'How you pay', trooper: 'The model plans you already pay for', competitor: 'Free software. You pay the model provider' },
+      { feature: 'Where it runs', trooper: 'Your machine', competitor: 'Your machine, a VPS, or an optional cloud runtime' },
+      { feature: 'Memory', trooper: 'Company facts every client can read', competitor: 'The agent’s own memory and skills' },
+      { feature: 'Where you talk to it', trooper: 'The workspace and the clients you already use', competitor: 'The terminal, the desktop app, and chat apps' },
+    ],
+    whenToChooseTrooper: [
+      'You want several roles sharing one company brain, not one personal agent.',
+      'A person should sign off before work ships.',
+      'The model bill should stay on the Claude, ChatGPT, Gemini, or Cursor plan you have.',
+    ],
+    demoId: 'launch',
+  }),
+  rakazo: build({
+    slug: 'rakazo',
+    competitorName: 'Rakazo',
+    titleAccent: 'with one company brain',
+    description:
+      'Rakazo is an open-source, self-hosted team of bots, and the page Google shows first for a Grok Bot alternative. Trooper is the company layer on OpenClaw, on the model plans you already pay for.',
+    overviewTitle: 'A self-hosted bot team vs. a company brain',
+    overviewParagraphs: [
+      'Rakazo is Apache-2.0. You give each bot a job, message it from Slack or from a self-hosted chat app, and run it on your machine with your own models, including Claude, ChatGPT, OpenRouter, Grok, and local models. Its cloud is marked beta.',
+      'Trooper is the company product on OpenClaw. The teammates share one brain, use the plans you already pay for, and wait for a sign-off before work ships.',
+      'Checked against Rakazo’s public site on 11 Nov 2026. That page does not publish a price.',
+    ],
+    benefits: [
+      { title: 'One brain', description: 'Facts stay in the company. Every client reads the same ones.' },
+      { title: 'Plans you already pay for', description: 'No second model account on top of Claude, ChatGPT, Gemini, or Cursor.' },
+      { title: 'A sign-off', description: 'Work waits until a person releases it.' },
+    ],
+    comparisonRows: [
+      { feature: 'Shape', trooper: 'AI teammates on one company brain', competitor: 'A roster of bots, each with a job' },
+      { feature: 'License', trooper: 'Built on open-source OpenClaw', competitor: 'Apache-2.0' },
+      { feature: 'How you pay', trooper: 'The model plans you already pay for', competitor: 'Self-hosted. No price on the public site. Cloud is in beta' },
+      { feature: 'Models', trooper: 'Claude, ChatGPT, Gemini, Cursor, or your keys', competitor: 'The model you choose, including local models' },
+      { feature: 'Where it runs', trooper: 'Your machine', competitor: 'Your machine' },
+      { feature: 'Where you talk to it', trooper: 'The workspace and the clients you already use', competitor: 'Slack, and self-hosted iMessage, WhatsApp, and Telegram' },
+    ],
+    whenToChooseTrooper: [
+      'The bots should share one set of company facts.',
+      'You already pay for a model plan and want the work on that plan.',
+      'A person should sign off before anything ships.',
+    ],
+    demoId: 'launch',
+  }),
 };
 
 export function getAlternativePage(slug: string): AlternativePageContent | undefined {
@@ -420,10 +644,48 @@ export function allAlternativeSlugs(): string[] {
 }
 
 export const alternativeHubMeta = {
-  title: 'Trooper Alternatives & Comparisons',
+  title: 'AI Employees Compared | Trooper',
   description:
-    'See how Trooper compares to Lindy, Clay, Apollo, Cursor, Devin, Zapier Agents, and other AI automation tools. The AI workforce for teams that need real execution.',
+    'Grok Bot, Hermes, Rakazo, Odella, Plumo, Viktor, Ema, and Lindy, compared with Trooper. Checked 11 Nov 2026.',
   canonical: 'https://trooper.so/alternatives',
+};
+
+/** Public facts from each company’s site on 11 Nov 2026. One row a writer can cite. */
+export const aiEmployeeComparison = [
+  { name: 'Trooper', href: '/', what: 'AI teammates on one company brain', pay: 'The Claude, ChatGPT, Gemini, or Cursor plan you already pay for', runs: 'Your machine' },
+  { name: 'Odella', href: '/alternatives/odella', what: 'Specialized AI employees from a marketplace', pay: 'From $0.30 per working hour', runs: 'Odella’s computer' },
+  { name: 'Plumo', href: '/alternatives/plumo', what: 'Pre-trained AI employees', pay: 'Open source, hire one free', runs: 'Machines you add' },
+  { name: 'Viktor', href: '/alternatives/viktor', what: 'One AI employee for the workspace', pay: 'Team plan at $100 a month', runs: 'Slack, Teams, or email' },
+  { name: 'Ema', href: '/alternatives/ema', what: 'A builder for AI employees', pay: 'Not published on the builder page', runs: 'Ema’s cloud' },
+  { name: 'Lindy', href: '/alternatives/lindy', what: 'AI assistants for workflows', pay: 'About $50 a month per user', runs: 'Lindy’s cloud' },
+  { name: 'Grok Bot', href: '/alternatives/grok-bot', what: 'AI teammates on a cloud computer', pay: 'Paid Cursor or SuperGrok, plus separate usage', runs: 'Grok Bot’s cloud computer' },
+] as const;
+
+/** What ranks for “Grok Bot alternative” and “Hermes Agent”. OpenClaw is the runtime, not a rival. */
+export const agentRuntimeComparison = [
+  { name: 'Trooper', href: '/', what: 'Company workforce on OpenClaw', pay: 'The model plans you already pay for', runs: 'Your machine' },
+  { name: 'Grok Bot', href: '/alternatives/grok-bot', what: 'Hosted teammates with a shared computer', pay: 'Paid Cursor or SuperGrok, plus separate usage', runs: 'A cloud computer' },
+  { name: 'Rakazo', href: '/alternatives/rakazo', what: 'Open-source bot team', pay: 'Free to self-host. Cloud is in beta', runs: 'Your machine' },
+  { name: 'Hermes Agent', href: '/alternatives/hermes', what: 'Open-source personal agent', pay: 'Free software. You pay the model', runs: 'Your machine or a VPS' },
+  { name: 'OpenClaw', href: '/features/openclaw-powered', what: 'Open-source assistant Trooper runs on', pay: 'Free. No hosted plan', runs: 'Your machine' },
+] as const;
+
+/** What ranks for “AI coding IDE” and “free AI coding IDE”. Trooper is the company layer, not an editor. */
+export const codingToolComparison = [
+  { name: 'Trooper', href: '/', what: 'Company workforce that runs the coding agents you have', pay: 'The model plans you already pay for', free: 'Uses the plan you have' },
+  { name: 'Cursor', href: '/alternatives/cursor', what: 'AI coding IDE', pay: 'Free plan and paid plans', free: 'Yes, with a cap' },
+  { name: 'Devin Desktop', href: '/alternatives/devin', what: 'AI coding IDE, formerly Windsurf', pay: 'Free plan and paid plans', free: 'Yes, with a cap' },
+  { name: 'Claude Code', href: 'https://claude.ai', what: 'Terminal coding agent', pay: 'Included with a paid Claude plan', free: 'The free Claude plan does not include it' },
+  { name: 'GitHub Copilot', href: 'https://github.com/features/copilot', what: 'Coding agent in the editor', pay: 'Free allowance and paid plans', free: 'Yes, monthly cap' },
+  { name: 'OpenCode', href: 'https://opencode.ai', what: 'Open-source coding agent', pay: 'Free software. Bring a provider', free: 'Yes' },
+  { name: 'Cline', href: 'https://cline.bot', what: 'Open-source coding agent for VS Code', pay: 'Free software. You pay the model', free: 'Yes' },
+] as const;
+
+export const codingHubMeta = {
+  title: 'AI Coding IDE Compared | Trooper',
+  description:
+    'Cursor, Devin Desktop, Claude Code, Copilot, OpenCode, and Cline, including which ones are free. Trooper runs the agents you already pay for. Checked 11 Nov 2026.',
+  canonical: 'https://trooper.so/ai-coding-ide',
 };
 
 export const alternativeSocialImage = SOCIAL_IMAGE;

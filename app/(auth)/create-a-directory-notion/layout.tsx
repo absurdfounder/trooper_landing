@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Directory from Notion | Trooper",
   description: "Launch a searchable directory site backed by Notion.",
   canonical: "https://trooper.so/create-a-directory-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-directory-notion",
 });

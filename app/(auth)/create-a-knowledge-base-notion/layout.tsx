@@ -5,6 +5,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Knowledge Base from Notion | Trooper",
   description: "Self-serve support knowledge base publishing from Notion.",
   canonical: "https://trooper.so/create-a-knowledge-base-notion",
+  robots: { index: false, follow: true },
   ogKind: 'page',
   ogSlug: "create-a-knowledge-base-notion",
 });
