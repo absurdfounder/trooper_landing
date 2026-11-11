@@ -1,4 +1,29 @@
 /** @type {import('next').NextConfig} */
+const pluginCatalog = require('./public/plugins_catalog.json');
+
+const pluginIntegrationRedirects = pluginCatalog.plugins.map((plugin) => ({
+  source: `/integrations/${plugin.slug}`,
+  destination: `/plugin/ai_agent_for_${plugin.slug}`,
+  permanent: true,
+}));
+
+/** Nav hrefs that were copied into /features/* and competed with the real URL. */
+const featureAliasRedirects = [
+  ['buddy-personal-assistant', '/buddy-personal-assistant'],
+  ['characters', '/characters'],
+  ['primitives', '/primitives'],
+  ['loops', '/loops'],
+  ['self-host', '/self-host'],
+  ['benchmarks', '/benchmarks'],
+  ['plugin', '/plugin'],
+  ['integration', '/integration'],
+  ['channels', '/channels'],
+].map(([slug, destination]) => ({
+  source: `/features/${slug}`,
+  destination,
+  permanent: true,
+}));
+
 const nextConfig = {
   transpilePackages: ['@trooper/demo', '@bible-strong/avatar-core', '@bible-strong/avatar-react'],
   images: {
@@ -27,9 +52,16 @@ const nextConfig = {
         destination: '/plugin',
         permanent: true,
       },
+      ...pluginIntegrationRedirects,
       {
+        // Unknown old integration URLs go to the catalog, not a 404.
         source: '/integrations/:slug',
-        destination: '/plugin/ai_agent_for_:slug',
+        destination: '/plugin',
+        permanent: true,
+      },
+      {
+        source: '/teams/legal',
+        destination: '/teams/lawyers',
         permanent: true,
       },
       {
@@ -42,6 +74,7 @@ const nextConfig = {
         destination: '/buddy-personal-assistant',
         permanent: true,
       },
+      ...featureAliasRedirects,
     ];
   },
   async rewrites() {

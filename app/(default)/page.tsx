@@ -40,6 +40,7 @@ export const metadata = {
 }
 
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import Hero from '@/components/hero'
 import Header from '@/components/ui/header'
 import LoopRail from '@/components/LoopRail'
@@ -121,6 +122,32 @@ export default function Home() {
 
       <SectionShell rhythm>
         <FounderMessageSection />
+      </SectionShell>
+
+      <SectionShell rhythm eyebrow="Work">
+        <ul className="grid gap-x-10 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            ['AI that codes', '/use-cases/writes-code'],
+            ['Customer service AI', '/use-cases/customer-support'],
+            ['Lead generation agent', '/use-cases/lead-generation'],
+            ['Find email', '/use-cases/find-emails'],
+            ['Browser agent', '/use-cases/uses-browser'],
+            ['AI for small business', '/use-cases/small-business'],
+            ['AI for startups', '/use-cases/startups'],
+            ['AI employees, compared', '/alternatives'],
+            ['AI coding IDEs, including the free ones', '/ai-coding-ide'],
+            ['OpenClaw for a company', '/features/openclaw-powered'],
+          ].map(([label, href]) => (
+            <li key={href}>
+              <Link
+                className="text-sm text-ink-muted transition-colors hover:text-ink"
+                href={href}
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </SectionShell>
 
       <SectionShell rhythm>

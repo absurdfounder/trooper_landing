@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import SubpageLayout from '@/components/marketing/SubpageLayout';
 import TeamSubpageLayout from '@/components/marketing/TeamSubpageLayout';
@@ -15,7 +15,9 @@ import {
 type Props = { params: { slug: string } };
 
 export function generateStaticParams() {
-  const slugs = Array.from(new Set([...allTeamSlugs(), ...allRichTeamSlugs()]));
+  const slugs = Array.from(new Set([...allTeamSlugs(), ...allRichTeamSlugs()])).filter(
+    (slug) => slug !== 'legal' && /^[a-z0-9-]+$/.test(slug),
+  );
   return slugs.map((slug) => ({ slug }));
 }
 
@@ -63,7 +65,8 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 export default function TeamPage({ params }: Props) {
-  if (params.slug === 'legal') redirect('/teams/lawyers');
+  // /teams/legal is a permanent redirect to /teams/lawyers. Never render a second page.
+  if (params.slug === 'legal') notFound();
 
   const rich = getTeamPageContent(params.slug);
   if (rich) return <TeamSubpageLayout content={rich} />;

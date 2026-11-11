@@ -91,7 +91,9 @@ function generateSiteMap(
 ): string {
   const now = new Date().toISOString();
 
-  const teamSlugs = Array.from(new Set([...allTeamSlugs(), ...allRichTeamSlugs()]));
+  const teamSlugs = Array.from(new Set([...allTeamSlugs(), ...allRichTeamSlugs()])).filter(
+    (slug) => slug !== 'legal' && /^[a-z0-9-]+$/.test(slug),
+  );
   const channelSlugs = allChannelPageSlugs();
   const integrationSlugs = allIntegrationPageSlugs();
   const alternativeSlugs = allAlternativeSlugs();

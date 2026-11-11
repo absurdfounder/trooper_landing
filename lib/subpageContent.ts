@@ -485,8 +485,10 @@ const teamContent: Record<string, SubpageContent> = {
 };
 
 for (const item of featureNavItems) {
-  const slug = item.href.replace('/features/', '');
-  if (slug.includes('/')) continue;
+  // Nav items that are not feature pages must not become /features/* duplicates.
+  if (!item.href.startsWith('/features/')) continue;
+  const slug = item.href.slice('/features/'.length);
+  if (!/^[a-z0-9-]+$/.test(slug)) continue;
   if (!featureContent[slug]) {
     featureContent[slug] = buildPage({
       slug,
@@ -507,7 +509,11 @@ for (const item of featureNavItems) {
 }
 
 for (const item of teamNavItems) {
-  const slug = item.href.replace('/teams/', '');
+  // Industries lives at /industries. Treating that href as a team slug
+  // published /teams/%2Findustries, which 404s.
+  if (!item.href.startsWith('/teams/')) continue;
+  const slug = item.href.slice('/teams/'.length);
+  if (!/^[a-z0-9-]+$/.test(slug)) continue;
   if (!teamContent[slug]) {
     teamContent[slug] = buildPage({
       slug,

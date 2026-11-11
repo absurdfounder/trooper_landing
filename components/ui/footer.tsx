@@ -142,7 +142,10 @@ const productColumn: FooterColumn = {
       links: [
         { label: 'Industries', href: '/industries' },
         { label: 'Use Cases', href: '/use-cases' },
+        { label: 'AI that codes', href: '/use-cases/writes-code' },
+        { label: 'Customer service AI', href: '/use-cases/customer-support' },
         { label: 'Alternatives', href: '/alternatives' },
+        { label: 'AI coding IDEs', href: '/ai-coding-ide' },
         { label: 'Affiliate', href: '/affiliate' },
         { label: 'Documentation', href: 'https://docs.openclaw.ai', external: true },
         { label: 'Blog', href: 'https://app.trooper.so/blog', external: true },
