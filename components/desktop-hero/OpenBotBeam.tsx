@@ -559,19 +559,24 @@ export default function OpenBotBeam({
           frameId = 0;
         }
         lastFrame = 0;
+        const introWasActive = introTime < 7.6;
         const clearPointerLens = pointer.inside || lens.strength > 0.01;
         pointer.inside = false;
+        pointer.hasPosition = false;
         lens.strength = 0;
         lens.vx = 0;
         lens.vy = 0;
-        if (clearPointerLens) scheduleFrame(true);
+        // Settle the one-shot beam on the first scroll instead of resuming its
+        // moving front after scroll idle. A stationary cursor must not wake the
+        // lens from coordinates that became stale as the hero moved underneath it.
+        introTime = 7.6;
+        if (introWasActive || clearPointerLens) scheduleFrame(true);
       }
       if (scrollIdleTimer !== null) window.clearTimeout(scrollIdleTimer);
       scrollIdleTimer = window.setTimeout(() => {
         scrollIdleTimer = null;
         isScrolling = false;
         geometryDirty = true;
-        updatePointerPosition();
         lastFrame = 0;
         scheduleFrame();
       }, 140);
