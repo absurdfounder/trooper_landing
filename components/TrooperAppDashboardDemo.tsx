@@ -210,7 +210,7 @@ export default function TrooperAppDashboardDemo({ maxHeight, autoLoad = false }:
       if (!entry?.isIntersecting) return;
       setInteractive(true);
       observer.disconnect();
-    }, { rootMargin: '0px', threshold: 0.35 });
+    }, { rootMargin: '120px 0px', threshold: 0 });
     observer.observe(element);
     return () => observer.disconnect();
   }, [autoLoad]);
