@@ -52,17 +52,25 @@ export default function Header({ dark = false }: { dark?: boolean }) {
       return
     }
 
-    const updateTheme = () => {
+    let observer: IntersectionObserver | null = null
+    const observeHero = () => {
       const headerBottom = navRef.current?.closest('header')?.getBoundingClientRect().bottom ?? 64
       setDarkHeroActive(hero.getBoundingClientRect().bottom > headerBottom)
+      observer?.disconnect()
+      observer = new IntersectionObserver(([entry]) => {
+        setDarkHeroActive(Boolean(entry?.isIntersecting))
+      }, {
+        rootMargin: `-${Math.ceil(headerBottom)}px 0px 0px 0px`,
+        threshold: 0,
+      })
+      observer.observe(hero)
     }
 
-    updateTheme()
-    window.addEventListener('scroll', updateTheme, { passive: true })
-    window.addEventListener('resize', updateTheme)
+    observeHero()
+    window.addEventListener('resize', observeHero)
     return () => {
-      window.removeEventListener('scroll', updateTheme)
-      window.removeEventListener('resize', updateTheme)
+      observer?.disconnect()
+      window.removeEventListener('resize', observeHero)
     }
   }, [dark, pathname])
 

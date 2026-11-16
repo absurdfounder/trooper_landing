@@ -78,7 +78,7 @@ const TINT_OFFSETS: Array<[number, number]> = [
   [52, 0.28], [-7.5, 0.13], [-2.7, 0.32], [12, 0.81],
 ];
 const HUE_CLAMP = { min: 165, max: 205 };
-const FRAME_INTERVAL_MS = 1000 / 30;
+const FRAME_INTERVAL_MS = 1000 / 24;
 // Keep the beam's shape and movement consistent; only its color family changes per page load.
 const BEAM_SHAPE_SEED = 285538;
 const BEAM_PALETTE_SESSION_KEY = 'trooper-landing-beam-palette';
@@ -305,7 +305,7 @@ export default function OpenBotBeam({
     gl.bindVertexArray(null);
 
     const settings = DEFAULT_BEAM_THEME.settings;
-    const pointer = { x: 0, y: 0, inside: false };
+    const pointer = { x: 0, y: 0, clientX: 0, clientY: 0, hasPosition: false, inside: false };
     const lens = { x: 0, y: 0, vx: 0, vy: 0, strength: 0 };
     const sourceColor = Array.from(DEFAULT_BEAM_THEME.tint.slice(0, 3), (value) => Math.round(value * 255)).join(', ');
     fallbackSurface?.style.setProperty('--landing-beam-accent', `rgb(${sourceColor})`);
@@ -319,41 +319,37 @@ export default function OpenBotBeam({
     let lastFrame = 0;
     let isVisible = true;
     let disposed = false;
+    let isScrolling = false;
+    let scrollIdleTimer: number | null = null;
+    let geometryDirty = true;
     let activeSource: HTMLElement | null = null;
-    const scheduleFrame = () => {
-      if (!frameId && !disposed && isVisible && !document.hidden) {
+    let isSourceStruck = false;
+    let sceneGeometry = {
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      radius: 0,
+      scale: 1,
+      beamX: 0,
+      sourceBox: [0, 0, 0, 0] as [number, number, number, number],
+      sourceRadius: 0,
+      hasSource: false,
+    };
+    const scheduleFrame = (duringScroll = false) => {
+      if (!frameId && !disposed && isVisible && !document.hidden && (!isScrolling || duringScroll)) {
         frameId = requestAnimationFrame(render);
       }
     };
 
-    const resize = () => {
-      const bounds = host.getBoundingClientRect();
-      width = Math.max(1, bounds.width);
-      height = Math.max(1, bounds.height);
-      const desiredDpr = Math.min(window.devicePixelRatio || 1, 1.25);
-      const maxDimension = Math.max(width, height) * desiredDpr;
-      ratio = maxDimension > 1440 ? 1440 / Math.max(width, height) : desiredDpr;
-      canvas.width = Math.max(1, Math.round(width * ratio));
-      canvas.height = Math.max(1, Math.round(height * ratio));
-      dpr = canvas.width / width;
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      scheduleFrame();
-    };
-
-    const render = () => {
-      frameId = 0;
-      if (disposed || !isVisible || document.hidden) return;
-      const now = performance.now();
-      if (!REDUCED_MOTION && lastFrame && now - lastFrame < FRAME_INTERVAL_MS) {
-        scheduleFrame();
-        return;
-      }
+    const measureScene = () => {
       const beamRect = host.getBoundingClientRect();
       const primarySurfaceRect = surface?.getBoundingClientRect();
       const activeSurface = surface && primarySurfaceRect && primarySurfaceRect.width > 0 && primarySurfaceRect.height > 0
         ? surface
         : fallbackSurface;
-      if (!activeSurface) return;
+      if (!activeSurface) return false;
+
       const surfaceRect = activeSurface.getBoundingClientRect();
       const css = getComputedStyle(activeSurface);
       const radius = Math.min(
@@ -368,18 +364,20 @@ export default function OpenBotBeam({
       const scale = clamp(Math.min(width / 585, height / 507), 0.2, 1.25);
       const frameBeamX = width * 0.78;
       let beamX = frameBeamX;
-      let sourceBox = [0, 0, 0, 0];
+      let sourceBox: [number, number, number, number] = [0, 0, 0, 0];
       let sourceRadius = 0;
       let hasSource = false;
       const source = sourceElements.find((candidate) => {
         const rect = candidate.getBoundingClientRect();
         return rect.width > 0 && rect.height > 0;
       }) ?? null;
+
       if (activeSource !== source) {
         activeSource?.removeAttribute('data-beam-source');
         activeSource?.removeAttribute('data-beam-struck');
         activeSource?.style.removeProperty('--landing-beam-rim');
         activeSource = source;
+        isSourceStruck = false;
       }
       if (source) {
         const sourceRect = source.getBoundingClientRect();
@@ -394,15 +392,59 @@ export default function OpenBotBeam({
           }
         }
       }
+
       host.toggleAttribute('data-source', hasSource);
       if (source && hasSource) {
-        source.setAttribute('data-beam-source', '');
-        source.style.setProperty('--landing-beam-rim', sourceColor);
+        if (!source.hasAttribute('data-beam-source')) source.setAttribute('data-beam-source', '');
+        if (source.style.getPropertyValue('--landing-beam-rim') !== sourceColor) {
+          source.style.setProperty('--landing-beam-rim', sourceColor);
+        }
       } else {
         source?.removeAttribute('data-beam-source');
         source?.removeAttribute('data-beam-struck');
         source?.style.removeProperty('--landing-beam-rim');
+        isSourceStruck = false;
       }
+
+      sceneGeometry = { left, top, right, bottom, radius, scale, beamX, sourceBox, sourceRadius, hasSource };
+      geometryDirty = false;
+      return true;
+    };
+
+    const updatePointerPosition = () => {
+      if (!pointer.hasPosition) return;
+      const bounds = host.getBoundingClientRect();
+      pointer.x = pointer.clientX - bounds.left;
+      pointer.y = pointer.clientY - bounds.top;
+      pointer.inside = pointer.x >= 0 && pointer.y >= 0 && pointer.x <= bounds.width && pointer.y <= bounds.height;
+    };
+
+    const resize = () => {
+      const bounds = host.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      const desiredDpr = Math.min(window.devicePixelRatio || 1, 1);
+      const maxDimension = Math.max(width, height) * desiredDpr;
+      ratio = maxDimension > 1280 ? 1280 / Math.max(width, height) : desiredDpr;
+      canvas.width = Math.max(1, Math.round(width * ratio));
+      canvas.height = Math.max(1, Math.round(height * ratio));
+      dpr = canvas.width / width;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      geometryDirty = true;
+      scheduleFrame();
+    };
+
+    const render = () => {
+      frameId = 0;
+      if (disposed || !isVisible || document.hidden) return;
+      const now = performance.now();
+      if (!REDUCED_MOTION && lastFrame && now - lastFrame < FRAME_INTERVAL_MS) {
+        scheduleFrame();
+        return;
+      }
+      if (geometryDirty && !measureScene()) return;
+      const { left, top, right, bottom, radius, scale, beamX, sourceBox, sourceRadius, hasSource } = sceneGeometry;
+      const source = activeSource;
 
       const reducedMotion = REDUCED_MOTION;
       const surfaceIntroStart = -0.15 * height;
@@ -435,8 +477,12 @@ export default function OpenBotBeam({
         ? 1.4 * clamp((sourceBox[1] - surfaceIntroStart) / surfaceIntroSpan, 0, 1) ** (1 / 1.3)
         : 0;
       const sourceWrapReveal = introComplete ? 100000 : Math.max(0, introTime - sourceAge) * 420;
-      if (source && hasSource && (introComplete || introTime >= sourceAge)) source.setAttribute('data-beam-struck', '');
-      else source?.removeAttribute('data-beam-struck');
+      const sourceStruck = Boolean(source && hasSource && (introComplete || introTime >= sourceAge));
+      if (source && sourceStruck !== isSourceStruck) {
+        if (sourceStruck) source.setAttribute('data-beam-struck', '');
+        else source.removeAttribute('data-beam-struck');
+        isSourceStruck = sourceStruck;
+      }
 
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -472,7 +518,7 @@ export default function OpenBotBeam({
       gl.bindVertexArray(null);
 
       if (!reducedMotion) {
-        const delta = lastFrame ? Math.min(0.05, (now - lastFrame) / 1000) : 1 / 30;
+        const delta = lastFrame ? Math.min(0.05, (now - lastFrame) / 1000) : 1 / 24;
         lastFrame = now;
         time += delta * settings.speed;
         introTime = Math.min(7.6, introTime + delta);
@@ -484,22 +530,52 @@ export default function OpenBotBeam({
         lens.x += lens.vx * delta;
         lens.y += lens.vy * delta;
         lens.strength += (target - lens.strength) * (1 - Math.exp(-delta / (target > lens.strength ? 0.3 : 0.55)));
-        const stillMoving = pointer.inside
-          || lens.strength > 0.01
+        const stillMoving = Math.abs(lens.strength - target) > 0.01
           || Math.abs(lens.vx) > 0.01
           || Math.abs(lens.vy) > 0.01;
-        if (introTime < 7.6 || stillMoving) scheduleFrame();
+        if (!isScrolling && (introTime < 7.6 || stillMoving)) scheduleFrame();
       }
     };
 
     const onPointerMove = (event: PointerEvent) => {
-      const bounds = host.getBoundingClientRect();
-      pointer.x = event.clientX - bounds.left;
-      pointer.y = event.clientY - bounds.top;
-      pointer.inside = pointer.x >= 0 && pointer.y >= 0 && pointer.x <= bounds.width && pointer.y <= bounds.height;
-      if (pointer.inside) scheduleFrame();
+      pointer.clientX = event.clientX;
+      pointer.clientY = event.clientY;
+      pointer.hasPosition = true;
+      if (isScrolling) return;
+      updatePointerPosition();
+      if (pointer.inside || lens.strength > 0.01 || Math.abs(lens.vx) > 0.01 || Math.abs(lens.vy) > 0.01) {
+        scheduleFrame();
+      }
     };
-    const onPointerLeave = () => { pointer.inside = false; };
+    const onPointerLeave = () => {
+      pointer.inside = false;
+      if (lens.strength > 0.01) scheduleFrame();
+    };
+    const onScroll = () => {
+      if (!isScrolling) {
+        isScrolling = true;
+        if (frameId) {
+          cancelAnimationFrame(frameId);
+          frameId = 0;
+        }
+        lastFrame = 0;
+        const clearPointerLens = pointer.inside || lens.strength > 0.01;
+        pointer.inside = false;
+        lens.strength = 0;
+        lens.vx = 0;
+        lens.vy = 0;
+        if (clearPointerLens) scheduleFrame(true);
+      }
+      if (scrollIdleTimer !== null) window.clearTimeout(scrollIdleTimer);
+      scrollIdleTimer = window.setTimeout(() => {
+        scrollIdleTimer = null;
+        isScrolling = false;
+        geometryDirty = true;
+        updatePointerPosition();
+        lastFrame = 0;
+        scheduleFrame();
+      }, 140);
+    };
     const onVisibility = () => {
       lastFrame = 0;
       scheduleFrame();
@@ -515,6 +591,7 @@ export default function OpenBotBeam({
     });
     intersection.observe(host);
     window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     document.documentElement.addEventListener('pointerleave', onPointerLeave);
     document.addEventListener('visibilitychange', onVisibility);
     resize();
@@ -523,9 +600,11 @@ export default function OpenBotBeam({
     return () => {
       disposed = true;
       cancelAnimationFrame(frameId);
+      if (scrollIdleTimer !== null) window.clearTimeout(scrollIdleTimer);
       observer.disconnect();
       intersection.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('scroll', onScroll);
       document.documentElement.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('visibilitychange', onVisibility);
       sourceElements.forEach((source) => {
