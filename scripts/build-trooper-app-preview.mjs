@@ -11,5 +11,7 @@ const config = path.join(landingRoot, 'scripts/trooper-app-preview.vite.config.m
 execFileSync(process.execPath, [runner, vite, 'build', '--config', config], {
   cwd: trooperRoot,
   stdio: 'inherit',
-  env: { ...process.env, TROOPER_APP_PATH: trooperRoot },
+  // This is a fixture-backed marketing demo, not the live app. Keep the Firebase
+  // client key out of the public static bundle so Netlify's secret scan can pass.
+  env: { ...process.env, TROOPER_APP_PATH: trooperRoot, VITE_FIREBASE_API_KEY: '' },
 });
