@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import SectionShell from '@/components/ui/SectionShell';
+import Header from '@/components/ui/header';
 import { buildPageMetadata } from '@/lib/og/buildMetadata';
 
 export const metadata = buildPageMetadata({
@@ -13,7 +14,9 @@ export const metadata = buildPageMetadata({
 
 export default function PrivacyPolicyPage() { // Renamed component for clarity
   return (
-    <SectionShell eyebrow="PRIVACY POLICY" eyebrowNumber="01" bgClass="bg-white">
+    <>
+    <Header />
+    <SectionShell eyebrow="PRIVACY POLICY" eyebrowNumber="01" bgClass="bg-white" clearSiteHeader>
       <div className="max-w-3xl mx-auto px-4 sm:px-6"> {/* Adjusted max-width for readability */}
         <div className="pt-12 pb-12 md:pt-16 md:pb-20"> {/* Adjusted padding */}
 
@@ -217,5 +220,6 @@ export default function PrivacyPolicyPage() { // Renamed component for clarity
         </div>
       </div>
     </SectionShell>
+    </>
   );
 }
