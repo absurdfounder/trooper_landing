@@ -78,6 +78,7 @@ const TINT_OFFSETS: Array<[number, number]> = [
   [52, 0.28], [-7.5, 0.13], [-2.7, 0.32], [12, 0.81],
 ];
 const HUE_CLAMP = { min: 165, max: 205 };
+const FRAME_INTERVAL_MS = 1000 / 30;
 // Keep the beam's shape and movement consistent; only its color family changes per page load.
 const BEAM_SHAPE_SEED = 285538;
 const BEAM_PALETTE_SESSION_KEY = 'trooper-landing-beam-palette';
@@ -319,24 +320,34 @@ export default function OpenBotBeam({
     let isVisible = true;
     let disposed = false;
     let activeSource: HTMLElement | null = null;
+    const scheduleFrame = () => {
+      if (!frameId && !disposed && isVisible && !document.hidden) {
+        frameId = requestAnimationFrame(render);
+      }
+    };
 
     const resize = () => {
       const bounds = host.getBoundingClientRect();
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
-      const desiredDpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const desiredDpr = Math.min(window.devicePixelRatio || 1, 1.25);
       const maxDimension = Math.max(width, height) * desiredDpr;
-      ratio = maxDimension > 1600 ? 1600 / Math.max(width, height) : desiredDpr;
+      ratio = maxDimension > 1440 ? 1440 / Math.max(width, height) : desiredDpr;
       canvas.width = Math.max(1, Math.round(width * ratio));
       canvas.height = Math.max(1, Math.round(height * ratio));
       dpr = canvas.width / width;
       gl.viewport(0, 0, canvas.width, canvas.height);
-      if (!frameId && !document.hidden) frameId = requestAnimationFrame(render);
+      scheduleFrame();
     };
 
     const render = () => {
       frameId = 0;
       if (disposed || !isVisible || document.hidden) return;
+      const now = performance.now();
+      if (!REDUCED_MOTION && lastFrame && now - lastFrame < FRAME_INTERVAL_MS) {
+        scheduleFrame();
+        return;
+      }
       const beamRect = host.getBoundingClientRect();
       const primarySurfaceRect = surface?.getBoundingClientRect();
       const activeSurface = surface && primarySurfaceRect && primarySurfaceRect.width > 0 && primarySurfaceRect.height > 0
@@ -461,8 +472,7 @@ export default function OpenBotBeam({
       gl.bindVertexArray(null);
 
       if (!reducedMotion) {
-        const now = performance.now();
-        const delta = lastFrame ? Math.min(0.05, (now - lastFrame) / 1000) : 1 / 60;
+        const delta = lastFrame ? Math.min(0.05, (now - lastFrame) / 1000) : 1 / 30;
         lastFrame = now;
         time += delta * settings.speed;
         introTime = Math.min(7.6, introTime + delta);
@@ -474,8 +484,12 @@ export default function OpenBotBeam({
         lens.x += lens.vx * delta;
         lens.y += lens.vy * delta;
         lens.strength += (target - lens.strength) * (1 - Math.exp(-delta / (target > lens.strength ? 0.3 : 0.55)));
+        const stillMoving = pointer.inside
+          || lens.strength > 0.01
+          || Math.abs(lens.vx) > 0.01
+          || Math.abs(lens.vy) > 0.01;
+        if (introTime < 7.6 || stillMoving) scheduleFrame();
       }
-      if (!reducedMotion) frameId = requestAnimationFrame(render);
     };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -483,11 +497,12 @@ export default function OpenBotBeam({
       pointer.x = event.clientX - bounds.left;
       pointer.y = event.clientY - bounds.top;
       pointer.inside = pointer.x >= 0 && pointer.y >= 0 && pointer.x <= bounds.width && pointer.y <= bounds.height;
+      if (pointer.inside) scheduleFrame();
     };
     const onPointerLeave = () => { pointer.inside = false; };
     const onVisibility = () => {
       lastFrame = 0;
-      if (!document.hidden && isVisible && !frameId && !REDUCED_MOTION) frameId = requestAnimationFrame(render);
+      scheduleFrame();
     };
     const observer = new ResizeObserver(resize);
     observer.observe(host);
@@ -496,14 +511,14 @@ export default function OpenBotBeam({
     sourceElements.forEach((source) => observer.observe(source));
     const intersection = new IntersectionObserver(([entry]) => {
       isVisible = Boolean(entry?.isIntersecting);
-      if (isVisible && !document.hidden && !frameId) frameId = requestAnimationFrame(render);
+      if (isVisible) scheduleFrame();
     });
     intersection.observe(host);
     window.addEventListener('pointermove', onPointerMove, { passive: true });
     document.documentElement.addEventListener('pointerleave', onPointerLeave);
     document.addEventListener('visibilitychange', onVisibility);
     resize();
-    frameId = requestAnimationFrame(render);
+    scheduleFrame();
 
     return () => {
       disposed = true;

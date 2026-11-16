@@ -1,19 +1,18 @@
 import { ogImageMeta } from '@/lib/og/url';
 
 const homeOg = ogImageMeta('home', 'Trooper: AI teammates that ship real work');
+const homeDescription = 'Run Claude, ChatGPT, Gemini, Grok, and your own models in one persistent workspace. Switch AI providers while keeping your chats and memory intact.';
 
 export const metadata = {
   metadataBase: new URL('https://trooper.so'),
   title: 'Trooper: AI teammates that ship real work',
-  description:
-    'Give tasks to AI employees like teammates. They use your tools, run loops you approved, and come back when they need a sign-off.',
+  description: homeDescription,
   alternates: {
     canonical: 'https://trooper.so',
   },
   openGraph: {
     title: 'Trooper: AI teammates that ship real work',
-    description:
-      'Give tasks to AI employees like teammates. They use your tools, run loops you approved, and come back when they need a sign-off.',
+    description: homeDescription,
     url: 'https://trooper.so',
     siteName: 'Trooper',
     images: homeOg.openGraph!.images,
@@ -23,8 +22,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: 'Trooper: AI teammates that ship real work',
-    description:
-      'Give tasks to AI employees like teammates. They use your tools, run loops you approved, and come back when they need a sign-off.',
+    description: homeDescription,
     site: '@trooper_so',
     images: homeOg.twitter!.images,
   },

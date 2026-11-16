@@ -1,12 +1,4 @@
 /** @type {import('next').NextConfig} */
-const pluginCatalog = require('./public/plugins_catalog.json');
-
-const pluginIntegrationRedirects = pluginCatalog.plugins.map((plugin) => ({
-  source: `/integrations/${plugin.slug}`,
-  destination: `/plugin/ai_agent_for_${plugin.slug}`,
-  permanent: true,
-}));
-
 /** Nav hrefs that were copied into /features/* and competed with the real URL. */
 const featureAliasRedirects = [
   ['buddy-personal-assistant', '/buddy-personal-assistant'],
@@ -49,13 +41,6 @@ const nextConfig = {
     return [
       {
         source: '/integrations',
-        destination: '/plugin',
-        permanent: true,
-      },
-      ...pluginIntegrationRedirects,
-      {
-        // Unknown old integration URLs go to the catalog, not a 404.
-        source: '/integrations/:slug',
         destination: '/plugin',
         permanent: true,
       },
