@@ -1,7 +1,7 @@
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
-import { Circle, Lock, Pause, Play, RotateCcw } from 'lucide-react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Circle, LoaderCircle, Lock, Pause, Play, RotateCcw } from 'lucide-react';
 
 const DEMO_WIDTH = 1320;
 const DEMO_HEIGHT = 744;
@@ -94,13 +94,126 @@ function PreviewPoster() {
   );
 }
 
+function SkeletonBlock({ className = '' }: { className?: string }) {
+  return <span aria-hidden="true" className={`block animate-pulse rounded bg-white/[0.075] motion-reduce:animate-none ${className}`} />;
+}
+
+function DashboardSkeleton() {
+  return (
+    <div role="status" aria-label="Loading Trooper workspace" className="absolute inset-0 flex overflow-hidden bg-[#191a1c] text-white">
+      <span className="sr-only">Loading the Trooper workspace preview…</span>
+      <aside aria-hidden="true" className="flex w-[220px] shrink-0 flex-col gap-5 border-r border-white/[0.08] bg-[#202123] p-4">
+        <div className="flex items-center gap-2">
+          <SkeletonBlock className="h-7 w-7 rounded-md" />
+          <SkeletonBlock className="h-3 w-24" />
+          <SkeletonBlock className="ml-auto h-2 w-2 rounded-full" />
+        </div>
+        <div className="space-y-2">
+          {[0, 1, 2, 3].map((item) => (
+            <div key={item} className={`flex h-9 items-center gap-3 rounded-lg px-3 ${item === 0 ? 'bg-white/[0.07]' : ''}`}>
+              <SkeletonBlock className="h-3.5 w-3.5 rounded-sm" />
+              <SkeletonBlock className={`h-2.5 ${item === 0 ? 'w-16' : 'w-20'}`} />
+              {item === 0 ? <SkeletonBlock className="ml-auto h-3 w-4 rounded-full" /> : null}
+            </div>
+          ))}
+        </div>
+        <div className="mt-1 space-y-3">
+          <SkeletonBlock className="h-2 w-16" />
+          {[0, 1, 2, 3].map((item) => (
+            <div key={item} className="flex items-center gap-2.5">
+              <SkeletonBlock className="h-7 w-7 rounded-full" />
+              <SkeletonBlock className={`h-2.5 ${item % 2 === 0 ? 'w-16' : 'w-20'}`} />
+              <SkeletonBlock className="ml-auto h-1.5 w-1.5 rounded-full" />
+            </div>
+          ))}
+        </div>
+        <SkeletonBlock className="mt-auto h-9 w-full rounded-lg" />
+      </aside>
+
+      <main aria-hidden="true" className="grid min-w-0 flex-1 grid-cols-[42%_1fr]">
+        <section className="flex min-w-0 flex-col border-r border-white/[0.08]">
+          <div className="flex h-12 shrink-0 items-center justify-between border-b border-white/[0.08] px-4">
+            <SkeletonBlock className="h-3 w-20" />
+            <SkeletonBlock className="h-3 w-8" />
+          </div>
+          <div className="flex-1 space-y-4 overflow-hidden p-5">
+            <SkeletonBlock className="mx-auto h-5 w-12 rounded-full" />
+            <SkeletonBlock className="h-14 w-[82%] rounded-xl" />
+            <SkeletonBlock className="ml-auto h-16 w-[76%] rounded-xl" />
+            <SkeletonBlock className="h-12 w-[78%] rounded-xl" />
+            <div className="flex items-center gap-2 pt-1">
+              <SkeletonBlock className="h-6 w-6 rounded-full" />
+              <SkeletonBlock className="h-2 w-28" />
+            </div>
+          </div>
+          <SkeletonBlock className="mx-3 mb-3 h-9 rounded-lg" />
+        </section>
+
+        <section className="flex min-w-0 flex-col bg-[#1b1c1e]">
+          <div className="flex h-12 shrink-0 items-center justify-between border-b border-white/[0.08] px-4">
+            <div className="space-y-1.5">
+              <SkeletonBlock className="h-3 w-24" />
+              <SkeletonBlock className="h-2 w-28" />
+            </div>
+            <SkeletonBlock className="h-7 w-20 rounded-md" />
+          </div>
+          <div className="grid min-h-0 flex-1 grid-cols-4 gap-2 overflow-hidden p-3">
+            {[0, 1, 2, 3].map((column) => (
+              <div key={column} className="min-w-0 rounded-lg bg-[#222326] p-2">
+                <div className="mb-3 flex items-center justify-between px-0.5">
+                  <SkeletonBlock className="h-2 w-14" />
+                  <SkeletonBlock className="h-2 w-3" />
+                </div>
+                {column === 1 ? (
+                  <div className="space-y-2">
+                    {[0, 1, 2].map((card) => (
+                      <div key={card} className="space-y-2 rounded-md border border-white/[0.07] bg-[#2b2c2f] p-2.5">
+                        {card === 0 ? <SkeletonBlock className="h-1.5 w-10" /> : null}
+                        <SkeletonBlock className="h-2 w-[90%]" />
+                        <SkeletonBlock className="h-2 w-[66%]" />
+                        <div className="flex items-center gap-1.5 border-t border-white/[0.06] pt-2">
+                          <SkeletonBlock className="h-4 w-4 rounded-full" />
+                          <SkeletonBlock className="h-1.5 w-10" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
 /** Product preview served from a static build of Trooper's own UI preview harness. */
-export default function TrooperAppDashboardDemo({ maxHeight }: { maxHeight?: number }) {
+export default function TrooperAppDashboardDemo({ maxHeight, autoLoad = false }: { maxHeight?: number; autoLoad?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
   const [paused, setPaused] = useState(false);
   const [interactive, setInteractive] = useState(false);
+  const [frameLoaded, setFrameLoaded] = useState(false);
   const [revision, setRevision] = useState(0);
+
+  useEffect(() => {
+    if (!autoLoad) return;
+    const element = containerRef.current;
+    if (!element) return;
+    if (!('IntersectionObserver' in window)) {
+      setInteractive(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      setInteractive(true);
+      observer.disconnect();
+    }, { rootMargin: '0px', threshold: 0.35 });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [autoLoad]);
 
   useLayoutEffect(() => {
     const el = containerRef.current;
@@ -165,12 +278,16 @@ export default function TrooperAppDashboardDemo({ maxHeight }: { maxHeight?: num
                   <span className="truncate">app.trooper.so</span>
                 </div>
                 <div className="flex h-7 items-center gap-1.5 rounded-full border border-white/10 bg-black/15 px-3 text-[11px] font-medium text-white/55">
-                  <Circle size={8} fill="currentColor" strokeWidth={0} aria-hidden="true" />
-                  {interactive ? (paused ? 'Paused' : 'Live demo — click anything') : 'Trooper workspace preview'}
+                  {interactive && !frameLoaded ? (
+                    <LoaderCircle size={10} className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+                  ) : (
+                    <Circle size={8} fill="currentColor" strokeWidth={0} aria-hidden="true" />
+                  )}
+                  {interactive ? (frameLoaded ? (paused ? 'Paused' : 'Live demo — click anything') : 'Loading workspace…') : autoLoad ? 'Preparing workspace…' : 'Trooper workspace preview'}
                 </div>
               </div>
               <div className="flex items-center gap-1.5">
-                {interactive ? (
+                {interactive && frameLoaded ? (
                   <>
                     <button
                       type="button"
@@ -185,6 +302,7 @@ export default function TrooperAppDashboardDemo({ maxHeight }: { maxHeight?: num
                       type="button"
                       onClick={() => {
                         setPaused(false);
+                        setFrameLoaded(false);
                         setRevision((value) => value + 1);
                       }}
                       aria-label="Restart dashboard demo"
@@ -194,6 +312,11 @@ export default function TrooperAppDashboardDemo({ maxHeight }: { maxHeight?: num
                       <RotateCcw size={13} />
                     </button>
                   </>
+                ) : autoLoad || interactive ? (
+                  <span role="status" className="inline-flex h-7 items-center gap-1.5 rounded-lg border border-white/10 px-2.5 text-[10px] font-medium text-white/55">
+                    <LoaderCircle size={11} className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+                    Loading
+                  </span>
                 ) : (
                   <button
                     type="button"
@@ -210,22 +333,36 @@ export default function TrooperAppDashboardDemo({ maxHeight }: { maxHeight?: num
                 key={revision}
                 title="Interactive Trooper dashboard preview"
                 srcDoc={dashboardDocument}
-                loading="lazy"
+                loading={autoLoad ? 'eager' : 'lazy'}
                 allow="clipboard-read; clipboard-write"
+                onLoad={() => setFrameLoaded(true)}
                 style={{
                   width: DEMO_WIDTH,
                   height: DEMO_HEIGHT - CHROME_HEIGHT,
                   border: 0,
                   display: 'block',
+                  position: 'absolute',
+                  inset: 0,
                   background: '#1A1A1A',
-                  pointerEvents: paused ? 'none' : 'auto',
+                  opacity: frameLoaded ? 1 : 0,
+                  transition: 'opacity 180ms ease',
+                  pointerEvents: paused || !frameLoaded ? 'none' : 'auto',
                 }}
               />
-            ) : (
+            ) : null}
+            {!frameLoaded ? (
               <div style={{ height: DEMO_HEIGHT - CHROME_HEIGHT, position: 'relative' }}>
-                <PreviewPoster />
+                {interactive || autoLoad ? <DashboardSkeleton /> : <PreviewPoster />}
+                {autoLoad ? (
+                  <div className="absolute inset-x-0 bottom-4 flex justify-center">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-white/[0.08] bg-[#202123]/90 px-3 py-1.5 text-[10px] font-medium text-white/55 shadow-lg backdrop-blur">
+                      <LoaderCircle size={12} className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+                      Loading workspace
+                    </span>
+                  </div>
+                ) : null}
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

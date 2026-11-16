@@ -94,7 +94,7 @@ export default function DesktopHero() {
         <div className="hero-product-frame overflow-hidden rounded-t-[22px] border border-white/15 border-b-0 bg-[#111113] p-2.5 pb-0 shadow-[0_-8px_80px_rgba(217,70,239,.10),0_0_60px_rgba(236,72,153,.08),0_30px_100px_rgba(0,0,0,.55)] sm:rounded-t-[28px] sm:p-3.5 sm:pb-0">
           <div className="overflow-hidden rounded-t-[15px] sm:rounded-t-[20px]">
             <div className="hero-product-demo-reservation">
-              <TrooperAppDashboardDemo maxHeight={744} />
+              <TrooperAppDashboardDemo maxHeight={744} autoLoad />
             </div>
           </div>
         </div>
