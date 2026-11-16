@@ -27,7 +27,7 @@ export default function DesktopHero() {
     <section className="band trooper-hero relative overflow-hidden text-white">
       <OpenBotBeam
         surfaceSelector=".hero-product-frame"
-        sourceSelector="[data-hero-beam-source]"
+        sourceSelector=".hero-download-control [data-hero-beam-source]"
       />
 
       <div className="trooper-hero-content relative z-10">
