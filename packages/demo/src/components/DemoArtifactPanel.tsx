@@ -75,7 +75,7 @@ function DiffStatsBadges({ additions, deletions, compact }: { additions: number;
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
       {additions > 0 && (
         <span style={{
-          borderRadius: 4, background: '#ecfdf5', color: '#047857',
+          borderRadius: 4, background: C.successTint, color: '#9ACD9C',
           padding: compact ? '1px 4px' : '2px 6px', fontSize: fs, fontWeight: 600, fontVariantNumeric: 'tabular-nums',
         }}>
           +{additions}
@@ -83,7 +83,7 @@ function DiffStatsBadges({ additions, deletions, compact }: { additions: number;
       )}
       {deletions > 0 && (
         <span style={{
-          borderRadius: 4, background: '#fef2f2', color: '#dc2626',
+          borderRadius: 4, background: 'rgba(240,120,120,0.14)', color: C.danger,
           padding: compact ? '1px 4px' : '2px 6px', fontSize: fs, fontWeight: 600, fontVariantNumeric: 'tabular-nums',
         }}>
           −{deletions}
@@ -113,15 +113,15 @@ function DiffFileHeader({ file, expanded, onToggle, compact }: {
         background: 'transparent', textAlign: 'left',
       }}
     >
-      <span style={{ marginTop: 3, color: '#a8a29e', flexShrink: 0 }}>
+      <span style={{ marginTop: 3, color: C.textSubtle, flexShrink: 0 }}>
         {expanded ? <ChevronDown size={compact ? 10 : 12} /> : <ChevronRight size={compact ? 10 : 12} />}
       </span>
       <span style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         width: compact ? 24 : 32, height: compact ? 24 : 32, borderRadius: 8,
-        background: '#fafaf9', border: `1px solid ${C.border}`, flexShrink: 0,
+        background: C.cardWarm, border: `1px solid ${C.border}`, flexShrink: 0,
       }}>
-        <FileCode size={compact ? 12 : 14} color="#a8a29e" strokeWidth={1.75} />
+        <FileCode size={compact ? 12 : 14} color={C.textSubtle} strokeWidth={1.75} />
       </span>
       <span style={{ flex: 1, minWidth: 0 }}>
         <div style={{
@@ -145,7 +145,7 @@ function DiffFileBody({ file, compact }: { file: DiffFile; compact?: boolean }) 
   const lh = compact ? 1.45 : 1.55;
 
   return (
-    <div style={{ overflowX: 'auto', borderTop: `1px solid ${C.border}`, background: '#fff' }}>
+    <div style={{ overflowX: 'auto', borderTop: `1px solid ${C.border}`, background: C.bg }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: fs, lineHeight: lh }}>
         <colgroup>
           <col style={{ width: compact ? 28 : 40 }} />
@@ -159,14 +159,14 @@ function DiffFileBody({ file, compact }: { file: DiffFile; compact?: boolean }) 
               if (line.type === 'header') {
                 return (
                   <tr key={`${hi}-${li}`}>
-                    <td colSpan={4} style={{ padding: compact ? '2px 6px' : '4px 12px', background: '#fafaf9', color: C.textSubtle, fontSize: compact ? 8 : 10 }}>
+                    <td colSpan={4} style={{ padding: compact ? '2px 6px' : '4px 12px', background: C.cardWarm, color: C.textSubtle, fontSize: compact ? 8 : 10 }}>
                       {line.content}
                     </td>
                   </tr>
                 );
               }
-              const rowBg = line.type === 'addition' ? 'rgba(16,185,129,0.08)' : line.type === 'deletion' ? 'rgba(239,68,68,0.06)' : 'transparent';
-              const markerColor = line.type === 'addition' ? '#047857' : line.type === 'deletion' ? '#dc2626' : 'transparent';
+              const rowBg = line.type === 'addition' ? C.successTint : line.type === 'deletion' ? 'rgba(240,120,120,0.08)' : 'transparent';
+              const markerColor = line.type === 'addition' ? '#9ACD9C' : line.type === 'deletion' ? C.danger : 'transparent';
               const marker = line.type === 'addition' ? '+' : line.type === 'deletion' ? '−' : ' ';
               return (
                 <tr key={`${hi}-${li}`} style={{ background: rowBg }}>
@@ -194,7 +194,7 @@ function DiffFileSection({ file, defaultExpanded, compact }: { file: DiffFile; d
   const [expanded, setExpanded] = useState(defaultExpanded ?? !compact);
   return (
     <div style={{
-      overflow: 'hidden', borderRadius: compact ? 6 : 10, background: '#fff',
+      overflow: 'hidden', borderRadius: compact ? 6 : 10, background: C.card,
       border: `1px solid ${C.border}`, boxShadow: compact ? 'none' : '0 1px 2px rgba(0,0,0,0.02)',
     }}>
       <DiffFileHeader file={file} expanded={expanded} onToggle={() => setExpanded(v => !v)} compact={compact} />
@@ -250,12 +250,12 @@ function ImagePreview({ artifact, mode = 'card' }: { artifact: DemoArtifact; mod
         showTabStrip
         claimed
       >
-        <div style={{ position: 'absolute', inset: 0, overflow: 'auto', background: '#f5f5f4' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', overflow: 'hidden', background: C.bg }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={src}
             alt={artifact.caption ?? artifact.name}
-            style={{ display: 'block', width: '100%', height: 'auto', objectFit: 'contain', objectPosition: 'top center' }}
+            style={{ display: 'block', width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'top center' }}
           />
         </div>
       </DemoBrowserFrame>
@@ -263,10 +263,10 @@ function ImagePreview({ artifact, mode = 'card' }: { artifact: DemoArtifact; mod
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 16, height: '100%', background: 'linear-gradient(135deg, #F5F5F4 0%, #FAF9F6 100%)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 16, height: '100%', background: `linear-gradient(135deg, ${C.bg} 0%, ${C.cardWarm} 100%)` }}>
       <div style={{
         width: '100%', maxWidth: 360, borderRadius: 12, overflow: 'hidden',
-        border: `1px solid ${C.border}`, background: C.card, boxShadow: '0 12px 32px -12px rgba(28,25,23,0.15)',
+        border: `1px solid ${C.border}`, background: C.card, boxShadow: '0 12px 32px -12px rgba(0,0,0,0.55)',
       }}>
         {src ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -294,10 +294,10 @@ function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
   const videoSrc = artifact.src && ['mp4', 'mov', 'webm'].includes(artifact.ext ?? '') ? artifact.src : null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 16, background: '#1c1917' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: 16, background: C.cardWarm }}>
       <div style={{
         flex: 1, borderRadius: 10, overflow: 'hidden', position: 'relative',
-        background: '#292524', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200,
+        background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200,
       }}>
         {videoSrc ? (
           <video
@@ -333,10 +333,10 @@ function VideoPreview({ artifact }: { artifact: DemoArtifact }) {
         )}
       </div>
       <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Film size={14} color="#a8a29e" />
+        <Film size={14} color={C.textSubtle} />
         <div>
-          <div style={{ fontSize: 11, fontWeight: 600, color: '#fafaf9' }}>{artifact.name}</div>
-          {artifact.caption && <div style={{ fontSize: 10, color: '#a8a29e', marginTop: 2 }}>{artifact.caption}</div>}
+          <div style={{ fontSize: 11, fontWeight: 600, color: C.text }}>{artifact.name}</div>
+          {artifact.caption && <div style={{ fontSize: 10, color: C.textSubtle, marginTop: 2 }}>{artifact.caption}</div>}
         </div>
       </div>
       {artifact.content && (
@@ -367,7 +367,7 @@ function TerminalPreview({
     <div
       data-demo-target="modal-artifact-content"
       style={{
-        background: '#1c1917',
+        background: C.cardWarm,
         minHeight: 240,
         padding: '12px 14px',
         fontFamily: 'ui-monospace, Menlo, monospace',
@@ -387,8 +387,8 @@ function TerminalPreview({
             line.includes('PASS') || line.includes('passed') || line.includes('✓')
               ? '#86efac'
               : line.startsWith('$')
-                ? '#fafaf9'
-                : '#a8a29e'
+              ? C.text
+                : C.textSubtle
           }
         />
       ))}
@@ -607,7 +607,7 @@ export function DemoArtifactTilePreview({ artifact, canvasTile }: { artifact: De
   }
   if (artifact.ext === 'log' || artifact.name.endsWith('.log')) {
     return (
-      <div style={{ background: '#1c1917', minHeight: '100%', padding: canvasTile ? '8px 10px' : '6px 8px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: canvasTile ? 9 : 8, lineHeight: 1.5 }}>
+      <div style={{ background: C.cardWarm, minHeight: '100%', padding: canvasTile ? '8px 10px' : '6px 8px', fontFamily: 'ui-monospace, Menlo, monospace', fontSize: canvasTile ? 9 : 8, lineHeight: 1.5 }}>
         {artifact.content.split('\n').slice(0, canvasTile ? 12 : 8).map((line, i) => (
           <div key={i} style={{ color: line.includes('✓') || line.includes('passed') ? '#86efac' : '#a8a29e', wordBreak: 'break-word' }}>{line}</div>
         ))}
@@ -646,7 +646,7 @@ export function DemoArtifactPanel({
   if (!artifact) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24, textAlign: 'center', background: C.card }}>
-        <div style={{ width: 40, height: 40, borderRadius: 10, background: '#F5F5F4', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
+        <div style={{ width: 40, height: 40, borderRadius: 10, background: C.brandLight, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
           <FileText size={20} strokeWidth={1.75} color={C.textSubtle} />
         </div>
         <p style={{ fontSize: 13, fontWeight: 600, color: C.text, margin: 0 }}>No files yet</p>
@@ -674,10 +674,10 @@ export function DemoArtifactPanel({
     >
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px',
-        borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
+        borderBottom: `1px solid ${C.border}`, background: C.cardWarm, flexShrink: 0,
       }}>
         {tabs.length > 1 ? (
-          <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
+          <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: C.bg }}>
             {tabs.map((tab) => {
               const Icon = tabIcon(tab);
               const active = effectiveTab === tab;
@@ -701,7 +701,7 @@ export function DemoArtifactPanel({
             })}
           </div>
         ) : (
-          <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
+          <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: C.bg }}>
             <span style={{
               display: 'flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
               fontSize: 11, fontWeight: 600, background: C.card, color: C.text,
@@ -719,8 +719,8 @@ export function DemoArtifactPanel({
           style={{
             display: 'flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 6,
             border: `1px solid ${hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? C.brand : C.border}`,
-            background: hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? '#f0f5e6' : C.card,
-            fontSize: 10, color: hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? '#284800' : C.textMuted, cursor: 'pointer',
+            background: hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? C.successTint : C.card,
+            fontSize: 10, color: hasSavedReview || review?.phase === 'composing' || review?.phase === 'saved' ? C.success : C.textMuted, cursor: 'pointer',
           }}
         >
           <MessageSquarePlus size={11} strokeWidth={1.75} /> Comment

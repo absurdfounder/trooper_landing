@@ -10,6 +10,7 @@
     "validate:playbooks": "node scripts/validate-playbooks.mjs",
     "generate:og": "tsx scripts/generate-og-images.ts",
     "generate:og:home": "tsx scripts/generate-og-images.ts --home",
+    "build:trooper-preview": "node scripts/build-trooper-app-preview.mjs",
     "build": "npm run sync:demo-assets && npm run validate:playbooks && npm run generate:og:home -- --force && next build",
     "start": "next start",
     "lint": "next lint",

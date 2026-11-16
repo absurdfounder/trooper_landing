@@ -1,9 +1,9 @@
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
 
 /**
- * Desktop / browser / devices capability rows — same section as Capabilities,
- * same chat-bubble + product-frame layout. Claims stay checkable against the
- * product repo (Mac DMG, Chrome MV3 extension, Devices enrollment).
+ * Desktop, browser, and device surfaces shown together in the homepage's
+ * computer-use showcase. Claims stay checkable against the product repo
+ * (Mac DMG, Chrome MV3 extension, Devices enrollment).
  */
 export const CHROME_WEB_STORE_URL =
   'https://chromewebstore.google.com/detail/trooper/ioaibohjnndgbmfpkipamhplihobflgb';
@@ -43,9 +43,9 @@ export const WORK_SURFACES: WorkSurface[] = [
     ask: 'trooper, pull last month from Stripe',
     reply: 'claiming your Chrome tab',
     window: 'Chrome — claimed tab',
-    title: 'In the browser',
-    highlight: 'you’re already signed in to.',
-    body: 'The Chrome extension claims a tab in your own profile — Gmail, Stripe, QuickBooks — so work happens where you already are.',
+    title: 'Keep working where you’re',
+    highlight: 'already signed in.',
+    body: 'Troopers continue in your signed-in Gmail, Stripe, or QuickBooks session, then bring the result back to the same task.',
     cta: { label: 'Get the Chrome extension', href: CHROME_WEB_STORE_URL, external: true },
     meta: 'Chrome 116+',
     ctaIcon: { src: '/images/desktop/dock/chrome.png' },
@@ -55,9 +55,9 @@ export const WORK_SURFACES: WorkSurface[] = [
     ask: 'trooper, get the forecast from Home and the ledger from Office',
     reply: 'routing across your machines',
     window: 'Devices — your fleet',
-    title: 'Across every machine',
-    highlight: 'you already own.',
-    body: 'Pair Home, Office, and the studio Mac. Asks route to whichever machine has the app and the files.',
+    title: 'As many desktops',
+    highlight: 'as your computers can hold.',
+    body: 'Keep your Mac and enrolled machines in one list. Troopers route work to the desktop with the right apps and files, then return the result to the shared task.',
     cta: { label: 'See the plans', href: '/pricing' },
     secondary: { label: 'How it works', href: '/features/browser-control' },
   },

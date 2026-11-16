@@ -1,0 +1,19 @@
+@import "../../../../Trooper/src/index.css";
+@import "mentis/dist/index.css";
+
+/* Tailwind v4 otherwise scans only the small landing-preview package. */
+@source "../../../../Trooper/src";
+
+/* Keep the embedded product demo steady and focused on the working UI. */
+.trooper-landing-preview [data-channel-chat-scroll] {
+  overflow-anchor: none;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scroll-behavior: auto !important;
+}
+
+.trooper-landing-preview [aria-label="Permission setup"],
+.trooper-landing-preview [aria-label="Jump to latest"],
+.trooper-landing-preview [aria-label="New messages — jump to latest"] {
+  display: none !important;
+}

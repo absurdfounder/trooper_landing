@@ -15,17 +15,11 @@ import {
   CircleCheck,
   Sparkles,
 } from 'lucide-react';
-import { WORK_SURFACES } from '@/lib/whereTheyWork';
 import { MAC_DMG_URL } from '@/lib/downloadUrls';
 import { getTrooper } from '@/lib/troopers';
 import { BubbleExchange } from './ui/ChatBubble';
 import PixelButton from './ui/PixelButton';
 import TrooperAvatar from './ui/TrooperAvatar';
-import {
-  BrowserScene,
-  DesktopScene,
-  DevicesScene,
-} from './where-they-work/WorkSurfaceScenes';
 import dynamic from 'next/dynamic';
 import BrainLedger from './moat/BrainLedger';
 
@@ -1095,12 +1089,6 @@ type CapabilityCard = {
   ctaIcon?: { src: string; invert?: boolean };
 };
 
-const WORK_SCENE: Record<(typeof WORK_SURFACES)[number]['id'], () => JSX.Element | null> = {
-  desktop: DesktopScene,
-  browser: BrowserScene,
-  devices: DevicesScene,
-};
-
 const cards: CapabilityCard[] = [
   {
     tag: 'AI organizations',
@@ -1187,33 +1175,12 @@ const cards: CapabilityCard[] = [
     meta: 'Cuts · motion graphics · score',
     cta: { label: 'Get started free', href: 'https://app.trooper.so?ref=video-editor', external: true },
   },
-  // Desktop / browser / devices — same rhythm as the rows above, not a second section.
-  ...WORK_SURFACES.map((surface, i) => {
-    const Scene = WORK_SCENE[surface.id];
-    const handles = ['scout', 'nova', 'pip'] as const;
-    return {
-      tag: surface.id,
-      ask: surface.ask,
-      reply: surface.reply,
-      agentHandle: handles[i % handles.length],
-      window: surface.window,
-      title: surface.title,
-      highlight: surface.highlight,
-      description: surface.body,
-      meta: surface.meta,
-      cta: surface.cta,
-      secondary: surface.secondary,
-      ctaIcon: surface.ctaIcon,
-      screen: true,
-      Visual: () => <Scene />,
-    };
-  }),
 ];
 
 /**
  * Capability rows (orgs, action, memory, workflows, screen context, video
- * editor, then desktop / browser / devices): typed ask → green reply,
- * product frame beside. One scroll-focus dims every other row.
+ * editor): typed ask → green reply, product frame beside. One scroll-focus
+ * dims every other row.
  */
 export default function OldWays() {
   const rowRefs = useRef<Array<HTMLElement | null>>([]);

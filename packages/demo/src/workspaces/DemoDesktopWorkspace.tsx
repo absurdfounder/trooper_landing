@@ -13,9 +13,9 @@ import { DUR, EASE_OUT } from '../lib/demoMotion';
  */
 
 const STATUS_TONE = {
-  online: { bg: '#ecfdf5', border: '#a7f3d0', color: '#047857', label: 'Online' },
-  busy: { bg: '#fffbeb', border: '#fde68a', color: '#b45309', label: 'Busy' },
-  idle: { bg: '#f5f5f4', border: '#e7e5e4', color: '#57534E', label: 'Idle' },
+  online: { bg: C.successTint, border: C.border, color: C.success, label: 'Online' },
+  busy: { bg: 'rgba(217,154,71,0.14)', border: C.border, color: '#E9C48F', label: 'Busy' },
+  idle: { bg: C.brandLight, border: C.border, color: C.textMuted, label: 'Idle' },
 } as const;
 
 export function DemoDesktopWorkspace({

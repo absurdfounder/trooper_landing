@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
 import DeferredMount from '@/components/DeferredMount';
-import LazyHeroArticleDemo from '@/components/LazyHeroArticleDemo';
+import TrooperAppDashboardDemo from '@/components/TrooperAppDashboardDemo';
 import PixelButton from '@/components/ui/PixelButton';
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -55,7 +55,7 @@ export default function DashboardShowcaseSection() {
         >
           <div className="relative z-[1] overflow-x-clip overflow-y-hidden rounded-[inherit] px-2 py-4 sm:px-4 sm:py-6">
             <DeferredMount minHeight={280}>
-              <LazyHeroArticleDemo flush maxHeight={360} />
+              <TrooperAppDashboardDemo maxHeight={360} />
             </DeferredMount>
           </div>
         </motion.div>
@@ -70,7 +70,7 @@ export default function DashboardShowcaseSection() {
         >
           <div className="relative z-[1] overflow-hidden rounded-[inherit] px-3 py-6 sm:px-6 sm:py-8">
             <DeferredMount desktopOnly minHeight={520}>
-              <LazyHeroArticleDemo rotate flush />
+              <TrooperAppDashboardDemo />
             </DeferredMount>
           </div>
         </motion.div>

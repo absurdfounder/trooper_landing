@@ -16,10 +16,10 @@ const NODE_W = 148;
 const NODE_H = 52;
 
 const KIND = {
-  trigger: { border: '#c4d9a0', bg: '#f0f5e6', color: '#325600', icon: Zap, label: 'Trigger' },
-  if: { border: '#fde68a', bg: '#FFFBEB', color: '#92400E', icon: GitBranch, label: 'If' },
-  then: { border: '#E7E5E4', bg: '#FFFFFF', color: '#1C1917', icon: Play, label: 'Then' },
-  ai: { border: '#BFDBFE', bg: '#EFF6FF', color: '#1E40AF', icon: Sparkles, label: 'AI' },
+  trigger: { border: 'rgba(97,170,100,0.38)', bg: 'rgba(97,170,100,0.12)', color: '#9ACD9C', icon: Zap, label: 'Trigger' },
+  if: { border: 'rgba(217,154,71,0.38)', bg: 'rgba(217,154,71,0.12)', color: '#E9C48F', icon: GitBranch, label: 'If' },
+  then: { border: C.border, bg: C.cardWarm, color: C.text, icon: Play, label: 'Then' },
+  ai: { border: 'rgba(96,165,250,0.38)', bg: 'rgba(96,165,250,0.12)', color: '#A9CCFF', icon: Sparkles, label: 'AI' },
 } as const;
 
 function nodeCentre(node: DemoWorkflowNode) {
@@ -44,7 +44,7 @@ export function DemoNodeGraph({
     <div data-demo-target="node-graph" style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, background: C.bg }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', flexShrink: 0,
-        borderBottom: `1px solid ${C.border}`, background: '#FAFAF9',
+        borderBottom: `1px solid ${C.border}`, background: C.cardWarm,
       }}>
         <GitBranch size={13} color={C.textMuted} strokeWidth={2} />
         <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{graph.name}</span>
@@ -73,7 +73,7 @@ export function DemoNodeGraph({
                   <path
                     d={`M ${a.x} ${a.y + NODE_H / 2} C ${a.x} ${midY}, ${bPt.x} ${midY}, ${bPt.x} ${bPt.y - NODE_H / 2}`}
                     fill="none"
-                    stroke={lit ? C.brand : '#d6d3d1'}
+                    stroke={lit ? C.success : C.border}
                     strokeWidth={lit ? 2 : 1.25}
                     strokeDasharray={lit ? undefined : '4 4'}
                     style={{ transition: `stroke ${DUR.panel}ms ${EASE_OUT}, stroke-width ${DUR.panel}ms ${EASE_OUT}` }}
@@ -84,7 +84,7 @@ export function DemoNodeGraph({
                       y={midY - 3}
                       fontSize={9}
                       fontWeight={600}
-                      fill={lit ? C.brandHover : '#a8a29e'}
+                      fill={lit ? '#9ACD9C' : C.textSubtle}
                     >
                       {edge.label}
                     </text>
@@ -107,7 +107,7 @@ export function DemoNodeGraph({
                   position: 'absolute', left: node.x, top: node.y, width: NODE_W, minHeight: NODE_H,
                   borderRadius: 10, border: `1px solid ${touched ? tone.border : C.border}`,
                   background: touched ? tone.bg : C.card,
-                  boxShadow: running ? `0 0 0 3px rgba(63,107,0,0.14)` : '0 1px 2px rgba(28,25,23,0.05)',
+                  boxShadow: running ? `0 0 0 3px rgba(97,170,100,0.18)` : '0 1px 2px rgba(0,0,0,0.24)',
                   padding: '8px 10px', opacity: touched ? 1 : 0.55,
                   transition: `opacity ${DUR.panel}ms ${EASE_OUT}, box-shadow ${DUR.panel}ms ${EASE_OUT}, background-color ${DUR.panel}ms ${EASE_OUT}, border-color ${DUR.panel}ms ${EASE_OUT}`,
                 }}
@@ -117,8 +117,8 @@ export function DemoNodeGraph({
                   <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: touched ? tone.color : C.textSubtle }}>
                     {tone.label}
                   </span>
-                  {done && <Check size={11} strokeWidth={2.8} color={C.brand} style={{ marginLeft: 'auto' }} />}
-                  {running && <span className="demo-live-dot" style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: C.brand }} />}
+                  {done && <Check size={11} strokeWidth={2.8} color={C.success} style={{ marginLeft: 'auto' }} />}
+                  {running && <span className="demo-live-dot" style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: C.success }} />}
                 </div>
                 <div style={{ fontSize: 11, fontWeight: 500, lineHeight: 1.35, color: touched ? C.text : C.textMuted }}>
                   {node.label}

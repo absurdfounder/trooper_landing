@@ -20,7 +20,7 @@ export const DEMO_KANBAN_GAP = 6;
 
 /** TaskCard.jsx `priorityDots` */
 const PRIORITY_DOT: Record<DemoTaskPriority, string> = {
-  urgent: C.brand,
+  urgent: C.danger,
   high: '#fb923c', // orange-400
   medium: '#facc15', // yellow-400
   low: C.border,
@@ -80,7 +80,7 @@ function Avatar({ name, src, size = 20 }: { name: string; src?: string; size?: n
         position: 'relative', width: size, height: size, flexShrink: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         overflow: 'hidden', borderRadius: Math.max(6, Math.round(size * 0.28)), border: `1px solid ${C.border}`,
-        background: C.brand, color: '#FFFFFF', fontSize: 9, fontWeight: 500,
+        background: C.brand, color: C.brandForeground, fontSize: 9, fontWeight: 500,
       }}
     >
       {initial}
@@ -139,19 +139,19 @@ export function DemoTaskCard({
 
   // TaskCard.jsx: hover:border-stone-300/55 hover:shadow-sm, active:bg-stone-100/85
   const hoverish = interactive && hovered && !ghosted;
-  const border = highlighted ? C.brand : hoverish ? 'rgba(214,211,209,0.55)' : C.border;
+  const border = highlighted ? C.brand : hoverish ? 'rgba(255,255,255,0.18)' : C.border;
   const shadow = lifted
-    ? '0 10px 15px -3px rgba(28,25,23,0.14), 0 4px 6px -4px rgba(28,25,23,0.10)'
+    ? '0 12px 28px -8px rgba(0,0,0,0.62), 0 3px 10px rgba(0,0,0,0.35)'
     : highlighted
-      ? `inset 0 0 0 1px rgba(63,107,0,0.35), 0 1px 2px rgba(28,25,23,0.05)`
+      ? `inset 0 0 0 1px rgba(230,230,230,0.18), 0 4px 18px rgba(0,0,0,0.22)`
       : hoverish
-        ? '0 1px 2px rgba(28,25,23,0.05)'
+        ? '0 4px 14px rgba(0,0,0,0.24)'
         : 'none';
 
   const style: CSSProperties = {
     display: 'flex', flexDirection: 'column',
     borderRadius: 8, border: `1px solid ${border}`,
-    background: pressed && interactive ? 'rgba(245,245,244,0.85)' : C.card,
+    background: pressed && interactive ? '#313131' : C.card,
     padding: 10,
     boxShadow: shadow,
     cursor: interactive ? (lifted ? 'grabbing' : 'pointer') : 'default',
@@ -204,7 +204,7 @@ export function DemoTaskCard({
           <span style={{
             display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0,
             padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 500,
-            background: 'rgba(63,107,0,0.1)', color: C.brand,
+            background: C.successTint, color: C.success,
           }}>
             <Zap size={11} strokeWidth={2} />
             URGENT
@@ -213,7 +213,7 @@ export function DemoTaskCard({
         {model.priority === 'high' && (
           <span style={{
             display: 'flex', alignItems: 'center', flexShrink: 0,
-            padding: '1px 5px', borderRadius: 4, background: '#fff7ed', color: '#ea580c',
+            padding: '1px 5px', borderRadius: 4, background: 'rgba(217,154,71,0.14)', color: '#E9C48F',
           }}>
             <Zap size={11} strokeWidth={2} />
           </span>
@@ -225,14 +225,14 @@ export function DemoTaskCard({
       {/* Context links — TaskCard.jsx:167 */}
       {(model.linkedProject || model.linkedGoal || model.artifactCount > 0) && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
-          {model.linkedProject && <ContextChip label={model.linkedProject} bg="#f0f9ff" color="#0369a1" />}
-          {model.linkedGoal && <ContextChip label={model.linkedGoal} bg={C.brandTint} color={C.brandHover} />}
+          {model.linkedProject && <ContextChip label={model.linkedProject} bg="rgba(96,165,250,0.14)" color="#A9CCFF" />}
+          {model.linkedGoal && <ContextChip label={model.linkedGoal} bg={C.brandTint} color="#9ACD9C" />}
           {model.artifactCount > 0 && (
             <ContextChip
               label={`${model.artifactCount} output${model.artifactCount === 1 ? '' : 's'}`}
-              bg="#f5f5f4"
-              color="#57534E"
-              ring="rgba(231,229,228,0.8)"
+              bg={C.brandLight}
+              color={C.textMuted}
+              ring="rgba(255,255,255,0.08)"
             />
           )}
         </div>
@@ -288,9 +288,9 @@ function ColumnCount({ count }: { count: number }) {
       key={bump}
       className={bump ? 'demo-count-bump' : undefined}
       style={{
-        borderRadius: 999, background: 'rgba(255,255,255,0.6)', padding: '2px 6px',
+        borderRadius: 999, background: 'rgba(255,255,255,0.08)', color: C.textMuted, padding: '2px 6px',
         fontSize: 11, fontWeight: 500, fontVariantNumeric: 'tabular-nums',
-        boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.06)', display: 'inline-block',
+        boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.08)', display: 'inline-block',
       }}
     >
       {count}
@@ -342,8 +342,8 @@ export function DemoKanbanColumn({
         className="Trooper-scrollbar"
         style={{
           minHeight: 0, flex: 1, overflowY: 'auto', borderRadius: 8, padding: 8,
-          border: `1px solid ${isOver ? 'rgba(214,211,209,0.7)' : 'transparent'}`,
-          background: isOver ? 'rgba(231,229,228,0.45)' : col.bodyBg,
+          border: `1px solid ${isOver ? 'rgba(255,255,255,0.18)' : 'transparent'}`,
+          background: isOver ? 'rgba(255,255,255,0.055)' : col.bodyBg,
           transition: `background-color ${DUR.hover}ms ${EASE_OUT}, border-color ${DUR.hover}ms ${EASE_OUT}`,
         }}
       >
@@ -364,11 +364,11 @@ export function DemoKanbanColumn({
           {tasks.length === 0 && (
             <div style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              borderRadius: 8, border: `1px dashed rgba(231,229,228,0.9)`, background: 'rgba(255,255,255,0.8)',
+              borderRadius: 8, border: `1px dashed rgba(255,255,255,0.18)`, background: 'rgba(36,36,36,0.72)',
               padding: '16px 8px', textAlign: 'center',
             }}>
               <p style={{ margin: 0, fontSize: 11, fontWeight: 500, color: C.textMuted, userSelect: 'none' }}>Nothing here yet</p>
-              <p style={{ margin: '2px 0 0', padding: '0 8px', fontSize: 10, lineHeight: 1.375, color: 'rgba(87,83,78,0.8)', userSelect: 'none' }}>
+              <p style={{ margin: '2px 0 0', padding: '0 8px', fontSize: 10, lineHeight: 1.375, color: 'rgba(179,179,179,0.8)', userSelect: 'none' }}>
                 Drop a task here or add one with +
               </p>
             </div>

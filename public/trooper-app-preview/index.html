@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trooper dashboard preview</title>
+    <script>
+      try {
+        localStorage.setItem('trooper.lookAndFeel.v1', JSON.stringify({
+          appearance: 'dark', colorTheme: 'ink', themeId: 'trooper', teamThemeId: 'pastel', chatStyle: 'bubbles',
+        }));
+        localStorage.setItem('trooper-sidebar-main-tab', 'chats');
+        localStorage.setItem('trooper_tasks_view', 'board');
+        document.documentElement.dataset.theme = 'ink';
+        document.documentElement.classList.add('dark');
+        document.documentElement.style.colorScheme = 'dark';
+      } catch {}
+    </script>
+    <script type="module" crossorigin src="/trooper-app-preview/assets/trooper-preview.js"></script>
+    <link rel="stylesheet" crossorigin href="/trooper-app-preview/assets/trooper-preview2.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

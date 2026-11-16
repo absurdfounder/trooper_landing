@@ -17,7 +17,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         <RecentlyShippedSection />
       </SectionShell>
 
-      <SectionShell bgClass="bg-canvas" noBorderBottom={false}>
+      <SectionShell bgClass="bg-canvas" noBorder noBorderBottom>
         <Newsletter />
       </SectionShell>
       <Footer />

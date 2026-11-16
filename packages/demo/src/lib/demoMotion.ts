@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, type RefObject } from 'react';
+import { TROOPER_DEMO as C } from '../components/demoTheme';
 
 /**
  * Motion vocabulary for the hero demo, ported from the Trooper app so the
@@ -159,15 +160,15 @@ export const DEMO_KEYFRAMES = `
  * up, so the scripted reel touches a UI that visibly responds.
  */
 .demo-hoverable { transition: background-color ${DUR.hover}ms ${EASE_OUT}, box-shadow ${DUR.hover}ms ${EASE_OUT}, border-color ${DUR.hover}ms ${EASE_OUT}, color ${DUR.hover}ms ${EASE_OUT}; }
-.demo-row:hover, .demo-row[data-demo-hover] { background-color: rgba(255,255,255,0.75); box-shadow: 0 1px 3px rgba(28,25,23,0.06); }
-.demo-row:active { background-color: rgba(245,245,244,0.9); }
-.demo-icon-btn:hover, .demo-icon-btn[data-demo-hover] { background-color: #F5F5F4; color: #1C1917; }
-.demo-chip:hover, .demo-chip[data-demo-hover] { background-color: #FAF9F6; border-color: #D6D3D1; }
+.demo-row:hover, .demo-row[data-demo-hover] { background-color: rgba(255,255,255,0.065); box-shadow: 0 1px 3px rgba(0,0,0,0.24); }
+.demo-row:active { background-color: rgba(255,255,255,0.1); }
+.demo-icon-btn:hover, .demo-icon-btn[data-demo-hover] { background-color: ${C.brandLight}; color: ${C.text}; }
+.demo-chip:hover, .demo-chip[data-demo-hover] { background-color: ${C.cardWarm}; border-color: ${C.brandSoft}; }
 .demo-send:hover, .demo-send[data-demo-hover] { filter: brightness(1.08); }
 
 .Trooper-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-.Trooper-scrollbar::-webkit-scrollbar-track { background: rgba(231,229,228,0.35); border-radius: 4px; }
-.Trooper-scrollbar::-webkit-scrollbar-thumb { background: #78716C; border-radius: 4px; }
+.Trooper-scrollbar::-webkit-scrollbar-track { background: rgba(63,63,63,0.45); border-radius: 4px; }
+.Trooper-scrollbar::-webkit-scrollbar-thumb { background: ${C.textSubtle}; border-radius: 4px; }
 
 @media (prefers-reduced-motion: reduce) {
   .demo-enter, .demo-pop, .demo-count-bump { animation: none; opacity: 1; transform: none; }

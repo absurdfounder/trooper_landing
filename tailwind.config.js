@@ -175,9 +175,9 @@ module.exports = {
       /*
        * Trooper typography (Ferndesk-aligned)
        * — font-sans / font-inter        → body, UI (Inter)
-       * — font-display / font-erode     → headlines (Funnel Display)
+       * — font-display / font-erode     → headlines (Inter)
        * — font-mono                     → code, terminal, agent UI (system stack)
-       * — font-brand / font-silkscreen  → section kickers, logo wordmark
+       * — font-brand / font-silkscreen  → section kickers (Inter)
        * Utilities: type-h1, type-h2, type-body, type-caption, type-label, type-code, kicker
        */
       fontFamily: {

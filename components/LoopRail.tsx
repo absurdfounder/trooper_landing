@@ -201,7 +201,7 @@ function LoopInfinityOo() {
 
 function LoopHeadline() {
   return (
-    <h2 className="h2-section mx-auto">
+    <h2 className="h2-section mx-auto" aria-label="Troopers work from a loop, not a prompt">
       Troopers work from a l
       <LoopInfinityOo />
       p,

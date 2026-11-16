@@ -97,7 +97,7 @@ export default function IntegrationScroller({ tiles, totalCount }: IntegrationSc
           Works with the tools you already have.
         </h2>
         <p className="lede sm:mx-auto">
-          If it has an API, a trooper can reach it.
+          Browse supported integrations and see what Trooper can do with each one.
         </p>
       </motion.div>
 

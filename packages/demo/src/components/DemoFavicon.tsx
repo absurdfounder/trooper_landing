@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { getFaviconUrl } from '../lib/favicon';
+import { TROOPER_DEMO as C } from './demoTheme';
 
 export function DemoFavicon({
   domain,
@@ -34,8 +35,8 @@ export function DemoFavicon({
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#F5F5F4',
-          color: '#78716C',
+          background: C.brandLight,
+          color: C.textMuted,
           fontSize: Math.max(7, size * 0.38),
           fontWeight: 700,
           flexShrink: 0,

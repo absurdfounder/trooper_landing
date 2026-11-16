@@ -4,6 +4,7 @@ import { Hash, Tag, Target } from 'lucide-react';
 
 import { DemoFavicon } from './DemoFavicon';
 import type { DemoTag } from './demoTaskExecution';
+import { TROOPER_DEMO as C } from './demoTheme';
 
 /**
  * Inline entity pill.
@@ -14,10 +15,10 @@ import type { DemoTag } from './demoTaskExecution';
  * demoTaskExecution's runtime exports never enter the graph either.
  */
 export const TAG_COLORS: Record<DemoTag['type'], { bg: string; border: string; color: string }> = {
-  channel: { bg: '#F5F5F4', border: '#E7E5E4', color: '#57534E' },
-  goal: { bg: '#f0f5e6', border: '#c4d9a0', color: '#284800' },
-  site: { bg: '#FFFBEB', border: '#FDE68A', color: '#92400E' },
-  topic: { bg: '#EFF6FF', border: '#BFDBFE', color: '#1E40AF' },
+  channel: { bg: C.brandLight, border: C.border, color: C.textMuted },
+  goal: { bg: C.successTint, border: C.border, color: C.success },
+  site: { bg: 'rgba(217,154,71,0.14)', border: C.border, color: '#E9C48F' },
+  topic: { bg: 'rgba(96,165,250,0.14)', border: C.border, color: '#A9CCFF' },
 };
 
 export function DemoTagBadge({ tag, size = 'sm' }: { tag: DemoTag; size?: 'sm' | 'xs' }) {

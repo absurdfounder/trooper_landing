@@ -184,11 +184,11 @@ function DemoSidebarRail({ org, onActivity }: { org: DemoOrg; onActivity: () => 
     <div style={{ width: 52, minWidth: 52, borderRight: `1px solid ${C.border}`, background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, width: "100%" }}>
         <img src="/images/trooper-logomark-64.webp" alt="" style={{ width: 32, height: 32, objectFit: "contain" }} />
-        <div style={{ width: 28, height: 1, background: "rgba(231,229,228,0.9)" }} />
+        <div style={{ width: 28, height: 1, background: C.border }} />
         <div style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.card, boxShadow: "0 1px 4px rgba(28,25,23,0.08)", overflow: "hidden", padding: 6 }}>
           <DemoFavicon src={org.icon} size={24} rounded="md" alt={org.name} />
         </div>
-        <button type="button" onClick={onActivity} className="demo-hoverable demo-icon-btn" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(245,245,244,0.7)", color: C.textSubtle, border: "none", cursor: "pointer" }}>
+        <button type="button" onClick={onActivity} className="demo-hoverable demo-icon-btn" style={{ width: 40, height: 40, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center", background: C.cardWarm, color: C.textSubtle, border: "none", cursor: "pointer" }}>
           <Plus size={16} strokeWidth={1.5} />
         </button>
       </div>
@@ -277,11 +277,11 @@ function DemoSidebarNav({
         <div style={{
           width: 32, height: 32, borderRadius: 16, display: "flex", alignItems: "center", justifyContent: "center",
           background: active ? C.brandLight : tone === "advanced" ? C.brandLight : "rgba(237,235,233,0.8)",
-          color: active ? "#292524" : tone === "advanced" ? C.textSubtle : C.textMuted,
+          color: active ? C.text : tone === "advanced" ? C.textSubtle : C.textMuted,
         }}>
           <Icon size={16} strokeWidth={1.35} />
         </div>
-        <span style={{ fontSize: 14, fontWeight: active ? 600 : tone === "advanced" ? 400 : 500, color: active ? C.text : tone === "advanced" ? C.textMuted : "#44403c" }}>{item.label}</span>
+        <span style={{ fontSize: 14, fontWeight: active ? 600 : tone === "advanced" ? 400 : 500, color: active ? C.text : C.textMuted }}>{item.label}</span>
       </button>
     );
   };
@@ -462,14 +462,14 @@ function DemoChatPane({
 
   return (
     <div style={{ width: DEMO_CHAT_W, minWidth: DEMO_CHAT_W, flexShrink: 0, borderRight: `1px solid ${C.borderWarm}`, background: C.card, display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: channelBrand === 'slack' ? '#f8f5fb' : channelBrand === 'whatsapp' ? '#f0faf4' : C.card }}>
+      <div style={{ padding: "12px 16px 8px", borderBottom: `1px solid ${C.borderWarm}`, background: channelBrand === 'slack' ? 'rgba(160,80,170,0.08)' : channelBrand === 'whatsapp' ? 'rgba(97,170,100,0.08)' : C.card }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-          <button type="button" onClick={onActivity} className="demo-hoverable" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#525252" }}>
+          <button type="button" onClick={onActivity} className="demo-hoverable" style={{ display: "flex", alignItems: "center", gap: 6, border: "none", background: "none", padding: 0, cursor: "pointer", fontSize: 14, fontWeight: 600, color: C.text }}>
             <ChannelIcon size={14} strokeWidth={1.75} color={headerAccent} />
             {channelName}
-            <ChevronDown size={14} strokeWidth={2} color="#a3a3a3" />
+            <ChevronDown size={14} strokeWidth={2} color={C.textSubtle} />
           </button>
-          <button type="button" onClick={onActivity} className="demo-hoverable demo-chip" style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 32, padding: "0 10px", borderRadius: 8, border: `1px solid rgba(231,229,228,0.8)`, background: C.card, fontSize: 12, fontWeight: 500, color: "#525252", boxShadow: "0 1px 2px rgba(28,25,23,0.04)", cursor: "pointer" }}>
+          <button type="button" onClick={onActivity} className="demo-hoverable demo-chip" style={{ display: "inline-flex", alignItems: "center", gap: 4, height: 32, padding: "0 10px", borderRadius: 8, border: `1px solid ${C.border}`, background: C.cardWarm, fontSize: 12, fontWeight: 500, color: C.text, boxShadow: "0 1px 2px rgba(0,0,0,0.16)", cursor: "pointer" }}>
             <MessageSquarePlus size={14} strokeWidth={1.75} />
             New session
           </button>
@@ -495,7 +495,7 @@ function DemoChatPane({
                 <span style={{ fontSize: 9, fontWeight: 600, color: C.text, background: C.brandLight, padding: "2px 6px", borderRadius: 4, height: 16, display: "inline-flex", alignItems: "center" }}>Manager</span>
               )}
               <span style={{ fontSize: 12, color: C.textSubtle }}>— {msg.role}</span>
-              <span style={{ fontSize: 11, color: "#d6d3d1", marginLeft: "auto" }}>{msg.time}</span>
+              <span style={{ fontSize: 11, color: C.textSubtle, marginLeft: "auto" }}>{msg.time}</span>
             </div>
             <div style={{ marginLeft: 32, fontSize: 14, lineHeight: 1.55, color: C.textMuted }}>{renderMentionParts(msg.text)}</div>
             {msg.reaction && (
@@ -541,7 +541,7 @@ function DemoChatPane({
                 className="demo-hoverable demo-send"
                 style={{
                   width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                  background: inputText ? C.brand : "rgba(28,25,23,0.09)", color: inputText ? "white" : C.textSubtle,
+                  background: inputText ? C.brand : "rgba(255,255,255,0.08)", color: inputText ? C.brandForeground : C.textSubtle,
                 }}
               >
                 <ArrowUp size={14} strokeWidth={2.25} />
@@ -589,7 +589,7 @@ function DemoBoardPane({
       style={{
         display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6,
         border: "none", cursor: "pointer",
-        background: viewMode === mode ? "rgba(231,229,228,0.9)" : "transparent",
+        background: viewMode === mode ? C.brandLight : "transparent",
         fontSize: 11, fontWeight: 500, color: viewMode === mode ? C.text : C.textMuted,
       }}
     >
@@ -605,7 +605,7 @@ function DemoBoardPane({
           {toggle('list', <List size={14} strokeWidth={1.5} />, 'List')}
         </div>
         <div style={{ flex: 1 }} />
-        <button type="button" onClick={onActivity} className="demo-hoverable" style={{ width: 32, height: 32, borderRadius: 8, border: "1px solid rgba(28,25,23,0.9)", background: "#1c1917", color: "white", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+        <button type="button" onClick={onActivity} className="demo-hoverable" style={{ width: 32, height: 32, borderRadius: 8, border: `1px solid ${C.border}`, background: C.brand, color: C.brandForeground, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <Plus size={14} strokeWidth={2} />
         </button>
       </div>
@@ -1529,7 +1529,7 @@ export default function TrooperDemo({
         <div style={{
           position: "relative", width: DEMO_CANVAS_W, borderRadius: C.radius, overflow: "hidden",
           border: `1px solid ${C.border}`, background: C.bg,
-          boxShadow: "0 24px 48px -16px rgba(28,25,23,0.18), 0 8px 16px -8px rgba(28,25,23,0.08)",
+          boxShadow: "0 24px 48px -16px rgba(0,0,0,0.62), 0 8px 16px -8px rgba(0,0,0,0.34)",
         }}>
           <div style={{ display: "flex", alignItems: "center", height: DEMO_CHROME_H, padding: "0 16px", background: C.cardWarm, borderBottom: `1px solid ${C.border}`, gap: 12 }}>
             <div style={{ display: "flex", gap: 7 }}>

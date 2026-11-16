@@ -48,44 +48,29 @@ import { getLoopRailItems, LOOP_CATALOG_COUNT } from '@/lib/loopCatalog'
 import IntegrationScroller from '@/components/IntegrationScroller'
 import { getIntegrationTiles } from '@/lib/integrationScroller'
 import { PLUGIN_CATALOG_COUNT } from '@/lib/pluginCatalog'
-import VoicesSection from '@/components/VoicesSection'
-import { getVoices } from '@/lib/voices'
 import FAQ from '@/components/faq'
-import FounderMessageSection from '@/components/FounderMessageSection'
-import DarkSplitSection from '@/components/ui/DarkSplitSection'
 import SectionShell from '@/components/ui/SectionShell'
+import ComputerUseSection from '@/components/ComputerUseSection'
 
-import ConnectSection from '@/components/moat/ConnectSection'
 import PlansFlowSection from '@/components/moat/PlansFlowSection'
+import ConnectSection from '@/components/moat/ConnectSection'
 
-const DashboardShowcaseSection = dynamic(() => import('@/components/DashboardShowcaseSection'))
 const OldWays = dynamic(() => import('@/components/OldWays'))
 const LoopApiSection = dynamic(() => import('@/components/LoopApiSection'))
 const MobileChannelsSection = dynamic(() => import('@/components/MobileChannelsSection'))
 const CompanyBrainSection = dynamic(() => import('@/components/CompanyBrainSection'))
 const OptimizeAgentsSection = dynamic(() => import('@/components/OptimizeAgentsSection'))
+
 export default function Home() {
   const loopRailItems = getLoopRailItems(8)
   const integrationTiles = getIntegrationTiles(36)
-  const voices = getVoices()
 
   return (
-    <>
-      {/* overflow-x-clip stops one misbehaving absolute child from widening the page
-          (same pattern Gumloop/Cursor use) without creating a sticky-breaking scrollport. */}
-      <div className="overflow-x-clip">
-      <div className="hero-shell bg-canvas">
-        <Header />
+    <div className="overflow-x-clip">
+      <div className="hero-shell trooper-home-shell">
+        <Header dark />
         <Hero />
       </div>
-
-      <DarkSplitSection>
-        <VoicesSection voices={voices} />
-      </DarkSplitSection>
-
-      {/* Ferndesk-style product frame: chat + board coordination after social proof.
-          Owns its own section so the dither demo band can run edge-to-edge. */}
-      <DashboardShowcaseSection />
 
       <SectionShell rhythm>
         <IntegrationScroller tiles={integrationTiles} totalCount={PLUGIN_CATALOG_COUNT} />
@@ -95,12 +80,13 @@ export default function Home() {
         <CompanyBrainSection />
       </SectionShell>
 
-      {/* Orgs / action / memory / workflows / surfaces */}
-      <SectionShell id="capabilities" rhythm>
+      <SectionShell rhythm>
         <OldWays />
       </SectionShell>
 
-      <SectionShell id="plans" rhythm>
+      <ComputerUseSection />
+
+      <SectionShell rhythm>
         <PlansFlowSection />
       </SectionShell>
 
@@ -110,19 +96,13 @@ export default function Home() {
 
       <ConnectSection />
 
-      {/* Loop APIs — owns its own section so the dither band runs edge-to-edge. */}
       <LoopApiSection />
 
       <SectionShell rhythm>
         <LoopRail items={loopRailItems} totalCount={LOOP_CATALOG_COUNT} />
       </SectionShell>
 
-      {/* Field Comms — channels + phone pair on the page rail. */}
       <MobileChannelsSection />
-
-      <SectionShell rhythm>
-        <FounderMessageSection />
-      </SectionShell>
 
       <SectionShell rhythm eyebrow="Work">
         <ul className="grid gap-x-10 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,7 +133,6 @@ export default function Home() {
       <SectionShell rhythm>
         <FAQ />
       </SectionShell>
-      </div>
-    </>
+    </div>
   )
 }

@@ -49,7 +49,7 @@ export function DemoGenerationCard({
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, background: C.card }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', flexShrink: 0,
-        borderBottom: `1px solid ${C.border}`, background: '#FAFAF9',
+        borderBottom: `1px solid ${C.border}`, background: C.cardWarm,
       }}>
         <Sparkles size={13} color={C.brand} strokeWidth={2} />
         <span style={{ fontSize: 12, fontWeight: 600, color: C.text }}>

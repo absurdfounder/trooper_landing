@@ -1,6 +1,7 @@
 'use client';
 
-import { TrooperDemo, type DemoScenarioId } from '@trooper/demo';
+import TrooperDemo from '../packages/demo/src/TrooperDemo';
+import type { DemoScenarioId } from '../packages/demo/src/scenarios/types';
 
 /**
  * The demo now lives in `packages/demo` so it can be built and iterated on

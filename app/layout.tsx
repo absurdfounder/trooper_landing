@@ -1,7 +1,6 @@
 import './css/style.css'
 
 import { Inter } from 'next/font/google'
-import localFont from 'next/font/local'
 import Script from 'next/script'
 import PlausibleProvider from 'next-plausible'
 
@@ -13,20 +12,6 @@ const homeOg = ogImageMeta('home', 'Trooper: AI teammates that ship real work')
 
 /** Body — paragraphs, nav, UI */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
-
-/** Section kickers, logo wordmark, small brand labels */
-const silkscreen = localFont({
-  src: [{ path: '../public/fonts/Silkscreen-Regular.ttf', weight: '400', style: 'normal' }],
-  variable: '--font-silkscreen',
-})
-
-/** H1, hero, section titles — Funnel Display */
-const display = localFont({
-  src: '../public/fonts/FunnelDisplay-VariableFont_wght.ttf',
-  variable: '--font-display',
-  display: 'swap',
-  weight: '300 800',
-})
 
 export const viewport = {
   width: 'device-width',
@@ -109,7 +94,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/images/trooper-wordmark.svg?v=9" type="image/svg+xml" />
       </head>
       <body
-        className={`${inter.variable} ${silkscreen.variable} ${display.variable} bg-canvas font-sans antialiased text-ink`}
+        className={`${inter.variable} bg-canvas font-sans antialiased text-ink`}
       >
         {/* GA + Clarity site-wide (covers (auth) pages too). */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FKXTBWH4RE" strategy="lazyOnload" />

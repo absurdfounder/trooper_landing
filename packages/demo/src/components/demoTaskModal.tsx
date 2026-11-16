@@ -74,7 +74,7 @@ function ProviderChip({ provider, size = 14 }: { provider: string; size?: number
 
 function ToolIcon({ tool }: { tool: string }) {
   const name = getToolIconName(tool);
-  const props = { size: 13, strokeWidth: 1.75, color: '#a8a29e' };
+  const props = { size: 13, strokeWidth: 1.75, color: C.textSubtle };
   switch (name) {
     case 'globe': return <Globe {...props} />;
     case 'search': return <Search {...props} />;
@@ -172,8 +172,8 @@ function ThreadArtifactBlock({ name, ext, onOpen }: { name: string; ext?: string
       style={{
         display: 'flex', width: '100%', minHeight: 64, margin: '10px 0 4px',
         borderRadius: 12, overflow: 'hidden', cursor: 'pointer', padding: '0 16px',
-        border: `1px solid ${hover ? 'rgba(214,211,209,0.95)' : C.border}`,
-        background: hover ? 'rgba(255,255,255,0.85)' : C.card,
+        border: `1px solid ${hover ? C.brand : C.border}`,
+        background: hover ? C.cardWarm : C.card,
         boxSizing: 'border-box',
         transition: `background-color ${DUR.panel}ms ${EASE_OUT}, border-color ${DUR.panel}ms ${EASE_OUT}`,
       }}
@@ -183,18 +183,18 @@ function ThreadArtifactBlock({ name, ext, onOpen }: { name: string; ext?: string
           position: 'absolute', right: 6, width: 40, height: 55,
           borderRadius: '8px 8px 0 0', border: `1px solid ${C.border}`,
           display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 11,
-          background: 'linear-gradient(to bottom, #fff, rgba(255,255,255,0))',
+          background: 'linear-gradient(to bottom, #313131, rgba(49,49,49,0))',
           transform: `translateY(19%) rotate(${hover ? -3.7 : -5.7}deg) scale(${hover ? 1.035 : 1})`,
           transformOrigin: 'bottom center',
           transition: `transform ${DUR.panel}ms ${EASE_OUT}`,
           willChange: 'transform',
         }}>
-          {isCode ? <Code size={15} color="#a8a29e" /> : <FileText size={15} color="#a8a29e" />}
+          {isCode ? <Code size={15} color={C.textSubtle} /> : <FileText size={15} color={C.textSubtle} />}
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4, padding: '14px 0', minWidth: 0, flex: 1 }}>
         <div style={{ fontSize: 13, lineHeight: 1.35, fontWeight: 500, color: C.text, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</div>
-        <div style={{ fontSize: 11, color: '#a8a29e' }}>
+        <div style={{ fontSize: 11, color: C.textSubtle }}>
           {isCode ? 'Code' : 'Document'}<span style={{ opacity: 0.5 }}> · </span>{(ext || 'file').toUpperCase()}
         </div>
       </div>
@@ -304,7 +304,7 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
           {/* Elapsed time reveals on hover, as it does in the app. */}
           {duration && (
             <span style={{
-              flexShrink: 0, marginLeft: 'auto', fontSize: 10, color: '#a8a29e',
+              flexShrink: 0, marginLeft: 'auto', fontSize: 10, color: C.textSubtle,
               fontVariantNumeric: 'tabular-nums',
               opacity: hover ? 1 : 0, transition: `opacity ${DUR.panel}ms ${EASE_OUT}`,
             }}>
@@ -314,7 +314,7 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
           {expandable && (
             <ChevronUp
               size={12}
-              color="#a8a29e"
+              color={C.textSubtle}
               style={{
                 flexShrink: 0,
                 transform: open ? 'none' : 'rotate(180deg)',
@@ -328,8 +328,8 @@ function ToolTimelineRow({ log, isLast, isLatest, onOpenArtifact }: {
             minWidth: 20, height: 20,
           }}>
             {running
-              ? <TypingDots size={4} color="#b45309" />
-              : <Check size={14} strokeWidth={2.5} color="#3f6b00" />}
+              ? <TypingDots size={4} color={C.warning} />
+              : <Check size={14} strokeWidth={2.5} color={C.success} />}
           </span>
         </div>
 
@@ -446,14 +446,14 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
       style={{
         display: 'flex', width: '100%', minHeight: 64, textAlign: 'left', cursor: 'pointer',
         borderRadius: 12, border: `1px solid ${active ? C.brand : C.border}`,
-        background: active ? '#f0f5e6' : C.card,
+        background: active ? C.successTint : C.card,
         padding: '12px 16px', marginTop: 10, boxSizing: 'border-box',
       }}
     >
       <div style={{ display: 'flex', gap: 12, alignItems: 'center', width: '100%' }}>
         <div style={{
           width: 36, height: 44, borderRadius: '6px 6px 0 0', border: `1px solid ${C.border}`,
-          background: 'linear-gradient(to bottom, white, transparent)',
+          background: 'linear-gradient(to bottom, #313131, transparent)',
           display: 'flex', alignItems: 'flex-start', justifyContent: 'center', paddingTop: 8, flexShrink: 0,
         }}>
           <FileText size={16} strokeWidth={1.75} color={C.textSubtle} />
@@ -467,7 +467,7 @@ function DeliveryCard({ name, active, onClick }: { name: string; active?: boolea
   );
 }
 
-function TypingDots({ size = 5, color = '#78716c' }: { size?: number; color?: string }) {
+function TypingDots({ size = 5, color = C.textSubtle }: { size?: number; color?: string }) {
   return (
     <span className="demo-typing-bubble" style={{ display: 'inline-flex', alignItems: 'center', gap: Math.max(3, size - 1) }} aria-hidden>
       <span className="demo-typing-dot" style={{ width: size, height: size, background: color }} />
@@ -507,7 +507,7 @@ function ThreadTypingIndicator({ name }: { name: string }) {
             height: 30, padding: '0 12px', borderRadius: 14,
             background: C.bg, border: `1px solid ${C.border}`,
           }}>
-            <TypingDots size={5} color="#78716c" />
+            <TypingDots size={5} color={C.textSubtle} />
           </div>
         </div>
       </div>
@@ -521,8 +521,8 @@ function SubtaskRow({ s }: { s: DemoSubtask }) {
   return (
     <div data-demo-subtask-id={s.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '4px 0' }}>
       <div style={{ marginTop: 2, flexShrink: 0, width: 14, height: 14, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {isDone ? <Check size={14} strokeWidth={2.5} color="#325600" />
-          : isRunning ? <TypingDots size={3.5} color="#B45309" />
+        {isDone ? <Check size={14} strokeWidth={2.5} color={C.success} />
+          : isRunning ? <TypingDots size={3.5} color={C.warning} />
             : <div style={{ width: 14, height: 14, borderRadius: 3, border: `1.5px solid ${C.border}` }} />}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -573,7 +573,7 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
           padding: '4px 2px', border: 'none', background: 'transparent', cursor: 'pointer', textAlign: 'left',
         }}
       >
-        <ListTodo size={13} strokeWidth={1.75} color={allDone ? '#325600' : running ? '#B45309' : C.textSubtle} />
+        <ListTodo size={13} strokeWidth={1.75} color={allDone ? C.success : running ? C.warning : C.textSubtle} />
         <span style={{ fontSize: 11.5, fontWeight: 600, color: C.text, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
           {done}/{total}
         </span>
@@ -584,7 +584,7 @@ function ComposerTodoAccordion({ subtasks }: { subtasks: DemoSubtask[] }) {
           {summary}
         </span>
         {running && (
-          <span style={{ flexShrink: 0, fontSize: 10, fontWeight: 600, color: '#B45309' }}>
+          <span style={{ flexShrink: 0, fontSize: 10, fontWeight: 600, color: C.warning }}>
             {running.agent}
           </span>
         )}
@@ -765,8 +765,8 @@ export function DemoTaskModal({
   }, [browserSession, videoProject, desktopSession, workflowGraph]);
 
   const statusLabel = statusCol === 'review' ? 'Human review' : statusCol === 'done' ? 'Completed' : 'In progress';
-  const statusBg = statusCol === 'review' ? '#FFFBEB' : statusCol === 'done' ? '#f0f5e6' : '#FFFBEB';
-  const statusColor = statusCol === 'review' ? '#78350F' : statusCol === 'done' ? '#284800' : '#B45309';
+  const statusBg = statusCol === 'review' ? 'rgba(217,154,71,0.14)' : statusCol === 'done' ? C.successTint : 'rgba(217,154,71,0.14)';
+  const statusColor = statusCol === 'review' ? '#E9C48F' : statusCol === 'done' ? '#9ACD9C' : '#E9C48F';
 
   if (!open) return null;
 
@@ -774,14 +774,14 @@ export function DemoTaskModal({
     <div style={{
       position: 'absolute', inset: 6, zIndex: 30,
       display: 'flex', flexDirection: 'column',
-      background: 'rgba(28,25,23,0.4)', backdropFilter: 'blur(3px)',
+      background: 'rgba(0,0,0,0.58)', backdropFilter: 'blur(3px)',
       borderRadius: 10,
       animation: `modalBackdropIn ${DUR.panel}ms ${EASE_OUT} both`,
     }}>
       <div style={{
         position: 'relative', flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column',
         margin: 8, borderRadius: 12, border: `1px solid ${C.border}`, background: C.card,
-        boxShadow: '0 20px 40px -12px rgba(28,25,23,0.28)',
+        boxShadow: '0 20px 40px -12px rgba(0,0,0,0.68)',
         overflow: 'hidden',
         // Grows out of the card that was clicked, so opening reads as caused by
         // the click rather than as an unrelated panel fading in.
@@ -906,12 +906,11 @@ export function DemoTaskModal({
             <BorderBeam
               size="line"
               colorVariant="sunset"
-              theme="light"
+              theme="dark"
               active={workRunning && !reducedMotion}
               borderRadius={0}
-              // The light-theme presets are tuned for white; a warm glow on the
-              // app's warm #FAFAF9 chrome needs the extra brightness and
-              // saturation to register at all at 1x.
+              // Match the app's dark workspace appearance and keep the border
+              // beam legible against ink surfaces.
               strength={1}
               brightness={2.1}
               saturation={1.7}
@@ -920,9 +919,9 @@ export function DemoTaskModal({
             >
             <div style={{
               display: 'flex', alignItems: 'center', gap: 6, padding: '8px 12px',
-              borderBottom: `1px solid ${C.border}`, background: '#FAFAF9',
+              borderBottom: `1px solid ${C.border}`, background: C.cardWarm,
             }}>
-              <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: '#F5F5F4' }}>
+              <div style={{ display: 'flex', borderRadius: 8, border: `1px solid ${C.border}`, padding: 2, background: C.bg }}>
                 {availableModes.map(mode => (
                   <button
                     key={mode}

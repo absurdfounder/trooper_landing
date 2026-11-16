@@ -181,12 +181,13 @@ function FooterLiveO({
  * Giant footer watermark: “tr” + two live letter-O faces + “per.”
  * Faces share the letter color (no bobbing) so they read as type, not stickers.
  */
-export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'watermark' | 'nav' }) {
+export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'watermark' | 'nav' | 'nav-dark' }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const openings = useRef<string[] | null>(null)
   const [reduceMotion, setReduceMotion] = useState(false)
   const nearFooter = useInView(rootRef, { amount: 0.01, margin: '40% 0px' })
-  const nav = variant === 'nav'
+  const nav = variant !== 'watermark'
+  const darkNav = variant === 'nav-dark'
   if (nav && openings.current === null) {
     const first = shuffle(MOTIONS)
     const second = shuffle(MOTIONS)
@@ -211,7 +212,7 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
       aria-hidden={nav ? undefined : true}
       className={
         nav
-          ? 'flex select-none items-center whitespace-nowrap font-display text-[1.65rem] font-medium lowercase leading-none tracking-[-0.045em] text-[#090909] sm:text-[1.85rem]'
+          ? `flex select-none items-center whitespace-nowrap font-display font-medium lowercase leading-none tracking-[-0.045em] ${darkNav ? 'text-[1.65rem] text-white sm:text-[1.85rem]' : 'text-[1.8rem] text-[#090909] sm:text-[2rem]'}`
           : 'pointer-events-none flex select-none items-center justify-center gap-[0.02em] overflow-x-hidden whitespace-nowrap font-display text-[clamp(2.75rem,16vw,11rem)] font-medium lowercase leading-none tracking-[-0.045em] text-neutral-200'
       }
     >
@@ -260,5 +261,46 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
       </span>
       <span>{nav ? 'per' : 'per.'}</span>
     </div>
+  )
+}
+
+/** Two live Trooper avatars, scaled to sit inline with the hero headline. */
+export function TrooperHeroCharacters() {
+  return (
+    <span className="trooper-hero-characters" aria-hidden="true">
+      {NAV_GLYPHS.map((glyph, index) => (
+        <span
+          key={glyph.presetId}
+          className="relative inline-flex shrink-0"
+          style={{
+            width: '0.46em',
+            height: '0.46em',
+            marginLeft: index === 1 ? '-0.09em' : 0,
+            transform: 'translateY(0.025em)',
+            zIndex: 2 - index,
+          }}
+        >
+          <span
+            className="absolute left-0 top-0 origin-top-left"
+            style={{
+              width: FACE_PX,
+              height: FACE_PX,
+              transform: `scale(calc(0.46em / ${FACE_PX}px))`,
+            }}
+          >
+            <FooterLiveO
+              presetId={glyph.presetId}
+              body={glyph.body}
+              eyes={NAV_EYES}
+              animation={index === 0 ? 'curious' : 'listening'}
+              size={FACE_PX}
+              active
+              cycle
+              opening={index === 0 ? 'curious' : 'listening'}
+            />
+          </span>
+        </span>
+      ))}
+    </span>
   )
 }

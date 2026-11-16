@@ -27,13 +27,13 @@ export function DemoBrowserTitleBar({
       display: 'flex', alignItems: 'center', gap: compact ? 6 : 8,
       height: h, padding: `0 ${padX}px`, flexShrink: 0,
       borderBottom: `1px solid ${C.border}`,
-      background: '#fff',
+      background: C.cardWarm,
     }}>
       {claimed ? (
         <span style={{
           display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0,
-          borderRadius: 999, background: '#f0f5e6', color: '#325600',
-          border: '1px solid #c4d9a0', padding: '2px 8px',
+          borderRadius: 999, background: C.successTint, color: C.success,
+          border: `1px solid ${C.border}`, padding: '2px 8px',
           fontSize: compact ? 9 : 10, fontWeight: 700,
         }}>
           Claimed
@@ -42,7 +42,7 @@ export function DemoBrowserTitleBar({
       <div style={{
         display: 'flex', alignItems: 'center', gap: compact ? 4 : 6,
         flex: 1, minWidth: 0, height: compact ? 20 : 24,
-        borderRadius: 999, background: '#F5F5F4', padding: '0 10px',
+        borderRadius: 999, background: C.bg, padding: '0 10px',
       }}>
         {faviconDomain ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -59,7 +59,7 @@ export function DemoBrowserTitleBar({
         <span style={{
           flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
-          fontSize, fontWeight: 500, color: '#57534E',
+          fontSize, fontWeight: 500, color: C.textMuted,
         }}>
           {addressText}
         </span>
@@ -101,7 +101,7 @@ function TabStrip({
     <div style={{
       display: 'flex', alignItems: 'flex-end', gap: 2,
       padding: compact ? '4px 6px 0' : '6px 8px 0',
-      background: '#DEE1E6', borderBottom: '1px solid #c5c8ce', flexShrink: 0,
+      background: C.cardWarm, borderBottom: `1px solid ${C.border}`, flexShrink: 0,
       overflow: 'hidden',
     }}>
       {tabs.map((tab) => {
@@ -116,12 +116,12 @@ function TabStrip({
               display: 'flex', alignItems: 'center', gap: 6,
               maxWidth: compact ? 110 : 140, minWidth: 0, flex: '0 1 auto',
               marginBottom: -1, borderRadius: '8px 8px 0 0',
-              background: active ? '#fff' : '#D3D6DB',
+              background: active ? C.card : C.bg,
               padding: compact ? '5px 8px' : '6px 10px',
-              boxShadow: active ? '0 -1px 0 #fff' : 'none',
+              boxShadow: active ? `0 -1px 0 ${C.card}` : 'none',
               fontSize: compact ? 10 : 11,
               fontWeight: active ? 600 : 500,
-              color: active ? '#1c1917' : '#57534e',
+              color: active ? C.text : C.textSubtle,
             }}
           >
             {tab.faviconDomain ? (
@@ -145,7 +145,7 @@ function TabStrip({
       })}
       <div style={{
         flex: 1, height: compact ? 22 : 26, marginBottom: -1, minWidth: 24,
-        borderRadius: '8px 8px 0 0', background: '#D3D6DB',
+        borderRadius: '8px 8px 0 0', background: C.bg,
       }} />
     </div>
   );
@@ -206,7 +206,7 @@ export function DemoBrowserFrame({
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', height: '100%',
-      minHeight: compact ? 0 : 280, background: '#fff',
+      minHeight: compact ? 0 : 280, background: C.bg,
     }}>
       {showTabStrip ? (
         <TabStrip tabs={resolvedTabs} compact={compact} />
@@ -220,7 +220,7 @@ export function DemoBrowserFrame({
       />
       <div style={{
         flex: 1, minHeight: compact ? 0 : 240, position: 'relative',
-        background: '#fafaf9', overflow: 'hidden',
+        background: C.bg, overflow: 'hidden',
       }}>
         {children ? (
           children
@@ -229,14 +229,14 @@ export function DemoBrowserFrame({
             title={title}
             srcDoc={srcDoc}
             sandbox="allow-same-origin allow-scripts"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', background: '#fff' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', background: C.bg }}
           />
         ) : src ? (
           <iframe
             title={title}
             src={src}
             sandbox="allow-same-origin allow-scripts"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', background: '#fff' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', background: C.bg }}
           />
         ) : (
           <div style={{

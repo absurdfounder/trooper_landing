@@ -11,11 +11,13 @@ export default function DeferredMount({
   minHeight = 0,
   desktopOnly = false,
   rootMargin = '320px',
+  className,
 }: {
   children: ReactNode
   minHeight?: number
   desktopOnly?: boolean
   rootMargin?: string
+  className?: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [show, setShow] = useState(false)
@@ -37,7 +39,7 @@ export default function DeferredMount({
   }, [desktopOnly, rootMargin])
 
   return (
-    <div ref={ref} style={!show && minHeight ? { minHeight } : undefined}>
+    <div ref={ref} className={className} style={!show && minHeight ? { minHeight } : undefined}>
       {show ? children : null}
     </div>
   )

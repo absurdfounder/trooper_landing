@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import { ChevronDown, Globe } from 'lucide-react';
 import { getCurrentLanguage, setLanguageWithCookie, ensureTranslation } from '../../app/utils/googleTranslateHelper';
 import { requestGoogleTranslate } from '@/components/GoogleTranslateRuntime';
 
@@ -68,7 +69,7 @@ const processLanguagesForDropdown = (): LanguageData[] => {
 // Get processed languages list
 const allUniqueLanguages = processLanguagesForDropdown();
 
-const TranslateButton = () => {
+const TranslateButton = ({ dark = false, landing = false }: { dark?: boolean; landing?: boolean }) => {
   const pathname = usePathname();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageData>(() => {
@@ -166,28 +167,38 @@ const TranslateButton = () => {
     <div className="relative notranslate" translate="no" ref={dropdownRef} onClick={preventTranslation}>
       <button 
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="font-medium text-slate-900 hover:text-emerald-600 px-4 py-3 flex items-center transition duration-150 ease-in-out relative group"
+        aria-expanded={dropdownOpen}
+        data-landing-language-trigger={landing ? '' : undefined}
+        className={landing
+          ? dark
+            ? 'relative inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.055] px-3 py-2 text-[12px] font-medium text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-xl transition-colors hover:border-white/25 hover:bg-white/10 sm:gap-2 sm:px-4 sm:text-[13px]'
+            : 'relative inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white/85 px-3 py-2 text-[12px] font-medium text-slate-800 shadow-[0_3px_10px_rgba(15,23,42,.05)] backdrop-blur-xl transition-colors hover:border-slate-400 hover:bg-white sm:gap-2 sm:px-4 sm:text-[13px]'
+          : dark
+            ? 'relative inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.055] px-4 py-2 text-[13px] font-medium text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,.08)] backdrop-blur-xl transition-colors hover:border-white/25 hover:bg-white/10'
+            : 'font-medium text-slate-900 hover:text-emerald-600 px-4 py-3 flex items-center transition duration-150 ease-in-out relative group'}
         aria-label="Select language"
       >
-        <span className="relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 group-hover:after:w-full after:transition-all after:duration-300 flex items-center">
-          <span className="mr-1 opacity-80">{selectedLanguage.flag}</span>
-          <span className="mr-1">{selectedLanguage.code.toUpperCase()}</span>
+        {dark || landing ? <Globe className={`h-4 w-4 ${dark ? '' : 'text-slate-600'}`} aria-hidden /> : null}
+        <span className={dark || landing ? 'inline-flex items-center gap-1.5' : 'relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-emerald-600 group-hover:after:w-full after:transition-all after:duration-300 flex items-center'}>
+          {!dark && !landing ? <span className="mr-1 opacity-80">{selectedLanguage.flag}</span> : null}
+          <span className={dark || landing ? '' : 'mr-1'}>{selectedLanguage.code.toUpperCase()}</span>
         </span>
+        {dark || landing ? <ChevronDown className={`h-3.5 w-3.5 transition-transform ${dark ? 'text-white/55' : 'text-slate-500'} ${dropdownOpen ? 'rotate-180' : ''}`} aria-hidden /> : null}
       </button>
       
       {dropdownOpen && (
-        <div className="absolute right-0 top-full mt-2 w-64 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 max-h-[28rem] overflow-y-auto notranslate" translate="no">
+        <div className={`absolute right-0 top-full z-50 mt-2 max-h-[28rem] w-64 overflow-y-auto notranslate ${dark ? 'rounded-2xl border border-white/10 bg-[#17171c]/95 text-white shadow-[0_24px_80px_rgba(0,0,0,.5)] ring-1 ring-white/[0.04] backdrop-blur-2xl' : 'rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5'}`} translate="no">
           <div className="py-1">
-            <div className="px-4 py-2 text-xs text-gray-500 border-b border-gray-100 flex justify-between items-center">
+            <div className={`flex items-center justify-between border-b px-4 py-2 text-xs ${dark ? 'border-white/10 text-white/55' : 'border-gray-100 text-gray-500'}`}>
               <span>Select language</span>
-              <span className="text-xs text-gray-400">{filteredLanguages.length} languages</span>
+              <span className={`text-xs ${dark ? 'text-white/35' : 'text-gray-400'}`}>{filteredLanguages.length} languages</span>
             </div>
 
             {/* Search input */}
-            <div className="px-3 py-2 border-b border-gray-100">
+            <div className={`border-b px-3 py-2 ${dark ? 'border-white/10' : 'border-gray-100'}`}>
               <input
                 type="text"
-                className="w-full px-2 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className={`w-full rounded border px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 ${dark ? 'border-white/10 bg-white/[0.06] text-white placeholder:text-white/35' : ''}`}
                 placeholder="Search languages..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -198,7 +209,7 @@ const TranslateButton = () => {
             {/* Language list */}
             <div className="max-h-80 overflow-y-auto">
               {filteredLanguages.length === 0 ? (
-                <div className="px-4 py-2 text-sm text-gray-500 italic">
+                <div className={`px-4 py-2 text-sm italic ${dark ? 'text-white/50' : 'text-gray-500'}`}>
                   No languages found
                 </div>
               ) : (
@@ -206,15 +217,15 @@ const TranslateButton = () => {
                   <button 
                     key={language.code}
                     onClick={() => translatePage(language)}
-                    className={`px-4 py-2 text-sm w-full text-left flex items-center ${
-                      selectedLanguage.code === language.code 
-                        ? 'bg-emerald-50 text-emerald-700' 
-                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    className={`flex w-full items-center px-4 py-2 text-left text-sm ${
+                      selectedLanguage.code === language.code
+                        ? dark ? 'bg-white/10 text-emerald-200' : 'bg-emerald-50 text-emerald-700'
+                        : dark ? 'text-white/80 hover:bg-white/[0.07] hover:text-white' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                     }`}
                   >
                     <span className="mr-2 opacity-70">{language.flag}</span> 
                     <span>{language.name}</span>
-                    <span className="ml-2 text-xs text-gray-400">
+                    <span className={`ml-2 text-xs ${dark ? 'text-white/35' : 'text-gray-400'}`}>
                       {language.code}
                     </span>
                     {selectedLanguage.code === language.code && (

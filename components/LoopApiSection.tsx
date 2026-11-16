@@ -216,7 +216,7 @@ export default function LoopApiSection() {
           transition={{ duration: 0.55, ease }}
           viewport={{ once: true, margin: '-40px' }}
         >
-          <h2 className="h2-section sm:mx-auto">
+          <h2 className="h2-section sm:mx-auto" aria-label="AI agents built by your team">
             AI agents built <ForBy /> your team
           </h2>
           <p className="lede sm:mx-auto">

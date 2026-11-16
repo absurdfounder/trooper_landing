@@ -156,7 +156,7 @@ function DesktopWorkspaceBg() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(155deg, #c8c4c0 0%, #e7e5e4 28%, #d6d3d1 55%, #cbc8c4 100%)',
+          background: 'linear-gradient(155deg, #1A1A1A 0%, #242424 28%, #1C1C1C 55%, #1A1A1A 100%)',
         }}
       />
       <div
@@ -165,7 +165,7 @@ function DesktopWorkspaceBg() {
           position: 'absolute',
           inset: 0,
           opacity: 0.28,
-          backgroundImage: 'radial-gradient(circle at center, rgba(87,83,78,0.22) 0.6px, transparent 0.6px)',
+          backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.08) 0.6px, transparent 0.6px)',
           backgroundSize: '14px 14px',
         }}
       />
@@ -311,7 +311,7 @@ export function DemoCanvasView({
 
   if (artifacts.length === 0) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24, background: '#F5F5F4' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'center', justifyContent: 'center', padding: 24, background: C.bg }}>
         <Layers size={28} strokeWidth={1.5} color={C.textSubtle} />
         <p style={{ fontSize: 12, fontWeight: 600, color: C.text, margin: '10px 0 4px' }}>Canvas</p>
         <p style={{ fontSize: 11, color: C.textSubtle, maxWidth: 220, textAlign: 'center', lineHeight: 1.5 }}>
@@ -324,14 +324,14 @@ export function DemoCanvasView({
   const useAmbient = ambientEnabled && ambientFrame != null;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: '#E7E5E4' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, background: C.bg }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px',
-        borderBottom: `1px solid ${C.border}`, background: '#FAFAF9', flexShrink: 0,
+        borderBottom: `1px solid ${C.border}`, background: C.cardWarm, flexShrink: 0,
       }}>
         <span style={{
           display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 9px', borderRadius: 6,
-          fontSize: 11, fontWeight: 600, background: '#f0f5e6', color: '#284800', border: '1px solid #c4d9a0',
+          fontSize: 11, fontWeight: 600, background: C.successTint, color: C.success, border: `1px solid ${C.border}`,
         }}>
           <Layers size={12} strokeWidth={1.75} /> Canvas
         </span>
@@ -355,8 +355,8 @@ export function DemoCanvasView({
             minHeight: '100%',
             borderRadius: 8,
             overflow: 'hidden',
-            border: '1px solid rgba(120,113,108,0.35)',
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.35)',
+            border: `1px solid ${C.border}`,
+            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.035)',
           }}
         >
           <DesktopWorkspaceBg />
@@ -401,8 +401,8 @@ export function DemoCanvasView({
                   border: `1px solid ${active || showHighlight ? C.brand : C.border}`,
                   background: C.card,
                   boxShadow: active || showHighlight
-                    ? '0 16px 40px -12px rgba(63,107,0,0.35), 0 4px 12px rgba(28,25,23,0.12)'
-                    : '0 12px 32px -12px rgba(28,25,23,0.18)',
+                    ? '0 16px 40px -12px rgba(0,0,0,0.62), 0 4px 12px rgba(0,0,0,0.32)'
+                    : '0 12px 32px -12px rgba(0,0,0,0.46)',
                   overflow: 'hidden',
                   textAlign: 'left',
                   padding: 0,
@@ -421,7 +421,7 @@ export function DemoCanvasView({
                   style={{
                     display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px',
                     height: CANVAS_TITLE_BAR_H, boxSizing: 'border-box',
-                    borderBottom: `1px solid ${C.border}`, background: '#FAFAF9',
+                    borderBottom: `1px solid ${C.border}`, background: C.cardWarm,
                     cursor: dragging ? 'grabbing' : 'grab',
                   }}
                 >
@@ -443,8 +443,8 @@ export function DemoCanvasView({
                     style={{
                       display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 6px',
                       borderRadius: 5, border: `1px solid ${comment ? C.brand : C.border}`,
-                      background: comment ? '#f0f5e6' : C.card,
-                      fontSize: 9, fontWeight: 600, color: comment ? '#284800' : C.textSubtle,
+                      background: comment ? C.successTint : C.card,
+                      fontSize: 9, fontWeight: 600, color: comment ? C.success : C.textSubtle,
                       cursor: 'pointer', flexShrink: 0,
                     }}
                   >
@@ -506,12 +506,12 @@ export function DemoCanvasView({
               alignItems: 'center',
               justifyContent: 'space-between',
               padding: '0 10px',
-              borderTop: '1px solid rgba(120,113,108,0.25)',
+              borderTop: `1px solid ${C.border}`,
               background: 'linear-gradient(180deg, rgba(41,37,36,0.88) 0%, rgba(28,25,23,0.94) 100%)',
             }}
           >
-            <span style={{ fontSize: 9, fontWeight: 500, color: '#a8a29e' }}>Canvas workspace</span>
-            <span style={{ fontSize: 9, color: '#78716c' }}>{tiles.length} artifacts · organized</span>
+            <span style={{ fontSize: 9, fontWeight: 500, color: C.textMuted }}>Canvas workspace</span>
+            <span style={{ fontSize: 9, color: C.textSubtle }}>{tiles.length} artifacts · organized</span>
           </div>
         </div>
       </div>

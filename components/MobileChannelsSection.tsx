@@ -6,7 +6,6 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 're
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
-  ArrowUpRight,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -493,7 +492,7 @@ function TrooperAppScreen({ play }: { play: boolean }) {
         </p>
       </div>
 
-      <div className="relative min-h-0 flex-1 space-y-2 overflow-y-auto overflow-x-hidden px-2 pb-3 sm:space-y-3 sm:px-4 sm:pb-4">
+      <div className="relative flex min-h-0 flex-1 flex-col gap-1.5 overflow-hidden px-2 pb-2 sm:gap-3 sm:px-4 sm:pb-4">
         {step < 1 ? (
           <div className="absolute inset-x-0 bottom-4 flex flex-col items-center gap-1.5 sm:bottom-6 sm:gap-2">
             {getTrooper('scout') ? (
@@ -516,7 +515,7 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease }}
-              className="px-0.5"
+              className="shrink-0 px-0.5"
             >
               <h2 className="text-[12px] font-medium leading-[1.3] tracking-[-0.02em] sm:text-[16px] sm:leading-[1.25]">
                 Add Vanta demo page + follow-up assets
@@ -538,7 +537,7 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, ease }}
-              className="rounded-xl border border-white/[0.09] bg-[#171612] p-2.5 sm:rounded-2xl sm:p-4"
+              className="shrink-0 rounded-xl border border-white/[0.09] bg-[#171612] p-2 sm:rounded-2xl sm:p-4"
             >
               <p className="mb-1.5 text-[11px] font-medium sm:mb-2.5 sm:text-[13px]">Ready to Merge</p>
               <div className="mb-2 flex items-center gap-1.5 sm:mb-3 sm:gap-2">
@@ -570,6 +569,7 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, ease }}
+              className="shrink-0"
             >
               <p className="mb-1 text-[9px] text-[#7a776e] sm:mb-1.5 sm:text-[11px]">Demos</p>
               <div className="overflow-hidden rounded-xl border border-white/[0.09] bg-[#171612] sm:rounded-2xl">
@@ -591,7 +591,7 @@ function TrooperAppScreen({ play }: { play: boolean }) {
                       <span className="ml-0.5 text-[9px] text-white sm:text-[11px]">▶</span>
                     </motion.div>
                   </div>
-                  <div className="absolute inset-x-2 bottom-1.5 sm:inset-x-3 sm:bottom-2.5">
+                  <div className="absolute inset-x-2 bottom-1 sm:inset-x-3 sm:bottom-2.5">
                     <p className="text-[10px] font-semibold text-white sm:text-[12px]">Vanta walkthrough</p>
                     <p className="text-[8px] text-white/65 sm:text-[10px]">og-image · demo assets</p>
                   </div>
@@ -606,7 +606,7 @@ function TrooperAppScreen({ play }: { play: boolean }) {
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.32, ease }}
-              className="space-y-2 sm:space-y-3"
+              className="shrink-0 space-y-2 sm:space-y-3"
             >
               <div>
                 <p className="mb-1 text-[9px] text-[#7a776e] sm:mb-1.5 sm:text-[11px]">Files</p>
@@ -632,14 +632,6 @@ function TrooperAppScreen({ play }: { play: boolean }) {
                 </div>
               </div>
 
-              <div className="flex items-center gap-1.5 rounded-xl border border-white/[0.09] bg-[#171612] px-2 py-1.5 sm:gap-2 sm:rounded-2xl sm:px-3.5 sm:py-2.5">
-                <Check className="size-3 text-[#3dd68c] sm:size-3.5" strokeWidth={3} />
-                <span className="min-w-0 flex-1 truncate text-[9px] text-[#c8c4b8] sm:text-[11px]">
-                  Marketing preview live
-                </span>
-                <span className="text-[8px] text-[#9a978e] sm:text-[10px]">1m</span>
-                <ArrowUpRight className="size-3 text-[#9a978e] sm:size-3.5" />
-              </div>
             </motion.div>
           ) : null}
         </AnimatePresence>
@@ -673,10 +665,10 @@ function PhoneDevice({
           style={{ background: screenBg }}
         >
           <div
-            className="pointer-events-none absolute left-1/2 top-[6px] z-30 h-[14px] w-[52px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:top-[10px] sm:h-[26px] sm:w-[96px]"
+            className="pointer-events-none absolute left-1/2 top-[6px] z-30 h-[12px] w-[48px] -translate-x-1/2 rounded-full bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] sm:top-[10px] sm:h-[26px] sm:w-[96px]"
             aria-hidden
           />
-          <div className="absolute inset-0 flex min-h-0 flex-col pt-5 sm:pt-10 [&>*]:min-h-0 [&>*]:flex-1">
+          <div className="absolute inset-0 flex min-h-0 flex-col pt-[18px] sm:pt-10 [&>*]:min-h-0 [&>*]:flex-1">
             {children}
           </div>
           <div
@@ -704,16 +696,16 @@ function PhonePair() {
   return (
     <div
       ref={rootRef}
-      className="relative mx-auto flex w-full max-w-[22rem] flex-row items-end justify-center gap-3 sm:max-w-[28rem] sm:gap-5 lg:mx-0 lg:max-w-none lg:justify-end lg:gap-6"
+      className="relative mx-auto flex w-full max-w-none snap-x snap-mandatory flex-row items-end justify-start gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:max-w-[30rem] sm:justify-center sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:mx-0 lg:max-w-none lg:justify-end lg:gap-6"
       aria-label="iMessage chat and Trooper app on iPhone"
     >
       {/* Fixed widths — never w-auto with aspect-[9/19.4] or phones collapse into pills. */}
-      <div className="w-[48%] max-w-[168px] shrink-0 sm:w-[220px] sm:max-w-[220px]">
+      <div className="w-[72vw] max-w-[252px] shrink-0 snap-center sm:w-[220px] sm:max-w-[220px]">
         <PhoneDevice screenBg="#ffffff" label="iMessage">
           <ImessageScreen play={play} />
         </PhoneDevice>
       </div>
-      <div className="w-[48%] max-w-[168px] shrink-0 sm:w-[220px] sm:max-w-[220px]">
+      <div className="w-[72vw] max-w-[252px] shrink-0 snap-center sm:w-[220px] sm:max-w-[220px]">
         <PhoneDevice screenBg="#0c0b09" label="Trooper app">
           <TrooperAppScreen play={play} />
         </PhoneDevice>

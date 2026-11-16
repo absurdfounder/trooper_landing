@@ -210,28 +210,12 @@ function LinkList({ links }: { links: LinkItem[] }) {
   );
 }
 
-function FooterColumnCell({
-  column,
-  borderRight,
-}: {
-  column: FooterColumn;
-  borderRight: boolean;
-}) {
+function FooterColumnCell({ column }: { column: FooterColumn }) {
   return (
-    <div
-      className={[
-        'flex flex-col gap-6 px-6 py-8 md:px-8 md:py-10',
-        borderRight ? 'lg:border-r lg:border-[var(--color-line)]' : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      {column.groups.map((group, gIdx) => (
-        <div
-          key={group.heading}
-          className={gIdx > 0 ? 'border-t border-[var(--color-line)] pt-5' : ''}
-        >
-          <div className="mb-3 text-sm font-semibold text-ink">{group.heading}</div>
+    <div className="flex flex-col gap-8">
+      {column.groups.map((group) => (
+        <div key={group.heading}>
+          <h2 className="mb-3 text-sm font-semibold text-ink">{group.heading}</h2>
           <LinkList links={group.links} />
         </div>
       ))}
@@ -243,13 +227,10 @@ export default function Footer() {
   const linkColumns = [featureColumn, productColumn, ecosystemColumn];
   return (
     <footer className="border-t border-[var(--color-line)] bg-white">
-      {/* Same measure + side hairlines as `.rail`, without the gutter — footer
-          cells own their own padding so content can run to the line. */}
-      <div className="mx-auto min-w-0 max-w-7xl border-[var(--color-line)] sm:border-l sm:border-r">
-        {/* Cell grid: 1 brand cell + 3 link cells, sharing hairlines */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto min-w-0 max-w-7xl px-5 sm:px-6 md:px-8">
+        <div className="grid grid-cols-1 gap-y-10 py-10 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-12 lg:grid-cols-[1.1fr_repeat(3,minmax(0,1fr))] lg:gap-x-12 lg:py-14">
           {/* Brand cell */}
-          <div className="flex flex-col items-start gap-5 px-6 py-8 md:px-8 md:py-10 lg:border-r lg:border-[var(--color-line)] border-b border-[var(--color-line)] sm:col-span-2 lg:col-span-1 lg:border-b-0">
+          <div className="flex flex-col items-start gap-5 sm:col-span-2 lg:col-span-1">
             <FooterWordmark variant="nav" />
             <p className="text-sm leading-relaxed text-ink-muted">
               AI employees you can give real work to: coding, support, sales, ops. They run loops
@@ -310,27 +291,13 @@ export default function Footer() {
           </div>
 
           {/* Link cells */}
-          {linkColumns.map((col, idx) => {
-            const isLast = idx === linkColumns.length - 1;
-            const isMobileLast = idx === linkColumns.length - 1;
-            return (
-              <div
-                key={col.number}
-                className={[
-                  !isMobileLast ? 'border-b border-[var(--color-line)] sm:border-b lg:border-b-0' : '',
-                  idx % 2 === 0 ? 'sm:border-r sm:border-[var(--color-line)] lg:border-r-0' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-              >
-                <FooterColumnCell column={col} borderRight={!isLast} />
-              </div>
-            );
-          })}
+          {linkColumns.map((col) => (
+            <FooterColumnCell key={col.number} column={col} />
+          ))}
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-start gap-4 border-t border-[var(--color-line)] px-6 py-5 md:flex-row md:items-center md:justify-between md:px-8">
+        <div className="flex flex-col items-start gap-4 border-t border-[var(--color-line)] py-5 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-muted md:text-sm">
             <span>© Boring Sites LLC. All rights reserved.</span>
             <Link href="/privacy" className="hover:text-ink">

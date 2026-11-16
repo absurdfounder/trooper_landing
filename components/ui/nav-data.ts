@@ -4,6 +4,7 @@ import {
   Brain,
   Briefcase,
   CheckCircle,
+  Cloud,
   Code,
   DollarSign,
   FlaskConical,
@@ -27,6 +28,7 @@ import {
   Shield,
   Sparkles,
   Terminal,
+  TestTube,
   TrendingUp,
   Users,
   Zap,
@@ -36,9 +38,23 @@ export type NavItem = {
   href: string
   title: string
   description?: string
+  meta?: string
+  iconSrc?: string
+  brandMark?: 'notion' | 'linear'
   icon: LucideIcon
   iconColor: string
   bgColor: string
+}
+
+export type HeaderDropdownGroup = {
+  key: string
+  label: string
+  variant: 'catalog' | 'features' | 'resources'
+  items: NavItem[]
+  sections?: { label: string; items: NavItem[] }[]
+  footerText: string
+  footerLabel: string
+  footerHref: string
 }
 
 export const featureNavItems: NavItem[] = [
@@ -76,37 +92,98 @@ export const channelNavItems: NavItem[] = [
 ]
 
 export const teamNavItems: NavItem[] = [
-  { href: '/teams/coding', title: 'Coding', description: 'Multi-agent harness & unified task board', icon: Terminal, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
-  { href: '/teams/marketing', title: 'Marketing', description: 'AI-powered campaigns & strategies', icon: Megaphone, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
-  { href: '/teams/sales', title: 'Sales', description: 'Intelligent lead gen & deal closing', icon: TrendingUp, iconColor: 'text-blue-500', bgColor: 'bg-blue-50' },
-  { href: '/teams/lawyers', title: 'Legal', description: 'Contract review & compliance prep', icon: Scale, iconColor: 'text-indigo-500', bgColor: 'bg-indigo-50' },
-  { href: '/teams/engineering', title: 'Engineering', description: 'Automated development & code reviews', icon: Code, iconColor: 'text-slate-600', bgColor: 'bg-slate-50' },
-  { href: '/teams/design', title: 'Design', description: 'Creative design & brand assets', icon: Palette, iconColor: 'text-purple-500', bgColor: 'bg-purple-50' },
-  { href: '/teams/customer-support', title: 'Customer Support', description: '24/7 support & customer success', icon: Headphones, iconColor: 'text-green-500', bgColor: 'bg-green-50' },
-  { href: '/teams/operations', title: 'Operations', description: 'Process automation & optimization', icon: Settings, iconColor: 'text-orange-500', bgColor: 'bg-orange-50' },
-  { href: '/teams/finance', title: 'Finance', description: 'Financial planning & analysis', icon: DollarSign, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
-  { href: '/teams/business-development', title: 'Business Development', description: 'Partnership & growth opportunities', icon: Briefcase, iconColor: 'text-cyan-500', bgColor: 'bg-cyan-50' },
-  { href: '/teams/research', title: 'Research', description: 'Market research & data analysis', icon: FlaskConical, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
-  { href: '/teams/security', title: 'Security', description: 'Security audits & threat detection', icon: Shield, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
-  { href: '/teams/pr', title: 'PR', description: 'Public relations & media management', icon: Radio, iconColor: 'text-fuchsia-500', bgColor: 'bg-fuchsia-50' },
-  { href: '/teams/growth', title: 'Growth', description: 'User acquisition & retention', icon: Rocket, iconColor: 'text-amber-500', bgColor: 'bg-amber-50' },
+  { href: '/teams/coding', title: 'Coding', description: 'Code, PRs & task board', icon: Terminal, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
+  { href: '/teams/marketing', title: 'Marketing', description: 'Campaigns & content', icon: Megaphone, iconColor: 'text-pink-500', bgColor: 'bg-pink-50' },
+  { href: '/teams/sales', title: 'Sales', description: 'Leads & deal pipeline', icon: TrendingUp, iconColor: 'text-blue-500', bgColor: 'bg-blue-50' },
+  { href: '/teams/lawyers', title: 'Legal', description: 'Contracts & compliance', icon: Scale, iconColor: 'text-indigo-500', bgColor: 'bg-indigo-50' },
+  { href: '/teams/engineering', title: 'Engineering', description: 'Builds, tests & reviews', icon: Code, iconColor: 'text-slate-600', bgColor: 'bg-slate-50' },
+  { href: '/teams/design', title: 'Design', description: 'Designs & brand assets', icon: Palette, iconColor: 'text-purple-500', bgColor: 'bg-purple-50' },
+  { href: '/teams/customer-support', title: 'Customer Support', description: 'Support & customer care', icon: Headphones, iconColor: 'text-green-500', bgColor: 'bg-green-50' },
+  { href: '/teams/operations', title: 'Operations', description: 'Processes & automation', icon: Settings, iconColor: 'text-orange-500', bgColor: 'bg-orange-50' },
+  { href: '/teams/finance', title: 'Finance', description: 'Planning & analysis', icon: DollarSign, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
+  { href: '/teams/business-development', title: 'Business Development', description: 'Partnerships & growth', icon: Briefcase, iconColor: 'text-cyan-500', bgColor: 'bg-cyan-50' },
+  { href: '/teams/research', title: 'Research', description: 'Markets & data', icon: FlaskConical, iconColor: 'text-violet-500', bgColor: 'bg-violet-50' },
+  { href: '/teams/security', title: 'Security', description: 'Audits & threat checks', icon: Shield, iconColor: 'text-emerald-500', bgColor: 'bg-emerald-50' },
+  { href: '/teams/pr', title: 'PR', description: 'Media & communications', icon: Radio, iconColor: 'text-fuchsia-500', bgColor: 'bg-fuchsia-50' },
+  { href: '/teams/growth', title: 'Growth', description: 'Acquisition & retention', icon: Rocket, iconColor: 'text-amber-500', bgColor: 'bg-amber-50' },
   { href: '/industries', title: 'Industries', description: 'Playbooks by vertical', icon: Briefcase, iconColor: 'text-stone-500', bgColor: 'bg-stone-50' },
 ]
 
-/*
- * Five, not six.
- *
- * With six links the nav measured ~682px and the whole header ~1225px against
- * a 1230px rail — 5px of slack, which would not survive a font-metric change.
- * At five it still leaves room; keep Resellers short so the rail stays healthy.
- *
- * Industries moved into the Teams menu, where it belongs semantically.
- * Download came out because the top bar is already a full-width Download CTA.
- */
-export const primaryNavLinks = [
-  { href: '/plugin', label: 'Plugins' },
-  { href: '/integration', label: 'Skills' },
-  { href: '/loops', label: 'Loops' },
+const pluginNavItems: NavItem[] = [
+  { href: '/plugin/ai_agent_for_github', title: 'GitHub', description: 'PRs, issues and code', icon: Github, iconColor: 'text-white', bgColor: 'bg-gradient-to-br from-slate-600 to-slate-950' },
+  { href: '/plugin/ai_agent_for_gmail', title: 'Gmail', description: 'Read and manage email', icon: Mail, iconColor: 'text-white', bgColor: 'bg-gradient-to-br from-red-400 to-rose-700' },
+  { href: '/plugin/ai_agent_for_slack', title: 'Slack', description: 'Messages and channels', icon: MessagesSquare, iconColor: 'text-white', bgColor: 'bg-gradient-to-br from-fuchsia-500 to-violet-800' },
+  { href: '/plugin/ai_agent_for_notion', title: 'Notion', description: 'Docs and knowledge base', icon: Inbox, iconColor: 'text-[#171717]', bgColor: 'bg-white', brandMark: 'notion' },
+  { href: '/plugin/ai_agent_for_linear', title: 'Linear', description: 'Issues and project triage', icon: CheckCircle, iconColor: 'text-white', bgColor: 'bg-gradient-to-br from-violet-500 to-pink-700', brandMark: 'linear' },
+  { href: '/plugin/ai_agent_for_figma', title: 'Figma', description: 'Designs and prototypes', icon: Palette, iconColor: 'text-white', bgColor: 'bg-white', iconSrc: '/images/desktop/dock/figma.svg' },
+]
+
+const skillCategories: NavItem[] = [
+  { href: `/integration?category=${encodeURIComponent('AI & LLMs')}`, title: 'AI & LLMs', description: '287 AI and model skills', icon: Brain, iconColor: 'text-violet-700', bgColor: 'bg-violet-100' },
+  { href: `/integration?category=${encodeURIComponent('Coding Agents & IDEs')}`, title: 'Coding agents', description: '132 coding skills', icon: Code, iconColor: 'text-sky-700', bgColor: 'bg-sky-100' },
+  { href: `/integration?category=${encodeURIComponent('DevOps & Cloud')}`, title: 'DevOps & cloud', description: '212 cloud and DevOps skills', icon: Cloud, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
+  { href: `/integration?category=${encodeURIComponent('Search & Research')}`, title: 'Search & research', description: '252 research skills', icon: FlaskConical, iconColor: 'text-amber-700', bgColor: 'bg-amber-100' },
+  { href: `/integration?category=${encodeURIComponent('Web & Frontend Development')}`, title: 'Web development', description: '201 web development skills', icon: Globe, iconColor: 'text-cyan-700', bgColor: 'bg-cyan-100' },
+  { href: `/integration?category=${encodeURIComponent('Marketing & Sales')}`, title: 'Marketing & sales', description: '143 growth skills', icon: TrendingUp, iconColor: 'text-rose-700', bgColor: 'bg-rose-100' },
+]
+
+const loopCategories: NavItem[] = [
+  { href: `/loops?category=${encodeURIComponent('Operations')}`, title: 'Operations', description: '17 operations workflows', icon: Settings, iconColor: 'text-orange-700', bgColor: 'bg-orange-100' },
+  { href: `/loops?category=${encodeURIComponent('Finance')}`, title: 'Finance', description: '18 finance workflows', icon: DollarSign, iconColor: 'text-emerald-700', bgColor: 'bg-emerald-100' },
+  { href: `/loops?category=${encodeURIComponent('Integrations')}`, title: 'Integrations', description: '14 connected-tool workflows', icon: Puzzle, iconColor: 'text-violet-700', bgColor: 'bg-violet-100' },
+  { href: `/loops?category=${encodeURIComponent('Design')}`, title: 'Design', description: '12 design workflows', icon: Palette, iconColor: 'text-pink-700', bgColor: 'bg-pink-100' },
+  { href: `/loops?category=${encodeURIComponent('Security')}`, title: 'Security', description: '12 security workflows', icon: Shield, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
+  { href: `/loops?category=${encodeURIComponent('Testing')}`, title: 'Testing', description: '5 testing workflows', icon: TestTube, iconColor: 'text-cyan-700', bgColor: 'bg-cyan-100' },
+]
+
+const resourceSections = [
+  {
+    label: 'Guides',
+    items: [
+      { href: '/features/ai-workforce', title: 'Meet your AI workforce', description: 'A practical introduction to Trooper', icon: Users, iconColor: 'text-violet-700', bgColor: 'bg-violet-100' },
+      { href: '/features/task-execution', title: 'How agents get work done', description: 'From a request to a finished task', icon: CheckCircle, iconColor: 'text-emerald-700', bgColor: 'bg-emerald-100' },
+      { href: '/self-host', title: 'Self-host Trooper', description: 'Run your own private instance', icon: Server, iconColor: 'text-blue-700', bgColor: 'bg-blue-100' },
+    ],
+  },
+  {
+    label: 'Compare',
+    items: [
+      { href: '/alternatives', title: 'AI agent alternatives', description: 'Compare agent apps and runtimes', icon: Scale, iconColor: 'text-indigo-700', bgColor: 'bg-indigo-100' },
+      { href: '/ai-coding-ide', title: 'AI coding tools', description: 'Compare coding agents and IDEs', icon: Code, iconColor: 'text-sky-700', bgColor: 'bg-sky-100' },
+      { href: '/benchmarks', title: 'Model benchmarks', description: 'Compare quality, speed and cost', icon: BarChart3, iconColor: 'text-amber-700', bgColor: 'bg-amber-100' },
+    ],
+  },
+] satisfies { label: string; items: NavItem[] }[]
+
+export const headerDropdownGroups = [
+  {
+    key: 'features', label: 'Features', variant: 'features', items: featureNavItems,
+    footerText: `Explore all ${featureNavItems.length} platform capabilities.`, footerLabel: 'Start here', footerHref: '/features/ai-workforce',
+  },
+  {
+    key: 'plugins', label: 'Plugins', variant: 'catalog', items: pluginNavItems,
+    footerText: 'Apps your agents can use.', footerLabel: 'Browse plugins', footerHref: '/plugin',
+  },
+  {
+    key: 'guides', label: 'Guides', variant: 'resources', sections: resourceSections,
+    items: resourceSections.flatMap((section) => section.items),
+    footerText: 'Guides to get started and comparisons to choose well.', footerLabel: 'All comparisons', footerHref: '/alternatives',
+  },
+  {
+    key: 'skills', label: 'Skills', variant: 'catalog', items: skillCategories,
+    footerText: 'Browse thousands of community-built skills.', footerLabel: 'All skills', footerHref: '/integration',
+  },
+  {
+    key: 'loops', label: 'Loops', variant: 'catalog', items: loopCategories,
+    footerText: 'Reusable loops, with clear checks and finish lines.', footerLabel: 'All loops', footerHref: '/loops',
+  },
+  {
+    key: 'teams', label: 'For Teams', variant: 'catalog', items: teamNavItems,
+    footerText: 'Explore Trooper teams by role and industry.', footerLabel: 'All teams', footerHref: '/industries',
+  },
+] satisfies readonly HeaderDropdownGroup[]
+
+export const headerDirectLinks = [
   { href: '/resellers', label: 'Resellers' },
   { href: '/pricing', label: 'Pricing' },
 ] as const

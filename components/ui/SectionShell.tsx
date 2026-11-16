@@ -23,9 +23,8 @@ interface SectionShellProps {
 }
 
 /**
- * SectionShell — establishes a deliberate grid/line rhythm between major
- * landing-page sections. Renders a hairline top border and optional section
- * label so mobile scroll has clear waypoints (not just stacked big boxes).
+ * SectionShell — establishes a consistent measure and vertical rhythm between
+ * major landing-page sections, with an optional label for scroll waypoints.
  */
 export default function SectionShell({
   id,
