@@ -72,7 +72,7 @@ export default function DesktopHero() {
                 {index < PROVIDERS.length - 1 ? ', ' : ' '}
               </span>
             ))}
-            and your own models in one persistent workspace. Agents hand off work, use tools, and collaborate with your real teammates. Switch AI providers while keeping all your chats and memory intact. Free for personal use.
+            and your own models in one persistent workspace. Agents hand off work, use tools, and collaborate with your real teammates. Switch AI providers while keeping all your chats and memory intact.
           </p>
         </div>
 
