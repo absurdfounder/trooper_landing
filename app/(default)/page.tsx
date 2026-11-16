@@ -1,7 +1,7 @@
 import { ogImageMeta } from '@/lib/og/url';
 
 const homeOg = ogImageMeta('home', 'Trooper: AI teammates that ship real work');
-const homeDescription = 'Run Claude, ChatGPT, Gemini, Grok, and your own models in one persistent workspace. Switch AI providers while keeping your chats and memory intact.';
+const homeDescription = 'Run Codex, Claude, Gemini, Grok, and your own models in one workspace. Agents use tools, hand off tasks, and work with your team. Switch providers and keep your chats and memory.';
 
 export const metadata = {
   metadataBase: new URL('https://trooper.so'),

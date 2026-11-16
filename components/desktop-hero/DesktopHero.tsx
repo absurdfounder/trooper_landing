@@ -58,7 +58,7 @@ export default function DesktopHero() {
 
           <p className="lede mx-auto mt-5 max-w-[48rem] text-center text-base leading-relaxed text-white/75 sm:mt-6 sm:text-xl sm:leading-[1.55]">
             Run{' '}
-            {PROVIDERS.map((provider, index) => (
+            {PROVIDERS.map((provider) => (
               <span key={provider.name}>
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap align-baseline">
                   <img
@@ -69,10 +69,10 @@ export default function DesktopHero() {
                   />
                   <strong className="font-semibold text-white/90">{provider.name}</strong>
                 </span>
-                {index < PROVIDERS.length - 1 ? ', ' : ' '}
+                ,{' '}
               </span>
             ))}
-            and your own models in one persistent workspace. Agents hand off work, use tools, and collaborate with your real teammates. Switch AI providers while keeping all your chats and memory intact.
+            and your own models in one workspace. Agents use tools, hand off tasks, and work with your team. Switch providers and keep your chats and memory.
           </p>
         </div>
 
