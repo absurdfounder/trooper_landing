@@ -18,9 +18,9 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
   const oldStack = getTeamOldStack(content.slug);
   return (
     <>
-      <div className="bg-white">
-        <Header />
-        <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
+      <div className="marketing-subpage-hero trooper-hero">
+        <Header dark darkOnLoad />
+        <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
             {content.heroHeadline ? (
               <MarketingHeadline as="h1" size="hero" lines={content.heroHeadline} />

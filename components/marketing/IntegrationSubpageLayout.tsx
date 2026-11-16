@@ -11,9 +11,9 @@ import { ArrowRight } from 'lucide-react';
 export default function IntegrationSubpageLayout({ content }: { content: IntegrationPageContent }) {
   return (
     <>
-      <div className="bg-white">
-        <Header />
-        <section className="max-w-7xl mx-auto border-l border-r border-slate-200">
+      <div className="marketing-subpage-hero trooper-hero">
+        <Header dark darkOnLoad />
+        <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900 flex items-center gap-3 sm:gap-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}

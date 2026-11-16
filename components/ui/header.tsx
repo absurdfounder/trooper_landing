@@ -21,10 +21,10 @@ type DropdownKey = (typeof headerDropdownGroups)[number]['key'] | null
 
 const GITHUB_URL = 'https://github.com/Trooper-AI/trooper-core'
 
-export default function Header({ dark = false }: { dark?: boolean }) {
+export default function Header({ dark = true, darkOnLoad = false }: { dark?: boolean; darkOnLoad?: boolean }) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
-  const [darkHeroActive, setDarkHeroActive] = useState(dark)
+  const [darkHeroActive, setDarkHeroActive] = useState(dark && (pathname === '/' || darkOnLoad))
   const [openDropdown, setOpenDropdown] = useState<DropdownKey>(null)
   const navRef = useRef<HTMLElement>(null)
   const darkNav = dark && darkHeroActive

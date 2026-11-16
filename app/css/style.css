@@ -707,11 +707,7 @@ body > iframe.goog-te-menu-frame {
   }
 
   .hero-surface {
-    background-color: #eef2e6;
-    background-image:
-      radial-gradient(circle at 1px 1px, rgba(63, 107, 0, 0.09) 1px, transparent 0),
-      linear-gradient(180deg, #f2f5ec 0%, #e7ecdc 100%);
-    background-size: 8px 8px, 100% 100%;
+    background: linear-gradient(180deg, #f8faf7 0%, #eef2e6 100%);
   }
 
   /* Grayscale desktop photo, tinted with #f3f3f6. Filter stays on ::before so children keep their color. */
@@ -1731,6 +1727,39 @@ body > iframe.goog-te-menu-frame {
   overflow: hidden;
   background: #11140e;
   color: #fff;
+}
+
+/* Inner marketing pages share the cinematic landing frame without the long
+   homepage hero height or the old dotted card behind their product demo. */
+.marketing-subpage-hero.trooper-hero {
+  min-height: 0;
+  overflow: visible;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse 72rem 35rem at 88% 2%, rgba(53, 205, 169, 0.16), transparent 70%),
+    linear-gradient(180deg, #11140e 0%, #0e110b 100%);
+  color: #fff;
+}
+
+.marketing-subpage-hero h1 {
+  color: #fff;
+  font-size: clamp(2.5rem, 4vw, 4.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.065em;
+}
+
+.marketing-subpage-hero h1 .text-slate-500,
+.marketing-subpage-hero h1 .text-fern {
+  color: #69e9c8;
+}
+
+.marketing-subpage-hero h1 .text-slate-900,
+.marketing-subpage-hero h1 .text-slate-950 {
+  color: #fff;
+}
+
+.marketing-subpage-hero .page-hero-padding p {
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .trooper-hero .rail {
