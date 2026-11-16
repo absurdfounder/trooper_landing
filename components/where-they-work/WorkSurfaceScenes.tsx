@@ -14,6 +14,7 @@ import {
   Globe2,
   HardDrive,
   Laptop,
+  Loader2,
   Link2,
   Mail,
   MessageCircle,

@@ -11,7 +11,7 @@ import PixelButton from '@/components/ui/PixelButton';
 import { WORK_SURFACES, type WorkSurface } from '@/lib/whereTheyWork';
 import { DevicesScene } from './where-they-work/WorkSurfaceScenes';
 
-const SURFACE_SCENES = { devices: DevicesScene } satisfies Partial<Record<WorkSurface['id'], ComponentType>>;
+const SURFACE_SCENES: Partial<Record<WorkSurface['id'], ComponentType>> = { devices: DevicesScene };
 
 const SURFACE_ICONS = {
   desktop: Monitor,
