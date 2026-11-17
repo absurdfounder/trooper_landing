@@ -199,20 +199,10 @@ export default function TrooperAppDashboardDemo({ maxHeight, autoLoad = false }:
 
   useEffect(() => {
     if (!autoLoad) return;
-    const element = containerRef.current;
-    if (!element) return;
-    if (!('IntersectionObserver' in window)) {
-      setInteractive(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry?.isIntersecting) return;
-      setInteractive(true);
-      observer.disconnect();
-    }, { rootMargin: '120px 0px', threshold: 0 });
-    observer.observe(element);
-    return () => observer.disconnect();
+    // Start the preview as soon as the hero hydrates so its scripts download
+    // while visitors read the copy. Defer only until React's effect phase, not
+    // until the iframe approaches the viewport or the browser becomes idle.
+    setInteractive(true);
   }, [autoLoad]);
 
   useLayoutEffect(() => {
@@ -236,14 +226,6 @@ export default function TrooperAppDashboardDemo({ maxHeight, autoLoad = false }:
 
   const scaledWidth = DEMO_WIDTH * scale;
   const scaledHeight = DEMO_HEIGHT * scale;
-  const dashboardDocument = `<!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<base href="/trooper-app-preview/">
-<style>html,body,#root{width:100%;height:100%;margin:0;overflow:hidden;background:#1A1A1A}</style>
-<script>try{localStorage.setItem('trooper.lookAndFeel.v1',JSON.stringify({appearance:'dark',colorTheme:'ink',themeId:'trooper',teamThemeId:'pastel',chatStyle:'bubbles'}));localStorage.setItem('trooper-sidebar-main-tab','chats');localStorage.setItem('trooper_tasks_view','board');document.documentElement.dataset.theme='ink';document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark'}catch{}</script>
-<link rel="stylesheet" href="/trooper-app-preview/assets/trooper-preview.css"><link rel="stylesheet" href="/trooper-app-preview/assets/trooper-preview2.css"></head>
-<body><div id="root"></div><script type="module" src="/trooper-app-preview/assets/trooper-preview.js"></script></body></html>`;
-
   return (
     <div ref={containerRef} className="w-full overflow-hidden" style={{ position: 'relative' }}>
       <div style={{ height: scaledHeight, display: 'flex', justifyContent: 'center', width: '100%' }}>
@@ -332,8 +314,8 @@ export default function TrooperAppDashboardDemo({ maxHeight, autoLoad = false }:
               <iframe
                 key={revision}
                 title="Interactive Trooper dashboard preview"
-                srcDoc={dashboardDocument}
-                loading={autoLoad ? 'eager' : 'lazy'}
+                src="/trooper-app-preview/index.html?channel=general&workspace=board"
+                loading="eager"
                 allow="clipboard-read; clipboard-write"
                 onLoad={() => setFrameLoaded(true)}
                 style={{

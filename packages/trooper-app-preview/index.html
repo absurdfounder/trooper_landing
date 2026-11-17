@@ -15,6 +15,14 @@
         document.documentElement.classList.add('dark');
         document.documentElement.style.colorScheme = 'dark';
       } catch {}
+      // The app router expects its normal root path. The landing fixture always
+      // mounts chat beside the board, keeping the right workspace pane visible.
+      try {
+        const params = new URLSearchParams(location.search);
+        if (!params.has('channel')) params.set('channel', 'general');
+        if (!params.has('workspace')) params.set('workspace', 'board');
+        history.replaceState(null, '', `/?${params.toString()}`);
+      } catch {}
     </script>
   </head>
   <body>

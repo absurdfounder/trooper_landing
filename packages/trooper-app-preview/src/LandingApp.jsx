@@ -34,7 +34,7 @@ export default function LandingApp() {
                 />
                 <main className="flex min-h-0 min-w-0 flex-1 overflow-hidden bg-[var(--color-bg)]">
                   <section className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden" style={{ width: '42%' }}>
-                    <ChatPanel channelId="general" onOpenActivityDrawer={() => {}} onOpenArtifact={() => {}} />
+                    <ChatPanel channelId="general" sideShellOpen onOpenActivityDrawer={() => {}} onOpenArtifact={() => {}} />
                   </section>
                   <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden border-l border-[var(--color-border)] bg-[var(--color-bg)]">
                     <KanbanBoard />

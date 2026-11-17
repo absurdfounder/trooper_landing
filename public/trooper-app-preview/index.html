@@ -15,9 +15,19 @@
         document.documentElement.classList.add('dark');
         document.documentElement.style.colorScheme = 'dark';
       } catch {}
+      // The app router expects its normal root path. The landing fixture always
+      // mounts chat beside the board, keeping the right workspace pane visible.
+      try {
+        const params = new URLSearchParams(location.search);
+        if (!params.has('channel')) params.set('channel', 'general');
+        if (!params.has('workspace')) params.set('workspace', 'board');
+        history.replaceState(null, '', `/?${params.toString()}`);
+      } catch {}
     </script>
-    <script type="module" crossorigin src="/trooper-app-preview/assets/trooper-preview.js"></script>
-    <link rel="stylesheet" crossorigin href="/trooper-app-preview/assets/trooper-preview2.css">
+    <script type="module" crossorigin src="/trooper-app-preview/assets/index-BA_CU_9I.js"></script>
+    <link rel="modulepreload" crossorigin href="/trooper-app-preview/assets/react-DDdAd_hy.js">
+    <link rel="modulepreload" crossorigin href="/trooper-app-preview/assets/firebase-BVaybQnq.js">
+    <link rel="stylesheet" crossorigin href="/trooper-app-preview/assets/index-C5TD8EXV.css">
   </head>
   <body>
     <div id="root"></div>

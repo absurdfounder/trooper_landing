@@ -36,11 +36,26 @@ export default {
     sourcemap: false,
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/trooper-preview.js',
+        // Content-hash the entry as well as lazy chunks so the preview can be
+        // cached across visits without serving stale application code.
+        entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: (asset) => (asset.name?.endsWith('.css')
-          ? 'assets/trooper-preview.css'
-          : 'assets/[name]-[hash][extname]'),
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        // Match the app build: split only framework and Firebase startup code.
+        // Heavy editor/video libraries remain behind their existing lazy imports.
+        manualChunks(id) {
+          if (!id.includes('node_modules/')) return undefined;
+          const pkg = id.split('node_modules/').pop() || '';
+          if (pkg.startsWith('firebase/') || pkg.startsWith('@firebase/')) return 'firebase';
+          if (
+            pkg.startsWith('react/')
+            || pkg.startsWith('react-dom/')
+            || pkg.startsWith('scheduler/')
+            || pkg.startsWith('react-router/')
+            || pkg.startsWith('react-router-dom/')
+          ) return 'react';
+          return undefined;
+        },
       },
     },
   },

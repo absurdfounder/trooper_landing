@@ -90,6 +90,35 @@ const nextConfig = {
         ],
       },
       {
+        // The marketing workspace is intentionally embedded by the homepage.
+        // Keep the global DENY policy elsewhere, but allow this same-origin app.
+        source: '/trooper-app-preview/:path*',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+        ],
+      },
+      {
+        source: '/trooper-app-preview/assets/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/trooper-app-preview/index.html',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+      {
         source: '/sitemap.xml',
         headers: [
           {
