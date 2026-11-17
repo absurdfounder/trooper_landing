@@ -5,12 +5,14 @@ import PixelButton from '@/components/ui/PixelButton';
 import type { SubpageContent } from '@/lib/subpageContent';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
+import MarketingSubpageBeam from '@/components/marketing/MarketingSubpageBeam';
 
 export default function SubpageLayout({ content }: { content: SubpageContent }) {
   return (
     <>
       <div className="marketing-subpage-hero trooper-hero">
         <Header dark darkOnLoad />
+        <MarketingSubpageBeam />
         <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900">

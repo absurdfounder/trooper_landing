@@ -11,6 +11,7 @@ import type { TeamPageContent } from '@/lib/teamContent';
 import { getTeamOldStack } from '@/lib/oldStackContent';
 import { getCapabilitiesEyebrowNumber, getSubpageSectionOffset } from '@/lib/subpageSections';
 import { ArrowRight } from 'lucide-react';
+import MarketingSubpageBeam from '@/components/marketing/MarketingSubpageBeam';
 
 export default function TeamSubpageLayout({ content }: { content: TeamPageContent }) {
   const sectionOffset = getSubpageSectionOffset(content);
@@ -20,6 +21,7 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
     <>
       <div className="marketing-subpage-hero trooper-hero">
         <Header dark darkOnLoad />
+        <MarketingSubpageBeam />
         <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
             {content.heroHeadline ? (

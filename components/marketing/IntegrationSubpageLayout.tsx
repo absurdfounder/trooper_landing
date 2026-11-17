@@ -7,14 +7,19 @@ import PixelButton from '@/components/ui/PixelButton';
 import type { IntegrationPageContent } from '@/lib/integrationContent';
 import { pluginPagePath } from '@/lib/pluginCatalog';
 import { ArrowRight } from 'lucide-react';
+import MarketingSubpageBeam from '@/components/marketing/MarketingSubpageBeam';
 
 export default function IntegrationSubpageLayout({ content }: { content: IntegrationPageContent }) {
   return (
     <>
       <div className="marketing-subpage-hero trooper-hero">
         <Header dark darkOnLoad />
+        <MarketingSubpageBeam />
         <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-300/80">
+              {content.missionLabel}
+            </p>
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900 flex items-center gap-3 sm:gap-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -27,7 +32,11 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
               <span className="min-w-0">{content.title}</span>
             </h1>
 
-            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+              {content.description}
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <PixelButton
                 href="https://app.trooper.so"
                 external

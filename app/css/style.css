@@ -1732,6 +1732,7 @@ body > iframe.goog-te-menu-frame {
 /* Inner marketing pages share the cinematic landing frame without the long
    homepage hero height or the old dotted card behind their product demo. */
 .marketing-subpage-hero.trooper-hero {
+  position: relative;
   min-height: 0;
   overflow: visible;
   isolation: isolate;
@@ -1739,6 +1740,11 @@ body > iframe.goog-te-menu-frame {
     radial-gradient(ellipse 72rem 35rem at 88% 2%, rgba(53, 205, 169, 0.16), transparent 70%),
     linear-gradient(180deg, #11140e 0%, #0e110b 100%);
   color: #fff;
+}
+
+.marketing-subpage-hero > section {
+  position: relative;
+  z-index: 10;
 }
 
 .marketing-subpage-hero h1 {
