@@ -8,6 +8,8 @@ interface SectionShellProps {
   eyebrowAlign?: 'left' | 'center';
   className?: string;
   bgClass?: string;
+  /** Quiet presentation used by content sections on marketing subpages. */
+  variant?: 'default' | 'marketing';
   noBorder?: boolean;
   noBorderBottom?: boolean;
   /** First section below fixed site header — clears TopBar + nav overlap */
@@ -33,6 +35,7 @@ export default function SectionShell({
   eyebrowAlign = 'left',
   className = '',
   bgClass = 'bg-canvas',
+  variant = 'default',
   noBorder = false,
   noBorderBottom = true,
   clearSiteHeader = false,
@@ -48,16 +51,18 @@ export default function SectionShell({
     .filter(Boolean)
     .join(' ');
 
-  // `.rail` owns measure + gutter + side hairlines. Top hairline closes the
-  // box on the frame so vertical and horizontal lines meet at the corners;
-  // the next section's top border serves as this one's bottom divider.
-  // Tighter mobile padding — less “endless tall boxes” between sections.
+  // The shared rail owns measure and gutter. Homepage sections keep their
+  // subtle top rule; marketing subpages use an open, unnumbered presentation.
   const frameClasses = [
     'rail',
     bgClass || 'bg-canvas',
-    !noBorder ? 'border-t' : '',
+    !noBorder && variant !== 'marketing' ? 'border-t' : '',
     !noBorderBottom ? 'border-b' : '',
-    rhythm ? 'py-9 sm:py-16 lg:py-20' : '',
+    variant === 'marketing'
+      ? 'py-12 sm:py-16 lg:py-20'
+      : rhythm
+        ? 'py-9 sm:py-16 lg:py-20'
+        : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -69,8 +74,8 @@ export default function SectionShell({
     <section id={id} className={sectionClasses}>
       <div className={frameClasses}>
         {showLabel ? (
-          <p className={`mb-5 flex items-baseline gap-2 sm:mb-7 ${labelAlign}`}>
-            {eyebrowNumber ? (
+          <p className={`mb-4 flex items-baseline gap-2 sm:mb-6 ${labelAlign}`}>
+            {eyebrowNumber && variant !== 'marketing' ? (
               <span className="font-mono text-[11px] tabular-nums text-ink-faint sm:text-[12px]">
                 {eyebrowNumber}
               </span>

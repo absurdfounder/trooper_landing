@@ -66,7 +66,7 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
         </h2>
       </motion.div>
 
-      <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 md:mt-12 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-12 lg:grid-cols-4">
         {guarantees.map((item, index) => {
           const Icon = item.icon;
           return (
@@ -76,7 +76,7 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: Math.min(index, 3) * 0.07, ease }}
               viewport={{ once: true, margin: '-20px' }}
-              className="border-t border-white/15 pt-5"
+              className="rounded-2xl bg-white/[0.045] p-5 sm:p-6"
             >
               <Icon className="h-7 w-7 text-white" strokeWidth={1.25} aria-hidden="true" />
               <h3 className="mt-4 font-sans text-base text-white sm:text-lg">{item.title}</h3>
@@ -87,7 +87,7 @@ export default function GovernanceSection({ eyebrowNumber = '06' }: GovernanceSe
       </div>
 
       <motion.div
-        className="mt-10 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-t border-white/15 pt-6 md:mt-14"
+        className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-1 pt-2 md:mt-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-20px' }}

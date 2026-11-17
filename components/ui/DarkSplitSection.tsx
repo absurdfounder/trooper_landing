@@ -4,6 +4,7 @@ type DarkSplitSectionProps = {
   children: ReactNode;
   className?: string;
   innerClassName?: string;
+  quiet?: boolean;
 };
 
 /**
@@ -15,11 +16,12 @@ export default function DarkSplitSection({
   children,
   className = '',
   innerClassName = '',
+  quiet = false,
 }: DarkSplitSectionProps) {
   return (
     <section className={className}>
       <div
-        className={`rail border-t border-white/[0.08] text-white ${innerClassName || 'bg-split'}`}
+        className={`rail ${quiet ? '' : 'border-t border-white/[0.08]'} text-white ${innerClassName || 'bg-split'}`}
       >
         {children}
       </div>

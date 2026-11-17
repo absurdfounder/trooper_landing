@@ -57,9 +57,9 @@ export default function AlternativeSubpageLayout({ content }: { content: Alterna
         </section>
       </div>
 
-      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="max-w-3xl">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-6">
                 {content.overviewTitle}
@@ -76,9 +76,9 @@ export default function AlternativeSubpageLayout({ content }: { content: Alterna
         </section>
       </SectionShell>
 
-      <SectionShell eyebrow="Comparison" eyebrowNumber="03" bgClass="bg-slate-50">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Comparison" eyebrowNumber="03" bgClass="bg-slate-50" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-8">
               Trooper vs {content.competitorName}
             </h2>
@@ -112,9 +112,9 @@ export default function AlternativeSubpageLayout({ content }: { content: Alterna
         </section>
       </SectionShell>
 
-      <SectionShell eyebrow="When to choose Trooper" bgClass="bg-white">
-        <section className="py-12 md:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="When to choose Trooper" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <ul className="grid md:grid-cols-3 gap-4 max-w-5xl">
               {content.whenToChooseTrooper.map((item) => (
                 <li

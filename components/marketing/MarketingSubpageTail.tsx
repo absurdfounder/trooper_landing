@@ -11,7 +11,7 @@ export default function MarketingSubpageTail() {
     <>
       {/* GovernanceSection is a dark trust band and renders its own eyebrow —
           it must sit on the dark surface, not inside a white SectionShell. */}
-      <DarkSplitSection>
+      <DarkSplitSection quiet>
         <GovernanceSection />
       </DarkSplitSection>
 

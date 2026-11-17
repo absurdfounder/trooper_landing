@@ -160,9 +160,9 @@ export default function PlaybookWorkflowSection({
   const active = content.playbooks.find((p) => p.id === activeId) ?? content.playbooks[0];
 
   return (
-    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-slate-50">
-      <section className="py-10 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-slate-50" variant="marketing">
+      <section>
+        <div className="marketing-section-content">
           <div className="mb-8 max-w-2xl sm:mb-10">
             <MarketingHeadline
               as="h2"
@@ -172,7 +172,7 @@ export default function PlaybookWorkflowSection({
             />
           </div>
 
-          <div className="mb-4 flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+          <div className="mb-4 flex flex-wrap gap-2">
             {content.playbooks.map((playbook) => {
               const selected = playbook.id === active?.id;
               return (
@@ -182,8 +182,8 @@ export default function PlaybookWorkflowSection({
                   onClick={() => setActiveId(playbook.id)}
                   className={`border px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.14em] transition-colors sm:text-[11px] ${
                     selected
-                      ? 'border-trooper/30 bg-trooper text-white'
-                      : 'border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-700'
+                      ? 'bg-trooper text-white'
+                      : 'bg-white text-slate-500 shadow-sm ring-1 ring-black/5 hover:text-slate-700'
                   }`}
                 >
                   {playbook.tabLabel}

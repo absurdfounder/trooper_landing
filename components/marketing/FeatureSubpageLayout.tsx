@@ -63,11 +63,11 @@ export default function FeatureSubpageLayout({ content }: { content: FeaturePage
         </section>
       </div>
 
-      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="max-w-3xl">
-              <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-6">
+              <h2 className="h2-section mb-5">
                 {content.overviewTitle}
               </h2>
               <div className="space-y-4 text-slate-600 leading-relaxed">

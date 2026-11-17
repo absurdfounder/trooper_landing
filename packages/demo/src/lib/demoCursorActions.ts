@@ -147,7 +147,9 @@ export function animateExecStepCursor(step: TaskExecStep, go: CursorGoFn, ctx: C
         { selector: '[data-demo-target="modal-delivery"]', click: true, silent },
       ]);
     case 'closeTaskModal':
-      return go('[data-demo-target="modal-close"]', { click: true });
+      // The marketing preview leaves the artifact workspace open after work
+      // completes, so finish by moving focus to the persistent output pane.
+      return go('[data-demo-target="modal-workspace"]');
     default:
       return Promise.resolve();
   }

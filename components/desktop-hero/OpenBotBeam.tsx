@@ -79,6 +79,7 @@ const TINT_OFFSETS: Array<[number, number]> = [
 ];
 const HUE_CLAMP = { min: 165, max: 205 };
 const FRAME_INTERVAL_MS = 1000 / 24;
+const INTRO_RATE = 3;
 // Keep the beam's shape and movement consistent; only its color family changes per page load.
 const BEAM_SHAPE_SEED = 285538;
 const BEAM_PALETTE_SESSION_KEY = 'trooper-landing-beam-palette';
@@ -521,7 +522,7 @@ export default function OpenBotBeam({
         const delta = lastFrame ? Math.min(0.05, (now - lastFrame) / 1000) : 1 / 24;
         lastFrame = now;
         time += delta * settings.speed;
-        introTime = Math.min(7.6, introTime + delta);
+        introTime = Math.min(7.6, introTime + delta * INTRO_RATE);
         const target = pointer.inside ? 1 : 0;
         const accelerationX = 120 * (pointer.x - lens.x) - 19 * lens.vx;
         const accelerationY = 120 * (pointer.y - lens.y) - 19 * lens.vy;

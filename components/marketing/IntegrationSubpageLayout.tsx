@@ -61,9 +61,9 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
         </section>
       </div>
 
-      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="max-w-3xl">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-6">
                 {content.overviewTitle}
@@ -83,9 +83,9 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
       <PlaybookWorkflowSection content={content.playbookWorkflow} eyebrowNumber="03" />
 
       {content.useCases.length > 0 && (
-        <SectionShell eyebrow="Use cases" eyebrowNumber="04" bgClass="bg-slate-50">
-          <section className="py-12 md:py-20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionShell eyebrow="Use cases" eyebrowNumber="04" bgClass="bg-slate-50" variant="marketing">
+          <section>
+            <div className="marketing-section-content">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-8">
                 What agents do with {content.catalog.name}
               </h2>
@@ -102,9 +102,9 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
         </SectionShell>
       )}
 
-      <SectionShell eyebrow="Setup" eyebrowNumber="05" bgClass="bg-white">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Setup" eyebrowNumber="05" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="max-w-3xl mb-10">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-4">
                 {content.setupTitle}
@@ -133,9 +133,9 @@ export default function IntegrationSubpageLayout({ content }: { content: Integra
       </SectionShell>
 
       {(content.relatedTeams.length > 0 || content.relatedIntegrations.length > 0) && (
-        <SectionShell eyebrow="Related" eyebrowNumber="06" bgClass="bg-slate-50">
-          <section className="py-12 md:py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionShell eyebrow="Related" eyebrowNumber="06" bgClass="bg-slate-50" variant="marketing">
+          <section>
+            <div className="marketing-section-content">
               <div className="grid md:grid-cols-2 gap-8">
                 {content.relatedTeams.length > 0 && (
                   <div>

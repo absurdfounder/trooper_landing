@@ -195,7 +195,7 @@ export default function MarketingFeatureSections({
   if (!sections.length) return null;
 
   return (
-    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-canvas" rhythm>
+    <SectionShell eyebrow={eyebrow} eyebrowNumber={eyebrowNumber} bgClass="bg-canvas" rhythm variant="marketing">
       <div className="mb-10 max-w-2xl sm:mb-14">
         {headingLines.length > 0 ? (
           <MarketingHeadline as="h2" size="section" lines={headingLines} subline={subheading} />
@@ -209,7 +209,7 @@ export default function MarketingFeatureSections({
         )}
       </div>
 
-      <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24">
+      <div className="flex flex-col gap-12 sm:gap-16 lg:gap-20">
         {sections.map((section, index) => {
           const Visual = VISUALS[section.visual] ?? CanvasBoardVisual;
           const visualFirst = section.reverse ?? index % 2 === 1;
@@ -224,7 +224,7 @@ export default function MarketingFeatureSections({
                 rowRefs.current[index] = el;
               }}
               className={[
-                'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-12',
+                'grid min-w-0 items-center gap-6 transition-[opacity,filter,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:grid-cols-2 lg:gap-14',
                 dimmed
                   ? 'opacity-[0.38] max-lg:opacity-[0.48] lg:scale-[0.985] lg:opacity-40 lg:blur-[1.5px]'
                   : 'opacity-100',
@@ -233,7 +233,7 @@ export default function MarketingFeatureSections({
                 .join(' ')}
             >
               <div
-                className={`flex min-w-0 flex-col lg:max-w-md lg:justify-self-center ${
+                className={`flex min-w-0 flex-col lg:max-w-lg lg:justify-self-start ${
                   visualFirst ? 'lg:order-2' : ''
                 }`}
               >

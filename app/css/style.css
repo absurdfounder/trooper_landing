@@ -556,6 +556,11 @@ body > iframe.goog-te-menu-frame {
     @apply mx-auto min-w-0 max-w-7xl px-4 sm:px-6;
   }
 
+  /* Subpage section content shares the rail's measure and gutter. */
+  .marketing-section-content {
+    @apply w-full;
+  }
+
   /*
    * The band separator. 5% black, not a hairline colour — it should be felt
    * rather than read. Pair with a bg on the <section>.

@@ -739,13 +739,17 @@ export default function TrooperDemo({
   const [scriptIndex, setScriptIndex] = useState(startStep);
   const [mode, setMode] = useState<DemoMode>('script');
   const [resumeIn, setResumeIn] = useState<number | null>(null);
-  const [taskModalOpen, setTaskModalOpen] = useState(false);
+  // Keep the split task/artifact workspace present from the first frame so the
+  // marketing demo never starts as an empty board and then shifts its layout.
+  const [taskModalOpen, setTaskModalOpen] = useState(true);
   const taskModalOpenRef = useRef(false);
   const [modalOrigin, setModalOrigin] = useState<CanvasRect | null>(null);
   const [modalTask, setModalTask] = useState<Task | null>(null);
   const [modalSubtasks, setModalSubtasks] = useState<DemoSubtask[]>(scenario.initialSubtasks);
   const [modalFeed, setModalFeed] = useState<DemoFeedItem[]>([]);
-  const [modalArtifact, setModalArtifact] = useState<DemoArtifact | null>(null);
+  const [modalArtifact, setModalArtifact] = useState<DemoArtifact | null>(
+    () => Object.values(DEMO_ARTIFACTS)[0] ?? null,
+  );
   const [modalWorkspaceMode, setModalWorkspaceMode] = useState<DemoWorkspaceMode>('ide');
   const [modalCanvasKeys, setModalCanvasKeys] = useState<string[]>([]);
   const [modalDelivery, setModalDelivery] = useState<string | null>(null);
@@ -899,12 +903,12 @@ export default function TrooperDemo({
   }, []);
 
   const resetTaskModal = useCallback(() => {
-    setTaskModalOpen(false);
+    setTaskModalOpen(true);
     setModalTask(null);
     setModalOrigin(null);
     setModalSubtasks(scenario.initialSubtasks.map(s => ({ ...s, status: 'pending' as const })));
     setModalFeed([]);
-    setModalArtifact(null);
+    setModalArtifact(Object.values(DEMO_ARTIFACTS)[0] ?? null);
     setModalWorkspaceMode('ide');
     setModalCanvasKeys([]);
     setModalDelivery(null);
@@ -922,7 +926,7 @@ export default function TrooperDemo({
     setActiveNodeIds([]);
     setGenerationJob(null);
     modalMsgCounter.current = 0;
-  }, [scenario.initialSubtasks]);
+  }, [DEMO_ARTIFACTS, scenario.initialSubtasks]);
 
   const resetDemo = useCallback(() => {
     setThreads({});
@@ -1261,7 +1265,8 @@ export default function TrooperDemo({
         break;
       }
       case 'closeTaskModal':
-        setTaskModalOpen(false);
+        // The marketing reel keeps the output workspace in view after a task
+        // completes; visitors can still close it with the visible close button.
         break;
       case 'chatMsg':
         // Status updates always land in #general so ticket work doesn't wipe the channel.

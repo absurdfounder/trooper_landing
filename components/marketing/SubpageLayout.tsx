@@ -58,9 +58,9 @@ export default function SubpageLayout({ content }: { content: SubpageContent }) 
         </section>
       </div>
 
-      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="max-w-3xl">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-6">
                 {content.overviewTitle}

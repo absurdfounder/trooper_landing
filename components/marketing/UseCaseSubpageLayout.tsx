@@ -70,9 +70,9 @@ export default function UseCaseSubpageLayout({
         </section>
       </div>
 
-      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Overview" eyebrowNumber="02" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="max-w-3xl">
               <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-6">
                 {content.overviewTitle}
@@ -91,9 +91,9 @@ export default function UseCaseSubpageLayout({
 
       {oldStack ? <OldStackComparison content={oldStack} bgClass="bg-canvas" /> : null}
 
-      <SectionShell eyebrow="How it works" eyebrowNumber="03" bgClass="bg-slate-50">
-        <section className="py-12 md:py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="How it works" eyebrowNumber="03" bgClass="bg-slate-50" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <h2 className="font-funneldisplay text-2xl sm:text-3xl tracking-tight text-slate-900 mb-8">
               How Trooper handles this
             </h2>
@@ -114,9 +114,9 @@ export default function UseCaseSubpageLayout({
         </section>
       </SectionShell>
 
-      <SectionShell eyebrow="Explore" bgClass="bg-white">
-        <section className="py-12 md:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionShell eyebrow="Explore" bgClass="bg-white" variant="marketing">
+        <section>
+          <div className="marketing-section-content">
             <div className="grid md:grid-cols-2 gap-8">
               {content.relatedTeams.length > 0 && (
                 <div>

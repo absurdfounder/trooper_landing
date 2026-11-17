@@ -219,7 +219,7 @@ export default function OldStackComparison({ content, bgClass = 'bg-white' }: Pr
   }, [extra]);
 
   return (
-    <SectionShell rhythm eyebrow={content.eyebrow} bgClass={bgClass}>
+    <SectionShell rhythm eyebrow={content.eyebrow} bgClass={bgClass} variant="marketing">
       <style>{`
         @keyframes oldstack-eq-dash-${uid} { to { stroke-dashoffset: -24; } }
         @keyframes oldstack-eq-wobble-${uid} {
