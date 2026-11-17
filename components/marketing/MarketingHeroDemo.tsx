@@ -10,7 +10,7 @@ import type { DemoScenarioId } from '@trooper/demo';
  */
 export default function MarketingHeroDemo({ scenarioId }: { scenarioId: DemoScenarioId }) {
   return (
-    <div className="mx-auto w-full max-w-[1240px] px-4 pb-12 sm:px-6 lg:px-8">
+    <div className="marketing-subpage-demo mx-auto w-full max-w-[1240px] px-4 pb-12 sm:px-6 lg:px-8">
       <HeroArticleDemo scenarioId={scenarioId} flush />
     </div>
   );

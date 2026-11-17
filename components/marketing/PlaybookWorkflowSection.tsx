@@ -91,15 +91,12 @@ function WorkflowCanvas({ workflow }: { workflow: PlaybookWorkflow }) {
   const nodeById = Object.fromEntries(workflow.nodes.map((n) => [n.id, n]));
 
   return (
-    <div className="relative overflow-hidden border border-slate-200 bg-slate-50/70 p-2 shadow-sm sm:p-3">
-      <div className="relative overflow-hidden border border-slate-200 bg-white shadow-sm">
+    <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-2 shadow-[0_24px_60px_-38px_rgba(15,23,42,.3)] sm:p-3">
+      <div className="relative overflow-hidden rounded-xl border border-slate-200/80 bg-white">
         <div
-          className="relative min-h-[280px] sm:min-h-[340px] lg:min-h-[380px]"
+          className="relative min-h-[280px] bg-[radial-gradient(ellipse_at_50%_0%,rgba(105,216,166,.08),transparent_68%)] sm:min-h-[340px] lg:min-h-[380px]"
         style={{
-          backgroundImage:
-            'radial-gradient(circle, rgb(148 163 184 / 0.35) 1px, transparent 1px)',
-          backgroundSize: '18px 18px',
-          backgroundColor: 'rgb(248 250 252 / 0.6)',
+          backgroundColor: '#fbfcfa',
         }}
       >
         {workflow.triggerBadge && (

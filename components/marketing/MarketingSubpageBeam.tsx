@@ -4,7 +4,7 @@ import OpenBotBeam from '@/components/desktop-hero/OpenBotBeam';
 export default function MarketingSubpageBeam() {
   return (
     <OpenBotBeam
-      surfaceSelector=".marketing-subpage-hero"
+      surfaceSelector=".marketing-subpage-demo"
       sourceSelector="header.site-header-landing [data-landing-header-download]"
     />
   );

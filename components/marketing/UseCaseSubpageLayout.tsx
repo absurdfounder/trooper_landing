@@ -9,6 +9,7 @@ import MarketingSubpageTail from '@/components/marketing/MarketingSubpageTail';
 import OldStackComparison from '@/components/marketing/OldStackComparison';
 import type { OldStackContent } from '@/lib/oldStackContent';
 import MarketingSubpageBeam from '@/components/marketing/MarketingSubpageBeam';
+import OverviewBenefits from '@/components/marketing/OverviewBenefits';
 
 export default function UseCaseSubpageLayout({
   content,
@@ -28,6 +29,7 @@ export default function UseCaseSubpageLayout({
         <MarketingSubpageBeam />
         <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
+            <p className="subpage-mission-label">{content.missionLabel}</p>
             <h1 className="font-funneldisplay text-3xl sm:text-4xl md:text-[2.5rem] max-w-3xl leading-tight tracking-tight text-slate-900">
               {content.title}
               {content.titleAccent && (
@@ -82,14 +84,7 @@ export default function UseCaseSubpageLayout({
               </div>
             </div>
 
-            <div className="mt-12 grid md:grid-cols-3 gap-6">
-              {content.benefits.map((b) => (
-                <div key={b.title} className="border border-slate-200 bg-white p-6">
-                  <h3 className="font-semibold text-slate-900 mb-2">{b.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{b.description}</p>
-                </div>
-              ))}
-            </div>
+            <OverviewBenefits benefits={content.benefits} />
           </div>
         </section>
       </SectionShell>

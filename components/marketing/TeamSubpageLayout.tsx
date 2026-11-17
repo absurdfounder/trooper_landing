@@ -12,6 +12,7 @@ import { getTeamOldStack } from '@/lib/oldStackContent';
 import { getCapabilitiesEyebrowNumber, getSubpageSectionOffset } from '@/lib/subpageSections';
 import { ArrowRight } from 'lucide-react';
 import MarketingSubpageBeam from '@/components/marketing/MarketingSubpageBeam';
+import OverviewBenefits from '@/components/marketing/OverviewBenefits';
 
 export default function TeamSubpageLayout({ content }: { content: TeamPageContent }) {
   const sectionOffset = getSubpageSectionOffset(content);
@@ -24,6 +25,7 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
         <MarketingSubpageBeam />
         <section className="max-w-7xl mx-auto">
           <div className="page-hero-padding px-4 sm:px-6 lg:px-8 pb-8">
+            <p className="subpage-mission-label">{content.missionLabel}</p>
             {content.heroHeadline ? (
               <MarketingHeadline as="h1" size="hero" lines={content.heroHeadline} />
             ) : (
@@ -83,14 +85,7 @@ export default function TeamSubpageLayout({ content }: { content: TeamPageConten
               </div>
             </div>
 
-            <div className="mt-12 grid md:grid-cols-3 gap-6">
-              {content.benefits.map((b) => (
-                <div key={b.title} className="border border-slate-200 bg-white p-6">
-                  <h3 className="font-semibold text-slate-900 mb-2">{b.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{b.description}</p>
-                </div>
-              ))}
-            </div>
+            <OverviewBenefits benefits={content.benefits} />
           </div>
         </section>
       </SectionShell>

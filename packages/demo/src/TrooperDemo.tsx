@@ -22,7 +22,7 @@ import {
 } from './scenarios/index';
 import type { DemoChannel, DemoKanbanTask, DemoOrg, ChannelBrand } from './scenarios/types';
 import { DemoClickCursor, useDemoCursor } from './components/DemoClickCursor';
-import { DemoKanbanColumn, DemoDragOverlay, DEMO_KANBAN_COL_W, DEMO_KANBAN_GAP } from './components/DemoKanban';
+import { DemoKanbanColumn, DemoTaskList, DemoDragOverlay, DEMO_KANBAN_COL_W, DEMO_KANBAN_GAP } from './components/DemoKanban';
 import {
   EMPTY_ARTIFACT_REVIEW,
   defaultArtifactReviewComment,
@@ -573,7 +573,7 @@ function DemoBoardPane({
   onDragStart?: (task: Task, event: ReactPointerEvent<HTMLDivElement>) => void;
   onActivity: () => void;
 }) {
-  const [viewMode, setViewMode] = useState<'columns' | 'list'>('columns');
+  const [viewMode, setViewMode] = useState<'columns' | 'list'>('list');
   const cols: Record<DemoColumnId, Task[]> = { inbox: [], in_progress: [], review: [], done: [] };
   tasks.forEach((t) => {
     // Fold inbox into In Progress so cards aren't lost when TODO is hidden.
@@ -585,6 +585,7 @@ function DemoBoardPane({
     <button
       type="button"
       onClick={() => { onActivity(); setViewMode(mode); }}
+      aria-pressed={viewMode === mode}
       className="demo-hoverable"
       style={{
         display: "inline-flex", alignItems: "center", gap: 4, height: 30, padding: "0 8px", borderRadius: 6,
@@ -609,22 +610,33 @@ function DemoBoardPane({
           <Plus size={14} strokeWidth={2} />
         </button>
       </div>
-      <div className="Trooper-scrollbar" style={{ display: "flex", gap: DEMO_KANBAN_GAP, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
-        {BOARD_COLUMN_IDS.map((k) => (
-          <DemoKanbanColumn
-            key={k}
-            colKey={k}
-            tasks={cols[k]}
-            avatarFor={avatarFor}
-            highlightedTaskId={highlightedTaskId}
-            draggingTaskId={draggingTaskId}
-            isOver={overCol === k || (k === 'in_progress' && overCol === 'inbox')}
-            interactive={interactive}
-            onOpenTask={onOpenTask}
-            onDragStart={onDragStart}
-          />
-        ))}
-      </div>
+      {viewMode === 'list' ? (
+        <DemoTaskList
+          tasks={tasks}
+          avatarFor={avatarFor}
+          highlightedTaskId={highlightedTaskId}
+          interactive={interactive}
+          onOpenTask={onOpenTask}
+          onActivity={onActivity}
+        />
+      ) : (
+        <div className="Trooper-scrollbar" style={{ display: "flex", gap: DEMO_KANBAN_GAP, flex: 1, overflowX: "auto", overflowY: "hidden", minHeight: 0 }}>
+          {BOARD_COLUMN_IDS.map((k) => (
+            <DemoKanbanColumn
+              key={k}
+              colKey={k}
+              tasks={cols[k]}
+              avatarFor={avatarFor}
+              highlightedTaskId={highlightedTaskId}
+              draggingTaskId={draggingTaskId}
+              isOver={overCol === k || (k === 'in_progress' && overCol === 'inbox')}
+              interactive={interactive}
+              onOpenTask={onOpenTask}
+              onDragStart={onDragStart}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

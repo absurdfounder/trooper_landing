@@ -1747,7 +1747,15 @@ body > iframe.goog-te-menu-frame {
   z-index: 10;
 }
 
+.marketing-subpage-hero .page-hero-padding {
+  max-width: 58rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
 .marketing-subpage-hero h1 {
+  max-width: none;
+  margin-inline: auto;
   color: #fff;
   font-size: clamp(2.5rem, 4vw, 4.25rem);
   line-height: 1.04;
@@ -1765,7 +1773,28 @@ body > iframe.goog-te-menu-frame {
 }
 
 .marketing-subpage-hero .page-hero-padding p {
+  margin-inline: auto;
   color: rgba(255, 255, 255, 0.72);
+}
+
+.marketing-subpage-hero .page-hero-padding > div:last-child {
+  justify-content: center;
+}
+
+.subpage-mission-label {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 auto 1rem !important;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .trooper-hero .rail {

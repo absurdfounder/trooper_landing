@@ -63,6 +63,74 @@ export function resolveTaskCardModel(task: DemoKanbanTask): DemoTaskCardModel {
   };
 }
 
+/** Compact task rows for the workspace list view used in the marketing demo. */
+export function DemoTaskList({
+  tasks,
+  avatarFor,
+  highlightedTaskId,
+  interactive,
+  onOpenTask,
+  onActivity,
+}: {
+  tasks: DemoKanbanTask[];
+  avatarFor: (name: string) => string | undefined;
+  highlightedTaskId?: number | null;
+  interactive?: boolean;
+  onOpenTask?: (task: DemoKanbanTask) => void;
+  onActivity: () => void;
+}) {
+  const groups = [
+    ...(['in_progress', 'review', 'done'] as const).map((status) => ({
+      status,
+      tasks: tasks.filter((task) => (task.col === 'inbox' ? 'in_progress' : task.col) === status),
+    })),
+  ].filter((group) => group.tasks.length > 0);
+
+  return (
+    <div className="Trooper-scrollbar" style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '0 4px' }}>
+      {groups.length === 0 ? (
+        <div style={{ display: 'flex', minHeight: 120, alignItems: 'center', justifyContent: 'center', borderTop: `1px solid ${C.border}`, color: C.textSubtle, fontSize: 12 }}>
+          Tasks will appear here as the team picks them up.
+        </div>
+      ) : groups.map(({ status, tasks: groupTasks }) => {
+        const column = KANBAN_COLUMNS[status];
+        return (
+          <section key={status} style={{ marginBottom: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '8px 4px', borderBottom: `1px solid ${C.border}` }}>
+              <span aria-hidden style={{ fontSize: 12 }}>{column.emoji}</span>
+              <h3 style={{ margin: 0, color: column.headerText, fontSize: 10, fontWeight: 600, letterSpacing: '0.06em' }}>{column.label}</h3>
+              <span style={{ color: C.textSubtle, fontSize: 10 }}>{groupTasks.length}</span>
+            </div>
+            {groupTasks.map((task) => {
+              const model = resolveTaskCardModel(task);
+              const priorityColor = model.priority === 'urgent' ? C.danger : model.priority === 'high' ? '#fb923c' : model.priority === 'medium' ? '#facc15' : C.border;
+              return (
+                <button
+                  key={task.id}
+                  type="button"
+                  onClick={() => {
+                    onActivity();
+                    if (interactive) onOpenTask?.(task);
+                  }}
+                  aria-label={`${task.title}, ${column.label}, assigned to ${model.assignee ?? 'Unassigned'}`}
+                  className="demo-hoverable"
+                  style={{ display: 'flex', width: '100%', alignItems: 'center', gap: 10, padding: '9px 6px', border: 0, borderBottom: `1px solid ${C.border}`, background: highlightedTaskId === task.id ? 'rgba(255,255,255,0.045)' : 'transparent', color: C.text, textAlign: 'left', cursor: interactive ? 'pointer' : 'default' }}
+                >
+                  <span aria-hidden style={{ width: 6, height: 6, flexShrink: 0, borderRadius: '50%', background: priorityColor }} />
+                  <span style={{ minWidth: 0, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 12, fontWeight: 500 }}>{task.title}</span>
+                  {model.artifactCount > 0 && <span style={{ flexShrink: 0, color: C.textSubtle, fontSize: 10 }}>{model.artifactCount} outputs</span>}
+                  <span style={{ width: 74, flexShrink: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: C.textMuted, fontSize: 10 }}>{model.assignee ?? 'Unassigned'}</span>
+                  {model.assignee && avatarFor(model.assignee) && <Avatar name={model.assignee} src={avatarFor(model.assignee)} size={20} />}
+                </button>
+              );
+            })}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
 function Avatar({ name, src, size = 20 }: { name: string; src?: string; size?: number }) {
   const [failed, setFailed] = useState(false);
   const initial = name.charAt(0).toUpperCase() || '?';
