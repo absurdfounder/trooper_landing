@@ -40,8 +40,13 @@ export default function Newsletter() {
             >
               Get started
             </PixelButton>
-            <PixelButton href="/contact-us#demo" size="lg" variant="outline" tone="light">
-              Book a demo
+            <PixelButton
+              href="mailto:vaibhav@troopermail.com"
+              size="lg"
+              variant="outline"
+              tone="light"
+            >
+              Talk to founder
             </PixelButton>
           </div>
         </div>
