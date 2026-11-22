@@ -2,7 +2,7 @@
 
 import { createElement, useEffect, useMemo, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
-import { Avatar as BsAvatar, type AvatarController } from '@bible-strong/avatar-react'
+import { Avatar as BsAvatar } from '@bible-strong/avatar-react'
 
 import { assembleAvatarDefinition } from '@/lib/avatars/assembleAvatar'
 import { getCharacterPreset } from '@/lib/avatars/characterCatalog'
@@ -44,6 +44,7 @@ function shuffle<T>(items: readonly T[]) {
 }
 
 type LogoCue = { expression: string; animation: string; durationMs: number }
+type LogoTarget = { kind: 'expression' | 'animation'; key: string }
 
 function buildLogoCycle(
   definition: ReturnType<typeof assembleAvatarDefinition>,
@@ -151,7 +152,7 @@ function FooterLiveO({
   active: boolean
   characterIndex: number
 }) {
-  const playerRef = useRef<AvatarController | null>(null)
+  const [target, setTarget] = useState<LogoTarget | null>(null)
   const definition = useMemo(() => {
     const preset = getCharacterPreset(presetId)
     if (!preset) return null
@@ -161,9 +162,15 @@ function FooterLiveO({
       colors: { body, eyes },
     })
   }, [presetId, body, eyes])
+  const initialExpression =
+    definition?.expressionOrder[characterIndex % (definition.expressionOrder.length || 1)] ?? 'neutral'
+  const visibleTarget = target ?? { kind: 'expression' as const, key: initialExpression }
 
   useEffect(() => {
-    if (!active || !definition) return
+    if (!active || !definition) {
+      setTarget(null)
+      return
+    }
     let cycleNumber = 0
     let deck = buildLogoCycle(definition, characterIndex, cycleNumber++)
     let cursor = 0
@@ -187,9 +194,9 @@ function FooterLiveO({
       const cue = deck[cursor]
       cursor += 1
       last = cue
-      playerRef.current?.setExpression(cue.expression)
+      setTarget({ kind: 'expression', key: cue.expression })
       timer = window.setTimeout(() => {
-        playerRef.current?.play(cue.animation)
+        setTarget({ kind: 'animation', key: cue.animation })
         timer = window.setTimeout(step, cue.durationMs + Math.random() * 600)
       }, 1500 + Math.random() * 300)
     }
@@ -201,16 +208,19 @@ function FooterLiveO({
     return <LetterOFallback size={size} body={body} eyes={eyes} />
   }
 
+  const playbackProps =
+    visibleTarget.kind === 'animation'
+      ? { defaultAnimation: visibleTarget.key }
+      : { defaultExpression: visibleTarget.key }
+
   return (
     <span className="inline-flex shrink-0 overflow-visible" style={{ width: size, height: size }}>
       {createElement(BsAvatar as never, {
-        key: presetId,
-        ref: playerRef,
+        key: `${presetId}-${visibleTarget.kind}-${visibleTarget.key}`,
         definition,
-        defaultExpression:
-          definition.expressionOrder[characterIndex % definition.expressionOrder.length] ?? 'neutral',
         size,
         ariaLabel: '',
+        ...playbackProps,
       })}
     </span>
   )
