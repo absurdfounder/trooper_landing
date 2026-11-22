@@ -32,10 +32,26 @@ const NAV_EYES = '#111316'
 const FACE_PX = 128
 const FACE_EM = 0.72
 
-function shuffle<T>(items: readonly T[]) {
+function createSeededRandom(seedText: string) {
+  let state = 2166136261
+  for (let index = 0; index < seedText.length; index += 1) {
+    state = Math.imul(state ^ seedText.charCodeAt(index), 16777619)
+  }
+  state >>>= 0
+
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0
+    let value = state
+    value = Math.imul(value ^ (value >>> 15), value | 1)
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61)
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function shuffleWithRandom<T>(items: readonly T[], random: () => number) {
   const next = [...items]
   for (let i = next.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(random() * (i + 1))
     const held = next[i]
     next[i] = next[j]
     next[j] = held
@@ -43,45 +59,84 @@ function shuffle<T>(items: readonly T[]) {
   return next
 }
 
-type LogoCue = { expression: string; animation: string; durationMs: number }
-type LogoTarget = { kind: 'expression' | 'animation'; key: string }
+type LogoAnimationStep = {
+  expression: string
+  holdMs: number
+  transitionMs: number
+  transition: 'spring' | 'smooth' | 'snappy'
+}
 
-function buildLogoCycle(
+type LogoAnimationDefinition = {
+  playbackMode: 'loop' | 'once' | 'pingPong'
+  steps: LogoAnimationStep[]
+  blink: {
+    enabled: boolean
+    initialDelayMs: number
+    minIntervalMs: number
+    maxIntervalMs: number
+    durationMs: number
+  }
+  metadata?: { label?: string; description?: string; group?: string }
+}
+
+function buildContinuousLogoDefinition(
   definition: ReturnType<typeof assembleAvatarDefinition>,
+  presetId: string,
+  body: string,
+  eyes: string,
   characterIndex: number,
-  cycleNumber: number
-): LogoCue[] {
-  const animations = shuffle(definition.animationOrder.map((key) => {
-    const animation = definition.animations[key] as {
-      steps?: { expression: string; transitionMs: number; holdMs: number }[]
-    }
-    const steps = animation?.steps ?? []
-    const durationMs = steps.reduce(
-      (duration, step) => duration + (step.transitionMs ?? 0) + (step.holdMs ?? 0),
-      0
+): ReturnType<typeof assembleAvatarDefinition> {
+  const random = createSeededRandom(`${presetId}:${body}:${eyes}:${characterIndex}`)
+  const animations = shuffleWithRandom(definition.animationOrder, random)
+  const expressions = shuffleWithRandom(definition.expressionOrder, random)
+  const extraExpressionSlots = new Set(
+    shuffleWithRandom(animations.map((_, index) => index), random).slice(
+      0,
+      expressions.length - animations.length
     )
+  )
+  const steps: LogoAnimationStep[] = []
+  let expressionIndex = 0
 
-    return { key, durationMs: Math.min(Math.max(2800, durationMs + 500), 4200) }
-  }))
-  const firstAnimation = definition.animationOrder[(characterIndex + cycleNumber + 7) % animations.length]
-  const firstAnimationIndex = animations.findIndex((animation) => animation.key === firstAnimation)
-  if (firstAnimationIndex > 0) {
-    [animations[0], animations[firstAnimationIndex]] = [animations[firstAnimationIndex], animations[0]]
+  const addExpressionStep = () => {
+    const expression = expressions[expressionIndex]
+    expressionIndex += 1
+    steps.push({
+      expression,
+      transitionMs: 430 + Math.floor(random() * 120),
+      holdMs: 850 + Math.floor(random() * 450),
+      transition: 'smooth',
+    })
   }
 
-  const expressions = shuffle(definition.expressionOrder)
-  const firstExpression = definition.expressionOrder[
-    (characterIndex + cycleNumber + 11) % expressions.length
-  ]
-  const firstExpressionIndex = expressions.indexOf(firstExpression)
-  if (firstExpressionIndex > 0) {
-    [expressions[0], expressions[firstExpressionIndex]] = [expressions[firstExpressionIndex], expressions[0]]
-  }
-
-  return expressions.map((expression, index) => {
-    const animation = animations[index % animations.length]
-    return { expression, animation: animation.key, durationMs: animation.durationMs }
+  animations.forEach((key, index) => {
+    const animation = definition.animations[key] as LogoAnimationDefinition
+    animation.steps.forEach((step) => {
+      steps.push({
+        ...step,
+        transitionMs: Math.min(Math.max(step.transitionMs, 350), 520),
+        holdMs: 950 + Math.floor(random() * 550),
+      })
+    })
+    addExpressionStep()
+    if (extraExpressionSlots.has(index)) addExpressionStep()
   })
+
+  const idle = definition.animations.idle as LogoAnimationDefinition
+  return {
+    ...definition,
+    name: `logo-${presetId}-${characterIndex}`,
+    animationOrder: [...definition.animationOrder, 'logo-cycle'],
+    animations: {
+      ...definition.animations,
+      'logo-cycle': {
+        playbackMode: 'loop',
+        steps,
+        blink: idle.blink,
+        metadata: { label: 'Trooper logo cycle', group: 'Logo' },
+      },
+    },
+  }
 }
 
 /** Static letter-colored O — off-screen / reduced-motion. */
@@ -152,75 +207,29 @@ function FooterLiveO({
   active: boolean
   characterIndex: number
 }) {
-  const [target, setTarget] = useState<LogoTarget | null>(null)
   const definition = useMemo(() => {
     const preset = getCharacterPreset(presetId)
     if (!preset) return null
-    return assembleAvatarDefinition({
+    const assembled = assembleAvatarDefinition({
       name: `footer-${presetId}`,
       preset,
       colors: { body, eyes },
     })
-  }, [presetId, body, eyes])
-  const initialExpression =
-    definition?.expressionOrder[characterIndex % (definition.expressionOrder.length || 1)] ?? 'neutral'
-  const visibleTarget = target ?? { kind: 'expression' as const, key: initialExpression }
-
-  useEffect(() => {
-    if (!active || !definition) {
-      setTarget(null)
-      return
-    }
-    let cycleNumber = 0
-    let deck = buildLogoCycle(definition, characterIndex, cycleNumber++)
-    let cursor = 0
-    let last: LogoCue | null = null
-    let timer = 0
-    const step = () => {
-      if (cursor >= deck.length) {
-        const fresh = buildLogoCycle(definition, characterIndex, cycleNumber++)
-        if (
-          last &&
-          (fresh[0]?.expression === last.expression || fresh[0]?.animation === last.animation)
-        ) {
-          const replacement = fresh.findIndex((cue, index) =>
-            index > 0 && cue.expression !== last?.expression && cue.animation !== last?.animation
-          )
-          if (replacement > 0) [fresh[0], fresh[replacement]] = [fresh[replacement], fresh[0]]
-        }
-        deck = fresh
-        cursor = 0
-      }
-      const cue = deck[cursor]
-      cursor += 1
-      last = cue
-      setTarget({ kind: 'expression', key: cue.expression })
-      timer = window.setTimeout(() => {
-        setTarget({ kind: 'animation', key: cue.animation })
-        timer = window.setTimeout(step, cue.durationMs + Math.random() * 600)
-      }, 1500 + Math.random() * 300)
-    }
-    timer = window.setTimeout(step, 300 + characterIndex * 1300 + Math.random() * 500)
-    return () => window.clearTimeout(timer)
-  }, [active, characterIndex, definition])
+    return buildContinuousLogoDefinition(assembled, presetId, body, eyes, characterIndex)
+  }, [presetId, body, eyes, characterIndex])
 
   if (!definition || !active) {
     return <LetterOFallback size={size} body={body} eyes={eyes} />
   }
 
-  const playbackProps =
-    visibleTarget.kind === 'animation'
-      ? { defaultAnimation: visibleTarget.key }
-      : { defaultExpression: visibleTarget.key }
-
   return (
     <span className="inline-flex shrink-0 overflow-visible" style={{ width: size, height: size }}>
       {createElement(BsAvatar as never, {
-        key: `${presetId}-${visibleTarget.kind}-${visibleTarget.key}`,
+        key: presetId,
         definition,
+        animation: 'logo-cycle',
         size,
         ariaLabel: '',
-        ...playbackProps,
       })}
     </span>
   )
