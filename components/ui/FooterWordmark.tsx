@@ -191,7 +191,7 @@ function FooterLiveO({
       timer = window.setTimeout(() => {
         playerRef.current?.play(cue.animation)
         timer = window.setTimeout(step, cue.durationMs + Math.random() * 600)
-      }, 2800 + Math.random() * 600)
+      }, 1500 + Math.random() * 300)
     }
     timer = window.setTimeout(step, 300 + characterIndex * 1300 + Math.random() * 500)
     return () => window.clearTimeout(timer)
