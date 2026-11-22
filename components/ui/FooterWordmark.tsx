@@ -60,7 +60,7 @@ function buildLogoCycle(
       0
     )
 
-    return { key, durationMs: Math.max(2800, durationMs + 500) }
+    return { key, durationMs: Math.min(Math.max(2800, durationMs + 500), 4200) }
   }))
   const firstAnimation = definition.animationOrder[(characterIndex + cycleNumber + 7) % animations.length]
   const firstAnimationIndex = animations.findIndex((animation) => animation.key === firstAnimation)
@@ -191,7 +191,7 @@ function FooterLiveO({
       timer = window.setTimeout(() => {
         playerRef.current?.play(cue.animation)
         timer = window.setTimeout(step, cue.durationMs + Math.random() * 600)
-      }, 900 + Math.random() * 500)
+      }, 2800 + Math.random() * 600)
     }
     timer = window.setTimeout(step, 300 + characterIndex * 1300 + Math.random() * 500)
     return () => window.clearTimeout(timer)
@@ -207,8 +207,8 @@ function FooterLiveO({
         key: presetId,
         ref: playerRef,
         definition,
-        defaultAnimation:
-          definition.animationOrder[(characterIndex + 2) % definition.animationOrder.length] ?? 'idle',
+        defaultExpression:
+          definition.expressionOrder[characterIndex % definition.expressionOrder.length] ?? 'neutral',
         size,
         ariaLabel: '',
       })}
