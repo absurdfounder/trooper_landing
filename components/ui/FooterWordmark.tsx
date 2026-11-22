@@ -2,9 +2,8 @@
 
 import { createElement, useEffect, useMemo, useRef, useState } from 'react'
 import { useInView } from 'framer-motion'
-import { Avatar as BsAvatar } from '@bible-strong/avatar-react'
+import { Avatar as BsAvatar, type AvatarController } from '@bible-strong/avatar-react'
 
-import LiveAvatarPreview from '@/components/character-builder/LiveAvatarPreview'
 import { assembleAvatarDefinition } from '@/lib/avatars/assembleAvatar'
 import { getCharacterPreset } from '@/lib/avatars/characterCatalog'
 
@@ -17,14 +16,14 @@ const LETTER_INK_DIM = '#d4d4d8' // slight second-O variation, still letter-fami
 const EYE_INK = '#a1a1aa' // neutral-400 — visible on light fills
 
 const GLYPHS = [
-  { presetId: 'strobi', body: LETTER_INK, animation: 'idle' },
-  { presetId: 'cubee', body: LETTER_INK_DIM, animation: 'idle' },
+  { presetId: 'strobi', body: LETTER_INK },
+  { presetId: 'cubee', body: LETTER_INK_DIM },
 ] as const
 
 /** Same faces as the footer, in the navbar wordmark colors. */
 const NAV_GLYPHS = [
-  { presetId: 'strobi', body: '#5bc2e5', animation: 'idle' },
-  { presetId: 'cubee', body: '#69d8a6', animation: 'idle' },
+  { presetId: 'strobi', body: '#5bc2e5' },
+  { presetId: 'cubee', body: '#69d8a6' },
 ] as const
 
 const NAV_EYES = '#111316'
@@ -32,24 +31,6 @@ const NAV_EYES = '#111316'
 /** Drawn once at this size, then scaled with the type so refresh doesn't flash a bigger face. */
 const FACE_PX = 128
 const FACE_EM = 0.72
-
-/** Same deck the cast walks, so each logo face picks its own expressions. */
-const MOTIONS = [
-  'listening',
-  'thinking',
-  'searching',
-  'working',
-  'excited',
-  'happy',
-  'curious',
-  'confused',
-  'surprised',
-  'proud',
-  'playful',
-  'laughing',
-  'celebrate',
-  'idle',
-] as const
 
 function shuffle<T>(items: readonly T[]) {
   const next = [...items]
@@ -60,6 +41,46 @@ function shuffle<T>(items: readonly T[]) {
     next[j] = held
   }
   return next
+}
+
+type LogoCue = { expression: string; animation: string; durationMs: number }
+
+function buildLogoCycle(
+  definition: ReturnType<typeof assembleAvatarDefinition>,
+  characterIndex: number,
+  cycleNumber: number
+): LogoCue[] {
+  const animations = shuffle(definition.animationOrder.map((key) => {
+    const animation = definition.animations[key] as {
+      steps?: { expression: string; transitionMs: number; holdMs: number }[]
+    }
+    const steps = animation?.steps ?? []
+    const durationMs = steps.reduce(
+      (duration, step) => duration + (step.transitionMs ?? 0) + (step.holdMs ?? 0),
+      0
+    )
+
+    return { key, durationMs: Math.max(2800, durationMs + 500) }
+  }))
+  const firstAnimation = definition.animationOrder[(characterIndex + cycleNumber + 7) % animations.length]
+  const firstAnimationIndex = animations.findIndex((animation) => animation.key === firstAnimation)
+  if (firstAnimationIndex > 0) {
+    [animations[0], animations[firstAnimationIndex]] = [animations[firstAnimationIndex], animations[0]]
+  }
+
+  const expressions = shuffle(definition.expressionOrder)
+  const firstExpression = definition.expressionOrder[
+    (characterIndex + cycleNumber + 11) % expressions.length
+  ]
+  const firstExpressionIndex = expressions.indexOf(firstExpression)
+  if (firstExpressionIndex > 0) {
+    [expressions[0], expressions[firstExpressionIndex]] = [expressions[firstExpressionIndex], expressions[0]]
+  }
+
+  return expressions.map((expression, index) => {
+    const animation = animations[index % animations.length]
+    return { expression, animation: animation.key, durationMs: animation.durationMs }
+  })
 }
 
 /** Static letter-colored O — off-screen / reduced-motion. */
@@ -93,27 +114,44 @@ function LetterOFallback({ size, body, eyes = EYE_INK }: { size: number; body: s
   )
 }
 
+function useLogoMotionAllowed() {
+  const [reduceMotion, setReduceMotion] = useState(false)
+  const [pageVisible, setPageVisible] = useState(true)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => setReduceMotion(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+
+  useEffect(() => {
+    const syncVisibility = () => setPageVisible(!document.hidden)
+    syncVisibility()
+    document.addEventListener('visibilitychange', syncVisibility)
+    return () => document.removeEventListener('visibilitychange', syncVisibility)
+  }, [])
+
+  return !reduceMotion && pageVisible
+}
+
 function FooterLiveO({
   presetId,
   body,
   eyes = EYE_INK,
-  animation,
   size,
   active,
-  cycle = false,
-  opening,
+  characterIndex,
 }: {
   presetId: string
   body: string
   eyes?: string
-  animation: string
   size: number
   active: boolean
-  /** Walk a private shuffled deck so this face never matches its neighbor. */
-  cycle?: boolean
-  opening?: string
+  characterIndex: number
 }) {
-  const playerRef = useRef<{ play: (animation: string) => void }>(null)
+  const playerRef = useRef<AvatarController | null>(null)
   const definition = useMemo(() => {
     const preset = getCharacterPreset(presetId)
     if (!preset) return null
@@ -125,55 +163,56 @@ function FooterLiveO({
   }, [presetId, body, eyes])
 
   useEffect(() => {
-    if (!cycle || !active || !definition) return
-    let deck = shuffle(MOTIONS)
+    if (!active || !definition) return
+    let cycleNumber = 0
+    let deck = buildLogoCycle(definition, characterIndex, cycleNumber++)
     let cursor = 0
-    let last = opening ?? ''
+    let last: LogoCue | null = null
     let timer = 0
     const step = () => {
       if (cursor >= deck.length) {
-        const fresh = shuffle(MOTIONS)
-        if (fresh[0] === last) fresh.push(fresh.shift() as (typeof MOTIONS)[number])
+        const fresh = buildLogoCycle(definition, characterIndex, cycleNumber++)
+        if (
+          last &&
+          (fresh[0]?.expression === last.expression || fresh[0]?.animation === last.animation)
+        ) {
+          const replacement = fresh.findIndex((cue, index) =>
+            index > 0 && cue.expression !== last?.expression && cue.animation !== last?.animation
+          )
+          if (replacement > 0) [fresh[0], fresh[replacement]] = [fresh[replacement], fresh[0]]
+        }
         deck = fresh
         cursor = 0
       }
-      const motion = deck[cursor]
+      const cue = deck[cursor]
       cursor += 1
-      last = motion
-      playerRef.current?.play(motion)
-      timer = window.setTimeout(step, 2800 + Math.random() * 3600)
+      last = cue
+      playerRef.current?.setExpression(cue.expression)
+      timer = window.setTimeout(() => {
+        playerRef.current?.play(cue.animation)
+        timer = window.setTimeout(step, cue.durationMs + Math.random() * 600)
+      }, 900 + Math.random() * 500)
     }
-    timer = window.setTimeout(step, 700 + Math.random() * 2400)
+    timer = window.setTimeout(step, 300 + characterIndex * 1300 + Math.random() * 500)
     return () => window.clearTimeout(timer)
-  }, [cycle, active, definition, opening])
+  }, [active, characterIndex, definition])
 
   if (!definition || !active) {
     return <LetterOFallback size={size} body={body} eyes={eyes} />
   }
 
-  if (cycle) {
-    return (
-      <span className="inline-flex shrink-0 overflow-visible" style={{ width: size, height: size }}>
-        {createElement(BsAvatar as never, {
-          key: presetId,
-          ref: playerRef,
-          definition,
-          defaultAnimation: opening ?? animation,
-          size,
-          ariaLabel: '',
-        })}
-      </span>
-    )
-  }
-
   return (
-    <LiveAvatarPreview
-      definition={definition}
-      size={size}
-      animation={animation}
-      label=""
-      className="!overflow-visible"
-    />
+    <span className="inline-flex shrink-0 overflow-visible" style={{ width: size, height: size }}>
+      {createElement(BsAvatar as never, {
+        key: presetId,
+        ref: playerRef,
+        definition,
+        defaultAnimation:
+          definition.animationOrder[(characterIndex + 2) % definition.animationOrder.length] ?? 'idle',
+        size,
+        ariaLabel: '',
+      })}
+    </span>
   )
 }
 
@@ -183,28 +222,13 @@ function FooterLiveO({
  */
 export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'watermark' | 'nav' | 'nav-dark' }) {
   const rootRef = useRef<HTMLDivElement>(null)
-  const openings = useRef<string[] | null>(null)
-  const [reduceMotion, setReduceMotion] = useState(false)
   const nearFooter = useInView(rootRef, { amount: 0.01, margin: '40% 0px' })
+  const motionAllowed = useLogoMotionAllowed()
   const nav = variant !== 'watermark'
   const darkNav = variant === 'nav-dark'
-  if (nav && openings.current === null) {
-    const first = shuffle(MOTIONS)
-    const second = shuffle(MOTIONS)
-    if (second[0] === first[0]) second.push(second.shift() as (typeof MOTIONS)[number])
-    openings.current = [first[0], second[0]]
-  }
   const glyphs = nav ? NAV_GLYPHS : GLYPHS
   const eyes = nav ? NAV_EYES : EYE_INK
-  const live = (nav || nearFooter) && !reduceMotion
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => setReduceMotion(mq.matches)
-    sync()
-    mq.addEventListener('change', sync)
-    return () => mq.removeEventListener('change', sync)
-  }, [])
+  const live = (nav || nearFooter) && motionAllowed
 
   return (
     <div
@@ -248,11 +272,9 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
                 presetId={g.presetId}
                 body={g.body}
                 eyes={eyes}
-                animation={g.animation}
                 size={FACE_PX}
                 active={live}
-                cycle={nav}
-                opening={nav ? openings.current?.[i] : undefined}
+                characterIndex={i}
               />
             </span>
           </span>
@@ -266,8 +288,13 @@ export default function FooterWordmark({ variant = 'watermark' }: { variant?: 'w
 
 /** Two live Trooper avatars, scaled to sit inline with the hero headline. */
 export function TrooperHeroCharacters() {
+  const rootRef = useRef<HTMLSpanElement>(null)
+  const inView = useInView(rootRef, { amount: 0.01, margin: '40% 0px' })
+  const motionAllowed = useLogoMotionAllowed()
+  const active = inView && motionAllowed
+
   return (
-    <span className="trooper-hero-characters" aria-hidden="true">
+    <span ref={rootRef} className="trooper-hero-characters" aria-hidden="true">
       {NAV_GLYPHS.map((glyph, index) => (
         <span
           key={glyph.presetId}
@@ -292,11 +319,9 @@ export function TrooperHeroCharacters() {
               presetId={glyph.presetId}
               body={glyph.body}
               eyes={NAV_EYES}
-              animation={index === 0 ? 'curious' : 'listening'}
               size={FACE_PX}
-              active
-              cycle
-              opening={index === 0 ? 'curious' : 'listening'}
+              active={active}
+              characterIndex={index}
             />
           </span>
         </span>
